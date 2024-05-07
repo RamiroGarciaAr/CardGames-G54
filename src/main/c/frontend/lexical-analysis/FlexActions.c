@@ -88,3 +88,29 @@ Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	return UNKNOWN;
 }
+
+Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	switch(lexicalAnalyzerContext->lexeme[0]) {
+		case '>':
+			if(lexicalAnalyzerContext->lexeme[1] == '=') {
+				token = GREATER_OR_EQUAL;
+			}else{
+				token = GREATER;
+			}
+			break;
+		case '<':
+			if(lexicalAnalyzerContext->lexeme[1] == '=') {
+				token = LOWER_OR_EQUAL;
+			}else{
+				token = LOWER;
+			}
+			break;
+
+	//TODO: FINISH IF NEEDED 
+	}
+	lexicalAnalyzerContext->semanticValue->token = token;
+	return token;
+}
+

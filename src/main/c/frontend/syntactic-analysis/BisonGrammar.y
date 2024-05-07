@@ -43,6 +43,36 @@
 %token <token> OPEN_PARENTHESIS
 %token <token> SUB
 
+%token <token> MORE_ONE
+%token <token> LESS_ONE
+%token <token> MORE_EQUAL
+%token <token> LESS_EQUAL
+
+%token <token> GREATER
+%token <token> LOWER
+%token <token> EQUAL_EQUAL
+%token <token> GREATER_OR_EQUAL
+%token <token> LOWER_OR_EQUAL
+
+%token <token> GAME_HAS
+%token <token> DESIGN_HAS
+%token <token> FOR_GAME
+%token <token> FOR_TYPE
+%token <token> FOR_VALUE
+%token <token> COLON //:
+
+%token <token> TYPE	
+%token <token> VALUE
+
+%token <token> PLAYER
+%token <token> DECK	
+%token <token> IDENTIFIER
+
+%token <token> FOREACH	
+%token <token> IF	
+%token <token> ELSE	
+%token <token> ELIF	
+
 %token <token> UNKNOWN
 
 /** Non-terminals. */
@@ -50,6 +80,9 @@
 %type <expression> expression
 %type <factor> factor
 %type <program> program
+%type <language_function> language_function
+%type <game_function> game_function
+%type <design_function> design_function
 
 /**
  * Precedence and associativity.
