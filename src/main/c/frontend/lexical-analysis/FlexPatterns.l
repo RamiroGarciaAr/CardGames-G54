@@ -16,8 +16,6 @@
  */
 %x MULTILINE_COMMENT
 
-alphanumeric    [a-zA-Z0-9_]
-
 /**
  * Reusable patterns.
  *
@@ -38,6 +36,74 @@ alphanumeric    [a-zA-Z0-9_]
 "/"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
 "+"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
 
+"++"                                { return DummyLexemeAction(); }
+"--"                                { return DummyLexemeAction(); }
+"+="                                { return DummyLexemeAction(); }
+"-="                                { return DummyLexemeAction(); }
+
+"<"                                 { return DummyLexemeAction(); }
+">"                                 { return DummyLexemeAction(); }
+"=="                                { return DummyLexemeAction(); }
+"<="                                { return DummyLexemeAction(); }
+">="                                { return DummyLexemeAction(); }
+"!="                                { return DummyLexemeAction(); }
+
+","                                 { return DummyLexemeAction(); }
+"."                                 { return DummyLexemeAction(); }
+
+"{"                                 { return DummyLexemeAction(); }
+"}"                                 { return DummyLexemeAction(); }
+
+"%"                                 { return DummyLexemeAction(); }
+"&&"                                { return DummyLexemeAction(); }
+"||"                                { return DummyLexemeAction(); }
+
+"game"                              { return DummyLexemeAction(); }
+"design"                            { return DummyLexemeAction(); }
+"has"                               { return DummyLexemeAction(); }
+"for"                               { return DummyLexemeAction(); }
+"type"                              { return DummyLexemeAction(); }
+"value"                             { return DummyLexemeAction(); }
+":"                                 { return DummyLexemeAction(); }
+
+"score"                             { return DummyLexemeAction(); }
+
+"Playing"                           { return DummyLexemeAction(); }
+"Waiting"                           { return DummyLexemeAction(); }
+"Deck"                              { return DummyLexemeAction(); }
+"User"                              { return DummyLexemeAction(); }
+"Machine"                           { return DummyLexemeAction(); }
+
+"Hand"                              { return DummyLexemeAction(); }
+
+"foreach"                           { return DummyLexemeAction(); }
+"if"                                { return DummyLexemeAction(); }
+"else"                              { return DummyLexemeAction(); }
+"elif"                              { return DummyLexemeAction(); }
+
+"NumbersOnDeck"                     { return DummyLexemeAction(); }
+"TypesOfCards"                      { return DummyLexemeAction(); }
+"CardsByPlayer"                     { return DummyLexemeAction(); }
+"Rounds"                            { return DummyLexemeAction(); }
+"RoundsTimer"                       { return DummyLexemeAction(); }
+"StartingScore"                     { return DummyLexemeAction(); }
+"WinRoundCondition"                 { return DummyLexemeAction(); }
+"WinGameCondition"                  { return DummyLexemeAction(); }
+"CardsDesign"                       { return DummyLexemeAction(); }
+"BackgroundDesign"                  { return DummyLexemeAction(); }
+
+"MoveCards"                         { return DummyLexemeAction(); }
+"LookAt"                            { return DummyLexemeAction(); }
+"RestockDeck"                       { return DummyLexemeAction(); }
+"WinGame"                           { return DummyLexemeAction(); }
+"WinnerType"                        { return DummyLexemeAction(); }
+"SpecialCardsOnPlay"                { return DummyLexemeAction(); }
+
+"RoundBorders"                      { return DummyLexemeAction(); }
+"ColorBorders"                      { return DummyLexemeAction(); }
+"BackgroundColor"                   { return DummyLexemeAction(); }
+
+/*
 "++"                                { return IncrementPatternAction(createLexicalAnalyzerContext()); }
 "--"                                { return DecrementPatternAction(createLexicalAnalyzerContext()); }
 "+="                                { return PlusEqualsPatternAction(createLexicalAnalyzerContext()); }
@@ -48,22 +114,36 @@ alphanumeric    [a-zA-Z0-9_]
 "=="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 "<="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 ">="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
+"!="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 
-"game has:"                         { return TypeLexemeAction(createLexicalAnalyzerContext()); }
-"design has:"                       { return TypeLexemeAction(createLexicalAnalyzerContext()); }                    
-"for game:"                         { return TypeLexemeAction(createLexicalAnalyzerContext()); }     
-"for type"                          { return TypeLexemeAction(createLexicalAnalyzerContext()); }
-"for value"                         { return TypeLexemeAction(createLexicalAnalyzerContext()); }
-":"                                 { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+","                                 { return CommaLexemeAction(createLexicalAnalyzerContext()); }
+"."                                 { return DotLexemeAction(createLexicalAnalyzerContext()); }
 
+"{"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }
+"}"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }
+
+"%"                                 { return ModuleLexemeAction(createLexicalAnalyzerContext()); }
+"&&"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
+"||"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
+
+"game"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+"design"                            { return TypeLexemeAction(createLexicalAnalyzerContext()); }  
+"has"                               { return TypeLexemeAction(createLexicalAnalyzerContext()); }                
+"for"                               { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "type"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "value"                             { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+":"                                 { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+
+"score"                             { return ScoreLexemeAction(createLexicalAnalyzerContext()); }
+"SelectedCard"                      { return SelectedCardLexemeAction(createLexicalAnalyzerContext()); }
 
 "Playing"                           { return PlayerLexemeAction(createLexicalAnalyzerContext()); }
 "Waiting"                           { return PlayerLexemeAction(createLexicalAnalyzerContext()); }
 "Deck"                              { return DeckLexemeAction(createLexicalAnalyzerContext()); }
 "User"                              { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
 "Machine"                           { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
+
+"Hand"                              { return HandLexemeAction(createLexicalAnalyzerContext()); }
 
 "foreach"                           { return ForEachLexemeAction(createLexicalAnalyzerContext()); }
 "if"                                { return IfLexemeAction(createLexicalAnalyzerContext()); }
@@ -91,7 +171,7 @@ alphanumeric    [a-zA-Z0-9_]
 "RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ColorBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "BackgroundColor"                   { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
-
+*/
 
 "("									{ return ParenthesisLexemeAction(createLexicalAnalyzerContext()); }
 ")"									{ return ParenthesisLexemeAction(createLexicalAnalyzerContext()); }
@@ -100,8 +180,12 @@ alphanumeric    [a-zA-Z0-9_]
 
 [[:space:]]+						{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
 
+/*
 //VARIABLE
-{alphanumeric}+                     { return VariablePatternAction(yytext, yyleng); }
+[[:alnum:]]+                        { return VariablePatternAction(createLexicalAnalyzerContext()); }
+*/
+
+[[:alnum:]]+                        { return DummyLexemeAction(); }
 
 .									{ return UnknownLexemeAction(createLexicalAnalyzerContext()); }
 

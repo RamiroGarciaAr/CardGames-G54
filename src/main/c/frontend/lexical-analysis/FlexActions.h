@@ -29,6 +29,8 @@ Token ArithmeticOperatorLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerCon
 Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
+Token DummyLexemeAction();
+
 Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);

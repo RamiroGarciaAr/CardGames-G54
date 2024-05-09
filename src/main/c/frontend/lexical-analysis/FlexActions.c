@@ -89,6 +89,10 @@ Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	return UNKNOWN;
 }
 
+Token DummyLexemeAction(){
+	return ;
+}
+
 Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	Token token;

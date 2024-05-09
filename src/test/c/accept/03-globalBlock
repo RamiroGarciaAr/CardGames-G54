@@ -1,0 +1,4 @@
+MyCardGame game has:
+    NumbersOnTypes(10)
+    TypesOfCards(Water, Fire, Earth)
+    CardsByPlayer(3)
