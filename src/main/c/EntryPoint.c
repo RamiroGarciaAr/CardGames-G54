@@ -37,6 +37,7 @@ const int main(const int count, const char ** arguments) {
 	if (syntacticAnalysisStatus == ACCEPT) {
 		logDebugging(logger, "Computing expression value...");
 		Program * program = compilerState.abstractSyntaxtTree;
+		/*
 		ComputationResult computationResult = computeExpression(program->expression);
 		if (computationResult.succeed) {
 			compilerState.value = computationResult.value;
@@ -46,6 +47,7 @@ const int main(const int count, const char ** arguments) {
 			logError(logger, "The computation phase rejects the input program.");
 			compilationStatus = FAILED;
 		}
+		*/
 		logDebugging(logger, "Releasing AST resources...");
 		releaseProgram(program);
 	}

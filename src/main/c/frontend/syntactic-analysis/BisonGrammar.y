@@ -81,6 +81,28 @@
 %token <token> ELIF	
 %token <token> HAND	
 
+%token <token> NUMBERS_ON_DECK
+%token <token> TYPES_OF_CARDS
+%token <token> CARDS_BY_PLAYER
+%token <token> ROUNDS
+%token <token> ROUNDS_TIMER
+%token <token> STARTING_SCORE
+%token <token> WIN_ROUND_CONDITION
+%token <token> WIN_GAME_CONDITION
+%token <token> CARDS_DESIGN
+%token <token> BACKGROUND_DESIGN
+
+%token <token> MOVE_CARDS
+%token <token> LOOK_AT
+%token <token> RESTOCK_DECK
+%token <token> WIN_GAME
+%token <token> WINNER_TYPE
+%token <token> SPECIAL_CARDS_ON_PLAY
+
+%token <token> ROUND_BORDERS
+%token <token> COLOR_BORDERS
+%token <token> BACKGROUND_COLOR
+
 %token <token> VARIABLE
 
 %token <token> UNKNOWN
@@ -90,28 +112,6 @@
 %type <expression> expression
 %type <factor> factor
 %type <program> program
-
-%type <NumbersOnDeck> NumbersOnDeck
-%type <TypesOfCards> TypesOfCards
-%type <CardsByPlayer> CardsByPlayer
-%type <Rounds> Rounds
-%type <RoundsTimer> RoundsTimer
-%type <StartingScore> StartingScore
-%type <WinRoundCondition> WinRoundCondition
-%type <WinGameCondition> WinGameCondition
-%type <CardsDesign> CardsDesign
-%type <BackgroundDesign> BackgroundDesign
-
-%type <MoveCards> MoveCards
-%type <LookAt> LookAt
-%type <RestockDeck> RestockDeck
-%type <WinGame> WinGame
-%type <WinnerType> WinnerType
-%type <SpecialCardsOnPlay> SpecialCardsOnPlay
-
-%type <RoundBorders> RoundBorders
-%type <ColorBorders> ColorBorders
-%type <BackgroundColor> BackgroundColor
 
 /**
  * Precedence and associativity.
@@ -132,28 +132,37 @@ block: variable FOR VALUE constant COLON Rules
 	| variable DESIGN HAS COLON Design
 	;
 
-GameFunctions: NumbersOnDeck OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
-				TypesOfCards OPEN_PARENTHESIS cardTypes CLOSE_PARENTHESIS
-				CardsByPlayer OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
-				Rounds OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
-				RoundsTimer OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
-				StartingScore OPEN_PARENTHESIS constant COMMA constant CLOSE_PARENTHESIS
-				WinRoundCondition OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
-				WinGameCondition OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+GameFunctions: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
+				TYPES_OF_CARDS OPEN_PARENTHESIS cardTypes CLOSE_PARENTHESIS
+				CARDS_BY_PLAYER OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
+				ROUNDS OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
+				ROUNDS_TIMER OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
+				STARTING_SCORE OPEN_PARENTHESIS constant COMMA constant CLOSE_PARENTHESIS
+				WIN_ROUND_CONDITION OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+				WIN_GAME_CONDITION OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+				CARDS_DESIGN OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+				BACKGROUND_DESIGN OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
 				;
 
 cardTypes: variable
 	| variable COMMA cardTypes
 	;
 
-Rules: IF OPEN_PARENTHESIS if CLOSE_PARENTHESIS
-	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS
-	| MoveCards OPEN_PARENTHESIS handRef COMMA handRef COMMA constant CLOSE_PARENTHESIS
-	| LookAt OPEN_PARENTHESIS handRef COMMA constant CLOSE_PARENTHESIS
-	| RestockDeck OPEN_PARENTHESIS CLOSE_PARENTHESIS
-	| WinGame OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS
-	| WinnerType OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
-	| SpecialCardsOnPlay OPEN_PARENTHESIS CLOSE_PARENTHESIS 
+Rules: structures
+	| MOVE_CARDS OPEN_PARENTHESIS handRef COMMA handRef COMMA constant CLOSE_PARENTHESIS
+	| LOOK_AT OPEN_PARENTHESIS handRef COMMA constant CLOSE_PARENTHESIS
+	| RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS
+	| WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS
+	| WINNER_TYPE OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS 
+	;
+
+structures: IF OPEN_PARENTHESIS if CLOSE_PARENTHESIS inBrakets //como hacemos un if abajo del otro y como metemos los else y como metemos el elif????
+	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS inBrakets
+	;
+
+inBrakets: OPEN_BRAKETS Rules CLOSE_BRAKETS
+	| 
 	;
 
 handRef: user DOT HAND
@@ -179,14 +188,13 @@ inIf: VALUE COMPARATION constant
 	| user COLON SELECTED_CARD COLON atomic COMPARATION user COLON SELECTED_CARD COLON atomic
 	;
 
-
 atomic: VALUE
 	| TYPE
 	;
 
-Design: RoundBorders
-	| ColorBorders
-	| BackgroundColor
+Design: ROUND_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+	| COLOR_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
+	| BACKGROUND_COLOR OPEN_PARENTHESIS variable CLOSE_PARENTHESIS
 	;
 
 /*

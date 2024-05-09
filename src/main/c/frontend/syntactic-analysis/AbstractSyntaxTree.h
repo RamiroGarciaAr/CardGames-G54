@@ -62,8 +62,13 @@ struct Expression {
 	ExpressionType type;
 };
 
+struct Block {
+
+};
+
 struct Program {
 	Expression * expression;
+	Block * block
 };
 
 /**

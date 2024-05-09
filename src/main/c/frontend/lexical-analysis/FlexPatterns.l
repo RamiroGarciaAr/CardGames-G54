@@ -16,6 +16,8 @@
  */
 %x MULTILINE_COMMENT
 
+%x ONELINE_COMMENT
+
 /**
  * Reusable patterns.
  *
@@ -25,89 +27,26 @@
 
 %%
 
-"/*"								{ BEGIN(MULTILINE_COMMENT); BeginMultilineCommentLexemeAction(createLexicalAnalyzerContext()); }
+"/*"								{ BEGIN(MULTILINE_COMMENT); BeginMultilineCommentLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 <MULTILINE_COMMENT>"*/"				{ EndMultilineCommentLexemeAction(createLexicalAnalyzerContext()); BEGIN(INITIAL); }
 <MULTILINE_COMMENT>[[:space:]]+		{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
 <MULTILINE_COMMENT>[^*]+			{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
 <MULTILINE_COMMENT>.				{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
 
-"-"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
+"//"								{ BEGIN(ONELINE_COMMENT); BeginOnelineCommentLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
+<ONELINE_COMMENT>"\n"				{ EndOnelineCommentLexemeAction(createLexicalAnalyzerContext()); BEGIN(INITIAL); }
+<ONELINE_COMMENT>[[:space:]]+		{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
+<ONELINE_COMMENT>.					{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
+
+"-"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "*"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
 "/"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
 "+"									{ return ArithmeticOperatorLexemeAction(createLexicalAnalyzerContext()); }
 
-"++"                                { return DummyLexemeAction(); }
-"--"                                { return DummyLexemeAction(); }
-"+="                                { return DummyLexemeAction(); }
-"-="                                { return DummyLexemeAction(); }
-
-"<"                                 { return DummyLexemeAction(); }
-">"                                 { return DummyLexemeAction(); }
-"=="                                { return DummyLexemeAction(); }
-"<="                                { return DummyLexemeAction(); }
-">="                                { return DummyLexemeAction(); }
-"!="                                { return DummyLexemeAction(); }
-
-","                                 { return DummyLexemeAction(); }
-"."                                 { return DummyLexemeAction(); }
-
-"{"                                 { return DummyLexemeAction(); }
-"}"                                 { return DummyLexemeAction(); }
-
-"%"                                 { return DummyLexemeAction(); }
-"&&"                                { return DummyLexemeAction(); }
-"||"                                { return DummyLexemeAction(); }
-
-"game"                              { return DummyLexemeAction(); }
-"design"                            { return DummyLexemeAction(); }
-"has"                               { return DummyLexemeAction(); }
-"for"                               { return DummyLexemeAction(); }
-"type"                              { return DummyLexemeAction(); }
-"value"                             { return DummyLexemeAction(); }
-":"                                 { return DummyLexemeAction(); }
-
-"score"                             { return DummyLexemeAction(); }
-
-"Playing"                           { return DummyLexemeAction(); }
-"Waiting"                           { return DummyLexemeAction(); }
-"Deck"                              { return DummyLexemeAction(); }
-"User"                              { return DummyLexemeAction(); }
-"Machine"                           { return DummyLexemeAction(); }
-
-"Hand"                              { return DummyLexemeAction(); }
-
-"foreach"                           { return DummyLexemeAction(); }
-"if"                                { return DummyLexemeAction(); }
-"else"                              { return DummyLexemeAction(); }
-"elif"                              { return DummyLexemeAction(); }
-
-"NumbersOnDeck"                     { return DummyLexemeAction(); }
-"TypesOfCards"                      { return DummyLexemeAction(); }
-"CardsByPlayer"                     { return DummyLexemeAction(); }
-"Rounds"                            { return DummyLexemeAction(); }
-"RoundsTimer"                       { return DummyLexemeAction(); }
-"StartingScore"                     { return DummyLexemeAction(); }
-"WinRoundCondition"                 { return DummyLexemeAction(); }
-"WinGameCondition"                  { return DummyLexemeAction(); }
-"CardsDesign"                       { return DummyLexemeAction(); }
-"BackgroundDesign"                  { return DummyLexemeAction(); }
-
-"MoveCards"                         { return DummyLexemeAction(); }
-"LookAt"                            { return DummyLexemeAction(); }
-"RestockDeck"                       { return DummyLexemeAction(); }
-"WinGame"                           { return DummyLexemeAction(); }
-"WinnerType"                        { return DummyLexemeAction(); }
-"SpecialCardsOnPlay"                { return DummyLexemeAction(); }
-
-"RoundBorders"                      { return DummyLexemeAction(); }
-"ColorBorders"                      { return DummyLexemeAction(); }
-"BackgroundColor"                   { return DummyLexemeAction(); }
-
-/*
 "++"                                { return IncrementPatternAction(createLexicalAnalyzerContext()); }
 "--"                                { return DecrementPatternAction(createLexicalAnalyzerContext()); }
 "+="                                { return PlusEqualsPatternAction(createLexicalAnalyzerContext()); }
-"-="                                { return IncrementPatternAction(createLexicalAnalyzerContext()); }
+"-="                                { return MinusEqualsPatternAction(createLexicalAnalyzerContext()); }
 
 "<"                                 { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 ">"                                 { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
@@ -116,26 +55,25 @@
 ">="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 "!="                                { return ComparationLexemeAction(createLexicalAnalyzerContext()); }
 
-","                                 { return CommaLexemeAction(createLexicalAnalyzerContext()); }
-"."                                 { return DotLexemeAction(createLexicalAnalyzerContext()); }
-
-"{"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }
+"{"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "}"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }
 
-"%"                                 { return ModuleLexemeAction(createLexicalAnalyzerContext()); }
+"%"                                 { return LogicLexemeAction(createLexicalAnalyzerContext()); }
 "&&"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
 "||"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
 
-"game"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+"game"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "design"                            { return TypeLexemeAction(createLexicalAnalyzerContext()); }  
 "has"                               { return TypeLexemeAction(createLexicalAnalyzerContext()); }                
 "for"                               { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "type"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "value"                             { return TypeLexemeAction(createLexicalAnalyzerContext()); }
-":"                                 { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+
+":"                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
+","                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
+"."                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
 
 "score"                             { return ScoreLexemeAction(createLexicalAnalyzerContext()); }
-"SelectedCard"                      { return SelectedCardLexemeAction(createLexicalAnalyzerContext()); }
 
 "Playing"                           { return PlayerLexemeAction(createLexicalAnalyzerContext()); }
 "Waiting"                           { return PlayerLexemeAction(createLexicalAnalyzerContext()); }
@@ -144,13 +82,14 @@
 "Machine"                           { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
 
 "Hand"                              { return HandLexemeAction(createLexicalAnalyzerContext()); }
+"SelectedCard"                      { return SelectedCardLexemeAction(createLexicalAnalyzerContext()); }
 
 "foreach"                           { return ForEachLexemeAction(createLexicalAnalyzerContext()); }
 "if"                                { return IfLexemeAction(createLexicalAnalyzerContext()); }
 "else"                              { return ElseisLexemeAction(createLexicalAnalyzerContext()); }
 "elif"                              { return ElifLexemeAction(createLexicalAnalyzerContext()); }
 
-"NumbersOnDeck"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"NumbersOnDeck"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "TypesOfCards"                      { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "CardsByPlayer"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "Rounds"                            { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
@@ -161,31 +100,26 @@
 "CardsDesign"                       { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "BackgroundDesign"                  { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 
-"MoveCards"                         { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"MoveCards"                         { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "LookAt"                            { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "RestockDeck"                       { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "WinGame"                           { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "WinnerType"                        { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "SpecialCardsOnPlay"                { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 
-"RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "ColorBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "BackgroundColor"                   { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
-*/
 
-"("									{ return ParenthesisLexemeAction(createLexicalAnalyzerContext()); }
+"("									{ return ParenthesisLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 ")"									{ return ParenthesisLexemeAction(createLexicalAnalyzerContext()); }
 
-[[:digit:]]+						{ return IntegerLexemeAction(createLexicalAnalyzerContext()); }
+[[:digit:]]+						{ return IntegerLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 
-[[:space:]]+						{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
+[[:space:]]+						{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 
-/*
 //VARIABLE
 [[:alnum:]]+                        { return VariablePatternAction(createLexicalAnalyzerContext()); }
-*/
-
-[[:alnum:]]+                        { return DummyLexemeAction(); }
 
 .									{ return UnknownLexemeAction(createLexicalAnalyzerContext()); }
 

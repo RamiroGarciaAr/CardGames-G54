@@ -23,16 +23,23 @@ void shutdownFlexActionsModule();
 
 void BeginMultilineCommentLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 void EndMultilineCommentLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+void BeginOnelineCommentLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+void EndOnelineCommentLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 void IgnoredLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 Token ArithmeticOperatorLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
-Token DummyLexemeAction();
+Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
+Token TypeLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token PunctuationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token BraketsLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token LanguageFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token GameFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token DesignFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
-Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 #endif
