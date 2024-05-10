@@ -58,7 +58,7 @@
 "{"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "}"                                 { return BraketsLexemeAction(createLexicalAnalyzerContext()); }
 
-"%"                                 { return LogicLexemeAction(createLexicalAnalyzerContext()); }
+"%"                                 { return LogicLexemeAction(createLexicalAnalyzerContext()); }/*listo*/
 "&&"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
 "||"                                { return LogicLexemeAction(createLexicalAnalyzerContext()); }
 

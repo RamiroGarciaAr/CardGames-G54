@@ -218,9 +218,28 @@ Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 				token = LOWER;
 			}
 			break;
-
-	//TODO: FINISH 
+		case '=':
+			if(lexicalAnalyzerContext->lexeme[1] == '='){
+				token = 
+			}
 	}
 	return token;
 }
 
+Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	switch(lexicalAnalyzerContext->lexeme[0]) {
+		case '%':
+			token = MODULE; break;
+		case '&':
+			if(lexicalAnalyzerContext->lexeme[1] == '&') {
+				token = AND;
+			} break;
+		case '|':
+			if(lexicalAnalyzerContext->lexeme[1] == '|'){
+				token = OR;
+			} break;
+	}
+	return token;
+}
