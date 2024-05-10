@@ -85,6 +85,12 @@ Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	return INTEGER;
 }
 
+Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	lexicalAnalyzerContext->semanticValue->string = strdup(lexicalAnalyzerContext->lexeme);
+	return VARIABLE;
+}
+
 Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	Token token;
@@ -200,6 +206,30 @@ Token DesignFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext
 	return token;
 }
 
+Token OperatorPatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	switch(lexicalAnalyzerContext->lexeme[0]) {
+		case '+':
+			if(lexicalAnalyzerContext->lexeme[1] == '+') {
+				token = ADD_ONE;
+			}
+			if (lexicalAnalyzerContext->lexeme[1] == '='){
+				token = ADD;
+			}
+			break;
+		case '-':
+			if(lexicalAnalyzerContext->lexeme[1] == '-') {
+				token = SUBSTRACT_ONE;
+			}
+			if (lexicalAnalyzerContext->lexeme[1]=='='){
+				token = SUB;	
+			}
+			break;
+	}
+	return token;
+}
+
 Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	Token token;
@@ -220,9 +250,30 @@ Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 			break;
 		case '=':
 			if(lexicalAnalyzerContext->lexeme[1] == '='){
-				token = 
-			}
+				token = EQUAL_EQUAL;
+			} else{
+				token = EQUAL;
+			}break;
+		case '!';
+			if(lexicalAnalyzerContext->lexeme[1] == '='){
+				token = DIFERENT;
+			} break;
 	}
+	return token;
+}
+
+Token PlayerReferenceLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	if (strcmp(lexicalAnalyzerContext->lexeme, "Hand") == 0) {
+		token = HAND;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "SelectedCard") == 0) {
+		token = SELECTED_CARD;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "score") == 0) {
+		token = SCORE;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "tied") == 0) {
+		token = TIED;
+	} 
 	return token;
 }
 
@@ -241,5 +292,37 @@ Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 				token = OR;
 			} break;
 	}
+	return token;
+}
+
+Token GamingLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	if (strcmp(lexicalAnalyzerContext->lexeme, "Playing") == 0) {
+		token = PLAYER;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "Waiting") == 0) {
+		token = PLAYER;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "Deck") == 0) {
+		token = DECK;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "User") == 0) {
+		token = IDENTIFIER;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "Machine") == 0) {
+		token = IDENTIFIER;
+	}
+	return token;
+}
+
+Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	if (strcmp(lexicalAnalyzerContext->lexeme, "foreach") == 0) {
+		token = FOREACH;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "if") == 0) {
+		token = IF;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "else") == 0) {
+		token = ELSE;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "elif") == 0) {
+		token = ELIF;
+		
 	return token;
 }

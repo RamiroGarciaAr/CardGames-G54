@@ -41,5 +41,11 @@ Token GameFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token DesignFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
+Token OperatorPatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token IdentifierLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token PlayerReferenceLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 #endif
