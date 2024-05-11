@@ -323,6 +323,17 @@ Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerConte
 		token = ELSE;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "elif") == 0) {
 		token = ELIF;
-		
+	}
+	return token;
+}
+
+Token BooleanLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	Token token;
+	if (strcmp(lexicalAnalyzerContext->lexeme, "true") == 0) {
+		token = TRUE;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "false") == 0) {
+		token = FALSE;
+	} 
 	return token;
 }

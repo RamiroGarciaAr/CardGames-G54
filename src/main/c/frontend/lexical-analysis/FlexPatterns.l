@@ -90,6 +90,9 @@
 "else"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "elif"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 
+"true"                              { return BooleanLexemeAction(createLexicalAnalyzerContext()); }
+"false"                             { return BooleanLexemeAction(createLexicalAnalyzerContext()); }
+
 "NumbersOnDeck"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "TypesOfCards"                      { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "CardsByPlayer"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
