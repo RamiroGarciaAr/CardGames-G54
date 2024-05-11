@@ -185,13 +185,13 @@ enum ComparisonType{
 enum AtomicType{
 	VALUE,
 	TYPE
-}
+};
 
 enum DesignType {
 	ROUND_BORDERS,
 	COLOR_BORDERS,
 	BACKGROUND_COLOR
-}
+};
 
 enum UserType{
 	PLAYER,
@@ -210,7 +210,7 @@ struct Variable{
 };
 
 struct Bool {
-	bool value;
+	boolean value;
 };
 
 struct User{
@@ -223,7 +223,7 @@ struct UserScore {
 
 struct UserCard {
 	User * user;
-}
+};
 
 struct Deck {
 	Deck * deck;
@@ -247,7 +247,7 @@ struct Aritmethic {
 
 struct Asignation {
 	AsignationsType type;
-}
+};
 
 struct Comparison {
 	ComparisonType type;
@@ -331,7 +331,7 @@ struct Numbers{
 		UserScore * userScore;
 	};
 	NumbersType type;
-}
+};
 
 struct Expression {
 	union {
@@ -381,7 +381,7 @@ struct UserRules{
 struct Structures {
 	union {
 		struct {
-			If * if;
+			If * conditional;
 			InBrakets * inBrakets;
 		};
 		struct {
@@ -391,7 +391,7 @@ struct Structures {
 		InBrakets * inBrakets;
 	};
 	StructuresType type;
-}
+};
 
 struct InBrakets {
 	union {
@@ -402,7 +402,7 @@ struct InBrakets {
 		};
 	};
 	InBraketsType type;
-}
+};
 
 struct HandRef{
 	union{
@@ -410,7 +410,7 @@ struct HandRef{
 		Deck * deck;
 	};
 	HandRefType type;
-}
+};
 
 struct If {
 	union {
@@ -456,7 +456,7 @@ struct Design {
 		Variable * backGroundColor;
 	};
 	DesignType type;
-}
+};
 	
 
 /**

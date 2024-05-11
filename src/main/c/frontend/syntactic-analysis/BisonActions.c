@@ -249,7 +249,7 @@ UserCard * UserCardSemanticAction(User * user){
 
 #pragma endregion UserAtomics
 
-Numbers * NumbersSemanticAction(Constant * constant, userScore * userScore ){
+Numbers * NumbersSemanticAction(Constant * constant, UserScore * userScore ){
 	logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->constant  = constant;
@@ -259,12 +259,12 @@ Numbers * NumbersSemanticAction(Constant * constant, userScore * userScore ){
 
 #pragma region Expresions
 
-Expression * ExpressionAritmethicSemanticAction(Expression * expression1 ,Arithmetic * arithmetic ,Expression * expression2 ){
+Expression * ExpressionAritmethicSemanticAction(Expression * expression1 ,Aritmethic * arithmetic ,Expression * expression2 ){
 	logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
-	expression->expression1 = expression1;
-	expression->arithmetic  = arithmetic;
-	expression->expression2 = expression2;
+	expression->leftExpression = expression1;
+	expression->aritmetic  = arithmetic;
+	expression->rightExpression = expression2;
 	return expression;
 }
 
@@ -278,7 +278,7 @@ Expression * ExpressionNumberSemanticAction(Numbers * numbers){
 Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomic){
 	logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
-	expression->usercard = usercard;
+	expression->userCard = usercard;
 	expression->atomic = atomic;
 	return expression;
 }
@@ -338,10 +338,10 @@ UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne)
 
 #pragma region Structures
 
-Structures * StructureIfSemanticAction(If * if, InBrakets * inBrakets){
+Structures * StructureIfSemanticAction(If * conditional, InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
-	structure->if = if;
+	structure->conditional = conditional;
 	structure->inBrakets = inBrakets;
 	return structure;
 }
@@ -428,7 +428,7 @@ If * IfSemanticAction(InIf * inIf){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	If * conditional = calloc(1, sizeof(If));
 	conditional->inIf = inIf;
-	return if;
+	return conditional;
 }
 
 If * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
@@ -436,7 +436,7 @@ If * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
 	If * conditional = calloc(1, sizeof(If));
 	conditional->leftInIf = leftInIf;
 	conditional->rightInIf = rightInIf;
-	return if;
+	return conditional;
 }
 
 If * IfSemanticAction(Tied * tied){
@@ -507,13 +507,26 @@ Tied * TiedSemanticAction()
 	return tied;
 }
 
-Design * DesignSemanticAction(Variable * variable){
+Design * RoundBordersDesignSemanticAction(Variable * variable){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Design * design = calloc(1, sizeof(Design));
-	design->variable = variable;
+	design->roundBorders = variable;
 	return design;
 }
-
+Design * ColorBordersDesignSemanticAction(Variable * variable)
+{
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Design * design = calloc(1, sizeof(Design));
+	design->colorBorders = variable;
+	return design;
+}
+Design * BackColorDesignSemanticAction(Variable * variable)
+{
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Design * design = calloc(1, sizeof(Design));
+	design->backgroundColor = variable;
+	return design;
+}
 #pragma region Vars
 
 Constant * IntegerConstantSemanticAction(const int value) {
@@ -530,7 +543,7 @@ Variable * VariableSemanticAction(const char * name){
 	return variable;
 }
 
-Bool * BooleanSemanticAction(const bool value)
+Bool * BooleanSemanticAction(const boolean value)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Bool * boolean = calloc(1,sizeof(Bool));
