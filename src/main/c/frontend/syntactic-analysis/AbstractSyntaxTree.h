@@ -24,37 +24,41 @@ typedef enum BoolType BoolType;
 typedef enum NumbersType NumbersType;
 typedef enum PmOneType PmOneType;
 typedef enum AritmethicType AritmethicType;
-typedef enum AsignationsType AsignationType;
+typedef enum AsignationsType AsignationsType;
 typedef enum UserRulesType UserRulesType;
 typedef enum StructuresType StructuresType;
 typedef enum InBraketsType InBraketsType;
+typedef enum HandRefType HandRefType;
+typedef enum IfType IfType;
 typedef enum InIfType InIfType;
 typedef enum ComparisonType ComparisonType;
 typedef enum AtomicType AtomicType;
 typedef enum DesignType DesignType;
-
+typedef enum UserType UserType;
 #pragma endregion EnumsDefinitions
-
 
 #pragma region ExpresionDefinitions
 typedef struct Constant Constant;
 typedef struct Variable Variable;
 typedef struct Block Block;
-typedef struct GameFunctions GameFunctions;
+typedef struct GameFunction GameFunction;
 typedef struct Rules Rules;
 typedef struct Bool Bool;
 typedef struct UserScore UserScore;
+typedef struct UserCard UserCard;
 typedef struct Numbers Numbers;
 typedef struct Expression Expression;
-typedef struct user user;
+typedef struct User User;
 typedef struct UserRules UserRules;
-typedef struct structPmOne structPmOne;
+typedef struct PmOne PmOne;
 typedef struct Aritmethic Aritmethic;
-typedef struct Asignations Asignations;
-
+typedef struct Asignation Asignation;
+typedef struct CardTypes CardTypes;
 typedef struct Structures Structures;
 typedef struct HandRef HandRef;
-typedef struct If  If;
+typedef struct InBrakets InBrakets;
+typedef struct Deck Deck;
+typedef struct If If;
 typedef struct Tied Tied;
 typedef struct InIf InIf;
 typedef struct Comparison Comparison;
@@ -72,6 +76,7 @@ typedef struct Program Program;
  
 /* ------------------------------------------------- ENUMS ------------------------------------------------- */
 #pragma region Enums
+
 enum ExpressionType {
 	ARITMETHIC,
 	NUMBERS,
@@ -110,8 +115,7 @@ enum NumbersType {
 	USER_SCORE
 };
 
-enum PmOneType
-{
+enum PmOneType{
 	INCREASE,
 	DECREASE
 };
@@ -149,6 +153,11 @@ enum InBraketsType{
 	MULTIPLE	
 };
 
+enum HandRefType {
+	USER,
+	DECK
+};
+
 enum IfType {
 	INIF, 
 	AND,
@@ -159,7 +168,7 @@ enum IfType {
 enum InIfType {
 	VALUE,
 	TYPE,
-	VARIABLE,
+	ACTIVATE_SPECIAL_CARDS,
 	USER_SCORE,
 	EXPRESSION
 };
@@ -183,6 +192,12 @@ enum DesignType {
 	COLOR_BORDERS,
 	BACKGROUND_COLOR
 }
+
+enum UserType{
+	PLAYER,
+	IDENTIFIER
+};
+
 #pragma endregion 
 /* ------------------------------------------------- EXPRESSIONS ------------------------------------------------- */
 
@@ -194,10 +209,53 @@ struct Variable{
 	char * name;
 };
 
-//struct User{
-//	int score;
-//	Cards[] hand;
-//}
+struct Bool {
+	bool value;
+};
+
+struct User{
+	UserType type; 
+};
+
+struct UserScore {
+	User * user;
+};
+
+struct UserCard {
+	User * user;
+}
+
+struct Deck {
+	Deck * deck;
+};
+
+struct Tied {
+	Bool * tied;
+};
+
+struct Program {
+	Block * block;
+};
+
+struct PmOne{
+	PmOneType type;
+};
+
+struct Aritmethic {
+	AritmethicType type;
+};
+
+struct Asignation {
+	AsignationsType type;
+}
+
+struct Comparison {
+	ComparisonType type;
+};
+
+struct Atomic {
+	AtomicType type;
+};
 
 struct Block {
 	union {
@@ -208,12 +266,12 @@ struct Block {
 		};
 		struct {
 			Variable * variable;
-			CardTypes * cardType;
+			CardTypes * cardTypes;
 			Rules * rules;
 		};
 		struct {
 			Variable * variable;
-			GameFunctions * gameFunctions;
+			GameFunction * gameFunctions;
 		};
 		struct {
 			Variable * variable;
@@ -223,7 +281,7 @@ struct Block {
 	BlockType type;
 };
 
-struct GameFunctions { 
+struct GameFunction { 
 	Constant * cteNumbersOnDeck;
 	CardTypes * cardTypes;
 	Constant * cteCardsByPlayers;
@@ -252,36 +310,20 @@ struct Rules {
     union {
         Structures * structures;
         struct {
-            HandRef * handRef1;
-            HandRef * handRef1;
+            HandRef * leftHandRef;
+            HandRef * rightandRef;
             Constant * constant;
         };
         struct {
-            HandRef * handRef1;
+            HandRef * handRef;
             Constant * constant;
         };
 		Variable * variable;
 		UserRules * userRules;
-		Bool * bool;
+		Tied * tied;
     };
     RuleType type;
 };
-
-struct Bool {
-	union {
-		Bool * true;
-		Bool * false;
-	};
-	BoolType types;
-};
-
-struct UserScore {
-	User * user;
-};
-
-struct UserCard {
-	User * user;
-}
 
 struct Numbers{
 	union {
@@ -295,7 +337,7 @@ struct Expression {
 	union {
 		struct {
 			Expression * leftExpression;
-			Artimethic * aritmetic;
+			Aritmethic * aritmetic;
 			Expression * rightExpression;
 		};
 		Numbers * numbers;
@@ -306,14 +348,6 @@ struct Expression {
 		Constant * constant;
 	};
 	ExpressionType type;
-};
-
-struct user{
-	union{
-		Player * player;
-		Identifier  * identifier;
-	};
-	UserType type; 
 };
 
 struct UserRules{
@@ -331,9 +365,9 @@ struct UserRules{
 		struct{
 			UserScore * userScore;
 			Asignation * asignation;
-			Numbers * numbers;
+			Numbers * leftNumber;
 			Aritmethic * arithmetic;
-			Numbers * numbers;
+			Numbers * rightNumber;
 		};
 		struct{
 			UserScore * userScore;
@@ -343,34 +377,6 @@ struct UserRules{
 	UserRulesType type
 };
 
-struct PmOne{
-	union {
-		PmOne * addOne;
-		PmOne * subOne;
-	};
-	PmOneType type;
-};
-
-
-struct Aritmethic {
-	union {
-		char * add;
-		char * div;
-		char * mul;
-		char * sub;
-		char * module;
-	};
-	AritmethicType type;
-};
-
-struct Asignations {
-	union {
-		Asignations * equal;
-		Asignations * addEqual;
-		Asignations * subEqual;
-	};
-	AsignationsType type;
-}
 
 struct Structures {
 	union {
@@ -412,14 +418,10 @@ struct If {
 		struct {
 			InIf * leftInIf;
 			InIf * rightInIf;
-		}
+		};
 		Tied * tied;
 	};
 	IfType type;
-};
-
-struct Tied {
-	Tied * tied;
 };
 
 struct InIf {
@@ -432,7 +434,6 @@ struct InIf {
 			Comparison * comparison;
 			Variable * variable;
 		};
-		Variable * variable;
 		struct {
 			UserScore * userScore;
 			Comparison * comparison;
@@ -447,25 +448,6 @@ struct InIf {
 	InIfType type;
 };
 
-struct Comparison {
-	union {
-		Comparison * greater;
-		Comparison * lower;
-		Comparison * equalEqual;
-		Comparison * greaterEqual;
-		Comparison * lowerEqual;
-		Comparison * diferent;
-	};
-	ComparisonType type;
-};
-
-struct Atomic {
-	union {
-		Value * value;
-		Type * type;
-	};
-	AtomicType type;
-};
 
 struct Design {
 	union{
@@ -476,10 +458,6 @@ struct Design {
 	DesignType type;
 }
 	
-
-struct Program {
-	Block * block;
-};
 
 /**
  * Node recursive destructors.

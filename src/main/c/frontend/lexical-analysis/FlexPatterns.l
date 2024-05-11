@@ -110,6 +110,7 @@
 "WinGame"                           { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "WinnerType"                        { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "SpecialCardsOnPlay"                { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"ActivateSpecialCards"              { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 
 "RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ColorBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
