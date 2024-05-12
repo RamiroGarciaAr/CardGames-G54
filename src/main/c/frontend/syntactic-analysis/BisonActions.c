@@ -110,11 +110,11 @@ Block * BlockTypeSemanticAction(Variable * variable, CardTypes * cardTypes, Rule
 	return block;
 }/*listo*/
 
-Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunctions){
+Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunction){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
 	block->variable2 = variable;
-	block->gameFunctions = gameFunctions;
+	block->gameFunction = gameFunction;
 	return block;
 }/*listo*/
 
@@ -259,11 +259,11 @@ Numbers * NumbersSemanticAction(Constant * constant, UserScore * userScore ){
 
 #pragma region Expresions
 
-Expression * ExpressionAritmethicSemanticAction(Expression * expression1 ,Aritmethic * arithmetic ,Expression * expression2 ){
+Expression * ExpressionArithmeticSemanticAction(Expression * expression1 ,Arithmetic * arithmetic ,Expression * expression2 ){
 	logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->leftExpression = expression1;
-	expression->aritmetic  = arithmetic;
+	expression->arithmetic  = arithmetic;
 	expression->rightExpression = expression2;
 	return expression;
 }
@@ -295,30 +295,30 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomi
 
 
 #pragma region UserRules
-/*UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignation * asignation,Constant * constant)
+/*UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignations * asignations,Constant * constant)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore = userScore;
-	userRules->asignation = asignation;
+	userRules->asignations = asignations;
 	userRules->constant = constant;
 	return userRules;
 }*/
-UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignation * asignation,Numbers * numbers)
+UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * numbers)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore = userScore;
-	userRules->asignation = asignation;
+	userRules->asignations = asignations;
 	userRules->numbers = numbers;
 	return userRules;
 }
-UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignation * asignation,Numbers * leftNum,Aritmethic * arithmetic,Numbers * rightNum)
+UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * leftNum,Arithmetic * arithmetic,Numbers * rightNum)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore1 = userScore;
-	userRules->asignation1 = asignation;
+	userRules->asignations1 = asignations;
 	userRules->numbers = leftNum;
 	userRules->arithmetic = arithmetic;
 	userRules->numbers = rightNum;
@@ -338,7 +338,7 @@ UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne)
 
 #pragma region Structures
 
-Structures * StructureIfSemanticAction(If * conditional, InBrakets * inBrakets){
+Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
 	structure->conditional = conditional;
@@ -381,16 +381,15 @@ InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules)
 
 #pragma endregion Brackets
 
-Aritmethic * ArithmeticExpressionSemanticAction(){
+Arithmetic * ArithmeticSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Aritmethic * aritmethic = calloc(1,sizeof(Aritmethic));
-	return aritmethic;
-	
+	Arithmetic * arithmetic = calloc(1,sizeof(Arithmetic));
+	return arithmetic;
 }
 
-Asignation * AsignationsSemanticAction(){
+Asignations * AsignationsSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Asignation * asignations = calloc(1, sizeof(Asignation));
+	Asignations * asignations = calloc(1, sizeof(Asignations));
 	return asignations;
 }
 
@@ -424,24 +423,24 @@ HandRef * DeckRefSemanticAction(Deck * deck)
 #pragma region if
 
 
-If * IfSemanticAction(InIf * inIf){
+Ifs * IfSemanticAction(InIf * inIf){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	If * conditional = calloc(1, sizeof(If));
+	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->inIf = inIf;
 	return conditional;
 }
 
-If * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
+Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	If * conditional = calloc(1, sizeof(If));
+	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->leftInIf = leftInIf;
 	conditional->rightInIf = rightInIf;
 	return conditional;
 }
 
-If * IfSemanticAction(Tied * tied){
+Ifs * IfSemanticAction(Tied * tied){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	If * conditional = calloc(1, sizeof(If));
+	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->tied = tied;
 	return conditional;
 }

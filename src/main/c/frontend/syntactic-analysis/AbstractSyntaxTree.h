@@ -23,7 +23,7 @@ typedef enum RuleType RuleType;
 typedef enum BoolType BoolType;
 typedef enum NumbersType NumbersType;
 typedef enum PmOneType PmOneType;
-typedef enum AritmethicType AritmethicType;
+typedef enum ArithmeticType ArithmeticType;
 typedef enum AsignationsType AsignationsType;
 typedef enum UserRulesType UserRulesType;
 typedef enum StructuresType StructuresType;
@@ -51,14 +51,14 @@ typedef struct Expression Expression;
 typedef struct User User;
 typedef struct UserRules UserRules;
 typedef struct PmOne PmOne;
-typedef struct Aritmethic Aritmethic;
-typedef struct Asignation Asignation;
+typedef struct Arithmetic Arithmetic;
+typedef struct Asignations Asignations;
 typedef struct CardTypes CardTypes;
 typedef struct Structures Structures;
 typedef struct HandRef HandRef;
 typedef struct InBrakets InBrakets;
 typedef struct Deck Deck;
-typedef struct If If;
+typedef struct Ifs Ifs;
 typedef struct Tied Tied;
 typedef struct InIf InIf;
 typedef struct Comparison Comparison;
@@ -78,7 +78,7 @@ typedef struct Program Program;
 #pragma region Enums
 
 enum ExpressionType {
-	ARITMETHIC,
+	ARITHMETIC,
 	NUMBERS,
 	ATOMIC
 };
@@ -119,7 +119,7 @@ enum PmOneType{
 	DECREASE
 };
 
-enum AritmethicType {
+enum ArithmeticType {
 	ARIT_ADD,	
 	ARIT_DIV,
 	ARIT_MUL,
@@ -135,7 +135,7 @@ enum AsignationsType {
 
 enum UserRulesType{
 	NUMBER_ASSIG,
-	ARITMETHIC_ASSIG,
+	ARITHMETIC_ASSIG,
 	PMO_ASSIG	
 };
 
@@ -238,11 +238,11 @@ struct PmOne{
 	PmOneType type;
 };
 
-struct Aritmethic {
-	AritmethicType type;
+struct Arithmetic {
+	ArithmeticType type;
 };
 
-struct Asignation {
+struct Asignations {
 	AsignationsType type;
 };
 
@@ -334,7 +334,7 @@ struct Expression {
 	union {
 		struct {
 			Expression * leftExpression;
-			Aritmethic * aritmetic;
+			Arithmetic * arithmetic;
 			Expression * rightExpression;
 		};
 		Numbers * numbers;
@@ -350,14 +350,14 @@ struct UserRules{
 	union{
 		struct{
 			UserScore * userScore;
-			Asignation * asignation;
+			Asignations * asignations;
 			Numbers * numbers;
 		};
 		struct{
 			UserScore * userScore1;
-			Asignation * asignation1;
+			Asignations * asignations1;
 			Numbers * leftNumber;
-			Aritmethic * arithmetic;
+			Arithmetic * arithmetic;
 			Numbers * rightNumber;
 		};
 		struct{
@@ -372,7 +372,7 @@ struct UserRules{
 struct Structures {
 	union {
 		struct {
-			If * conditional;
+			Ifs * conditional;
 			InBrakets * inBrakets;
 		};
 		struct {
@@ -403,7 +403,7 @@ struct HandRef{
 	HandRefType type;
 };
 
-struct If {
+struct Ifs {
 	union {
 		InIf * inIf;
 		struct {

@@ -16,13 +16,13 @@
 
 	Constant * constant;
 	Expression * expression;
-	Factor * factor;
+	
 	Program * program;
 	Block * block;
 	Rules * rules;
 	Bool * bool;
 	UserScore * userScore;
-	GameFunctions * gameFunctions;
+	GameFunction * gameFunction;
 	CardTypes * cardTypes;
 	UserCard * userCard;
 	Numbers * numbers;
@@ -35,7 +35,7 @@
 	HandRef * handRef;
 	Deck * deck;
 	User * user;
-	If * if;
+	Ifs * ifs;
 	Tied * tied;
 	InIf * inIf;
 	Comparison * comparison;
@@ -108,7 +108,7 @@
 %token <token> TIED
 
 %token <token> FOREACH	
-%token <token> IF	
+%token <token> IFS	
 %token <token> ELSE	
 %token <token> ELIF	
 
@@ -151,7 +151,7 @@
 %type <rules> rules
 %type <bool> bool
 %type <userScore> userScore
-%type <gameFunctions> gameFunctions
+%type <gameFunction> gameFunction
 %type <cardTypes> cardTypes
 %type <userCard> userCard
 %type <numbers> numbers
@@ -164,7 +164,7 @@
 %type <handRef> handRef
 %type <deck> deck
 %type <user> user
-%type <if> if
+%type <ifs> ifs
 %type <tied> tied
 %type <inIf> inIf
 %type <comparison> comparison
@@ -187,7 +187,7 @@
 
 %precedence ELSE
 %precedence ELIF
-%precedence IF
+%precedence IFS
 
 %%
 
@@ -196,11 +196,11 @@ program: block													{ $$ = BlockSemanticAction(currentCompilerState(), $1
 
 block: variable FOR VALUE constant COLON rules					{ $$ = BlockValueSemanticAction($1, $4, $6); }
 	| variable FOR TYPE cardTypes COLON rules					{ $$ = BlockTypeSemanticAction($1, $4, $6); }
-	| variable GAME HAS COLON gameFunctions                     { $$ = BlockGameSemanticAction($1, $5); }
+	| variable GAME HAS COLON gameFunction                     { $$ = BlockGameSemanticAction($1, $5); }
 	| variable DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
 	;
 
-gameFunctions: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
+gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
 			   TYPES_OF_CARDS OPEN_PARENTHESIS cardTypes CLOSE_PARENTHESIS
 			   CARDS_BY_PLAYER OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
 			   ROUNDS OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
@@ -241,7 +241,7 @@ numbers: constant													{ $$ = NumbersSemanticAction($1); }
 	| userScore														{ $$ = NumbersSemanticAction($1); }
 	;
 
-expression: expression arithmetic expression						{ $$ = ExpressionAritmethicSemanticAction($1, $2, $3); }
+expression: expression arithmetic expression						{ $$ = ExpressionArithmeticSemanticAction($1, $2, $3); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
 	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $2); }
 	/*| constant														{ $$ = ExpressionConstantSemanticAction($1); }*/
@@ -249,15 +249,15 @@ expression: expression arithmetic expression						{ $$ = ExpressionAritmethicSem
 	
 userRules: userScore asignations numbers							{ $$ = UserRuleNumberSemanticAction($1, $2, $3); }
 	/*| userScore asignations constant								{ $$ = UserRuleConstantSemanticAction($1, $2, $3); }*/
-	| userScore asignations numbers arithmetic numbers 				{ $$ = UserRuleAritmethicSemanticAction($1, $2, $3, $4, $5); }
+	| userScore asignations numbers arithmetic numbers 				{ $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5); }
 	| userScore pmOne												{ $$ = UserRulePMOneSemanticAction($1, $2); }
 	;
 
-arithmetic: ADD														{ $$ = AritmethicSemanticAction(); }
-	| DIV															{ $$ = AritmethicSemanticAction(); }
-	| MUL															{ $$ = AritmethicSemanticAction(); }
-	| SUB															{ $$ = AritmethicSemanticAction(); }
-	| MODULE														{ $$ = AritmethicSemanticAction(); }
+arithmetic: ADD														{ $$ = ArithmeticSemanticAction(); }
+	| DIV															{ $$ = ArithmeticSemanticAction(); }
+	| MUL															{ $$ = ArithmeticSemanticAction(); }
+	| SUB															{ $$ = ArithmeticSemanticAction(); }
+	| MODULE														{ $$ = ArithmeticSemanticAction(); }
 	;
 
 asignations: EQUAL													{ $$ = AsignationsSemanticAction(); }
@@ -269,9 +269,9 @@ pmOne: ADD_ONE														{ $$ = PMOneSemanticAction(); }
 	| SUBSTRACT_ONE													{ $$ = PMOneSemanticAction(); }
 	;
 
-structures: IF OPEN_PARENTHESIS if CLOSE_PARENTHESIS inBrakets		{ $$ = StructureIfSemanticAction($3, $5); }
+structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = StructureIfSemanticAction($3, $5); }
 	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS inBrakets	{ $$ = StructureForeachSemanticAction($3, $5); }
-	| ELIF OPEN_PARENTHESIS if CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5); }
+	| ELIF OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5); }
 	| ELSE inBrakets												{ $$ = StructureElseSemanticAction($2); }
 	;
 
@@ -290,7 +290,7 @@ user: PLAYER														{ $$ = UserSemanticAction(); }
 	| IDENTIFIER													{ $$ = UserSemanticAction(); }
 	;
 
-if: inIf															{ $$ = IfSemanticAction($1); }
+ifs: inIf															{ $$ = IfSemanticAction($1); }
 	| inIf AND inIf													{ $$ = IfChainSemanticAction($1, $3); }
 	| inIf OR inIf													{ $$ = IfChainSemanticAction($1, $3); }
 	| tied															{ $$ = IfSemanticAction($1); }
