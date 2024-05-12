@@ -293,7 +293,7 @@ user: PLAYER														{ $$ = UserSemanticAction(); }
 ifs: inIf															{ $$ = IfSemanticAction($1); }
 	| inIf AND inIf													{ $$ = IfChainSemanticAction($1, $3); }
 	| inIf OR inIf													{ $$ = IfChainSemanticAction($1, $3); }
-	| tied															{ $$ = IfSemanticAction($1); }
+	| tied															{ $$ = IfTiedAction($1); }
 	;
 
 tied: TIED															{ $$ = TiedSemanticAction(); }

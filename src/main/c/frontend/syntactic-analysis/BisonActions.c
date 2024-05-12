@@ -241,7 +241,7 @@ UserScore * UserScoreSemanticAction(User * user ){
 }
 
 UserCard * UserCardSemanticAction(User * user){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserCard * userCard = calloc(1, sizeof(UserCard));
 	userCard->user = user;
 	return userCard;
@@ -313,8 +313,7 @@ UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * as
 	userRules->numbers = numbers;
 	return userRules;
 }
-UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * leftNum,Arithmetic * arithmetic,Numbers * rightNum)
-{
+UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore1 = userScore;
@@ -438,7 +437,7 @@ Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
 	return conditional;
 }
 
-Ifs * IfSemanticAction(Tied * tied){
+Ifs * IfTiedAction(Tied * tied){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->tied = tied;
@@ -538,7 +537,7 @@ Constant * IntegerConstantSemanticAction(const int value) {
 Variable * VariableSemanticAction(const char * name){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Variable * variable = calloc(1, sizeof(Variable));
-	variable->name = name;
+	variable->name = strcpy(name);
 	return variable;
 }
 

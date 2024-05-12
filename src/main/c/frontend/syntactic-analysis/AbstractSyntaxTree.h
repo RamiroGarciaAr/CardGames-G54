@@ -268,7 +268,7 @@ struct Block {
 		};
 		struct {
 			Variable * variable2;
-			GameFunction * gameFunctions;
+			GameFunction * gameFunction;
 		};
 		struct {
 			Variable * variable3;
