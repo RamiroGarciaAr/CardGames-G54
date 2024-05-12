@@ -196,7 +196,7 @@ program: block													{ $$ = BlockSemanticAction(currentCompilerState(), $1
 
 block: variable FOR VALUE constant COLON rules					{ $$ = BlockValueSemanticAction($1, $4, $6); }
 	| variable FOR TYPE cardTypes COLON rules					{ $$ = BlockTypeSemanticAction($1, $4, $6); }
-	| variable GAME HAS COLON gameFunction                     { $$ = BlockGameSemanticAction($1, $5); }
+	| variable GAME HAS COLON gameFunction                      { $$ = BlockGameSemanticAction($1, $5); }
 	| variable DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
 	;
 
@@ -331,7 +331,7 @@ variable: VARIABLE													{ $$ = VariableSemanticAction($1); }
 
 %%
 
-/*
+/*																	{ $$ = BlockSemanticAction(currentCompilerState(), $1); }
 expression: expression[left] ADD expression[right]					{ $$ = ArithmeticExpressionSemanticAction($left, $right, ADDITION); }
 	| expression[left] DIV expression[right]						{ $$ = ArithmeticExpressionSemanticAction($left, $right, DIVISION); }
 	| expression[left] MUL expression[right]						{ $$ = ArithmeticExpressionSemanticAction($left, $right, MULTIPLICATION); }

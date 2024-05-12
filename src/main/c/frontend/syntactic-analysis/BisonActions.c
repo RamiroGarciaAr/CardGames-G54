@@ -250,7 +250,7 @@ UserCard * UserCardSemanticAction(User * user){
 #pragma endregion UserAtomics
 
 Numbers * NumbersSemanticAction(Constant * constant, UserScore * userScore ){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->constant  = constant;
 	numbers->userScore = userScore;
@@ -260,7 +260,7 @@ Numbers * NumbersSemanticAction(Constant * constant, UserScore * userScore ){
 #pragma region Expresions
 
 Expression * ExpressionArithmeticSemanticAction(Expression * expression1 ,Arithmetic * arithmetic ,Expression * expression2 ){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->leftExpression = expression1;
 	expression->arithmetic  = arithmetic;
@@ -269,14 +269,14 @@ Expression * ExpressionArithmeticSemanticAction(Expression * expression1 ,Arithm
 }
 
 Expression * ExpressionNumberSemanticAction(Numbers * numbers){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->numbers = numbers;
 	return expression;
 }
 
 Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomic){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->userCard = usercard;
 	expression->atomic = atomic;
@@ -284,7 +284,7 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomi
 }
 
 /*Expression * ExpressionConstantSemanticAction(Constant * constant){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->constant = constant;
 	return expression;
@@ -393,7 +393,7 @@ Asignations * AsignationsSemanticAction(){
 }
 
 PmOne * PMOneSemanticAction(){
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	PmOne * pmOne = calloc(1, sizeof(PmOne));
 	return pmOne;
 }
@@ -402,7 +402,7 @@ PmOne * PMOneSemanticAction(){
 
 HandRef * UserHandRefSemanticAction(User * user)
 {
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	HandRef * handRef = calloc(1, sizeof(HandRef));
 	handRef->user = user;
 	return handRef;
@@ -410,7 +410,7 @@ HandRef * UserHandRefSemanticAction(User * user)
 
 HandRef * DeckRefSemanticAction(Deck * deck)
 {
-	logSyntacticAnalyzerAction(__FUNCTION__);
+	_logSyntacticAnalyzerAction(__FUNCTION__);
 	HandRef * handRef = calloc(1, sizeof(HandRef));
 	handRef->deck = deck;
 	return handRef;
@@ -534,10 +534,10 @@ Constant * IntegerConstantSemanticAction(const int value) {
 	return constant;
 }
 
-Variable * VariableSemanticAction(const char * name){
+Variable * VariableSemanticAction(char * name){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Variable * variable = calloc(1, sizeof(Variable));
-	variable->name = strcpy(name);
+	variable->name = name;
 	return variable;
 }
 

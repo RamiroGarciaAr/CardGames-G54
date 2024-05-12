@@ -29,8 +29,10 @@ void IgnoredLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 Token ArithmeticOperatorLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
+Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+
+Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token UnknownLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 Token TypeLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
@@ -39,13 +41,12 @@ Token BraketsLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token LanguageFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token GameFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token DesignFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-
 Token OperatorPatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token IdentifierLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token PlayerReferenceLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token GamingLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
+Token BooleanLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 #endif
