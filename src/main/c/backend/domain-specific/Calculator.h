@@ -48,6 +48,6 @@ ComputationResult computeExpression(Expression * expression);
 /**
  * Computes the final value of a mathematical factor.
  */
-ComputationResult computeFactor(Factor * factor);
+//ComputationResult computeFactor(Factor * factor);
 
 #endif

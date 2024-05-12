@@ -80,20 +80,19 @@ typedef struct Program Program;
 enum ExpressionType {
 	ARITMETHIC,
 	NUMBERS,
-	ATOMIC,
-	CONSTANT
+	ATOMIC
 };
 
 enum BlockType {
-	VALUE,
-	TYPE,
-	GAME,
-	DESIGN
+	VALUE_BLOCK,
+	TYPE_BLOCK,
+	GAME_BLOCK,
+	DESIGN_BLOCK
 };
 
 enum CardTypesType{
-	ONE,
-	MULTIPLE
+	ONE_TYPE,
+	MULTIPLE_TYPE
 };
 
 enum RuleType {
@@ -102,7 +101,7 @@ enum RuleType {
 	LOOK_AT,
 	WINNER_TYPE,
 	USER_RULES,
-	TIED
+	TIED_RULE
 };
 
 enum BoolType  {
@@ -135,7 +134,6 @@ enum AsignationsType {
 };
 
 enum UserRulesType{
-	CONSTANT_ASSIG,
 	NUMBER_ASSIG,
 	ARITMETHIC_ASSIG,
 	PMO_ASSIG	
@@ -149,8 +147,8 @@ enum StructuresType {
 };
 
 enum InBraketsType{
-	ONE,
-	MULTIPLE	
+	ONE_IF,
+	MULTIPLE_IF
 };
 
 enum HandRefType {
@@ -162,15 +160,14 @@ enum IfType {
 	INIF, 
 	AND,
 	OR,
-	TIED
+	TIED_IF
 };
 
 enum InIfType {
-	VALUE,
-	TYPE,
+	VALUE_IF,
+	TYPE_IF,
 	ACTIVATE_SPECIAL_CARDS,
-	USER_SCORE,
-	EXPRESSION
+	EXPRESSION_IF
 };
 
 enum ComparisonType{
@@ -265,16 +262,16 @@ struct Block {
 			Rules * rules;
 		};
 		struct {
-			Variable * variable;
+			Variable * variable1;
 			CardTypes * cardTypes;
-			Rules * rules;
+			Rules * rules1;
 		};
 		struct {
-			Variable * variable;
+			Variable * variable2;
 			GameFunction * gameFunctions;
 		};
 		struct {
-			Variable * variable;
+			Variable * variable3;
 			Design * design;
 		};
 	};
@@ -299,7 +296,7 @@ struct CardTypes {
 	union {
 		Variable * variable;
 		struct {
-			Variable * variable;
+			Variable * variable1;
 			CardTypes * cardType;
 		};
 	};
@@ -311,12 +308,12 @@ struct Rules {
         Structures * structures;
         struct {
             HandRef * leftHandRef;
-            HandRef * rightandRef;
+            HandRef * rightHandRef;
             Constant * constant;
         };
         struct {
             HandRef * handRef;
-            Constant * constant;
+            Constant * constant1;
         };
 		Variable * variable;
 		UserRules * userRules;
@@ -345,7 +342,6 @@ struct Expression {
 			UserCard * userCard;
 			Atomic * atomic;
 		};
-		Constant * constant;
 	};
 	ExpressionType type;
 };
@@ -355,26 +351,21 @@ struct UserRules{
 		struct{
 			UserScore * userScore;
 			Asignation * asignation;
-			Constant * constant;
-		};
-		struct{
-			UserScore * userScore;
-			Asignation * asignation;
 			Numbers * numbers;
 		};
 		struct{
-			UserScore * userScore;
-			Asignation * asignation;
+			UserScore * userScore1;
+			Asignation * asignation1;
 			Numbers * leftNumber;
 			Aritmethic * arithmetic;
 			Numbers * rightNumber;
 		};
 		struct{
-			UserScore * userScore;
+			UserScore * userScore2;
 			PmOne * pmOne;
-		};		
+		};
 	};
-	UserRulesType type
+	UserRulesType type;
 };
 
 
@@ -386,9 +377,9 @@ struct Structures {
 		};
 		struct {
 			Atomic *  atomic;
-			InBrakets * inBrakets;
+			InBrakets * inBrakets1;
 		};
-		InBrakets * inBrakets;
+		InBrakets * inBrakets2;
 	};
 	StructuresType type;
 };
@@ -431,17 +422,12 @@ struct InIf {
 			Constant * constant;
 		};
 		struct {
-			Comparison * comparison;
+			Comparison * comparison1;
 			Variable * variable;
 		};
 		struct {
-			UserScore * userScore;
-			Comparison * comparison;
-			Constant * constant;
-		};
-		struct {
 			Expression * leftExpression;
-			Comparison * comparison;
+			Comparison * comparison2;
 			Expression * rightExpression;
 		};
 	};
@@ -453,7 +439,7 @@ struct Design {
 	union{
 		Variable * roundBorders;
 		Variable * colorBorders;
-		Variable * backGroundColor;
+		Variable * backgroundColor;
 	};
 	DesignType type;
 };

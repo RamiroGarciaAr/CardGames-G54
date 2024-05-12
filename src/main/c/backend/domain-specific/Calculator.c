@@ -25,17 +25,17 @@ static ComputationResult _invalidComputation();
  * possible, returns a binary operator that always returns an invalid
  * computation result.
  */
-static BinaryOperator _expressionTypeToBinaryOperator(const ExpressionType type) {
-	switch (type) {
-		case ADDITION: return add;
-		case DIVISION: return divide;
-		case MULTIPLICATION: return multiply;
-		case SUBTRACTION: return subtract;
-		default:
-			logError(_logger, "The specified expression type cannot be converted into character: %d", type);
-			return _invalidBinaryOperator;
-	}
-}
+//static BinaryOperator _expressionTypeToBinaryOperator(const ExpressionType type) {
+//	switch (type) {
+//		case ADDITION: return add;
+//		case DIVISION: return divide;
+//		case MULTIPLICATION: return multiply;
+//		case SUBTRACTION: return subtract;
+//		default:
+//			logError(_logger, "The specified expression type cannot be converted into character: %d", type);
+//			return _invalidBinaryOperator;
+//	}
+//}
 
 /**
  * A binary operator that always returns an invalid computation result.
@@ -102,35 +102,35 @@ ComputationResult computeConstant(Constant * constant) {
 	return computationResult;
 }
 
-ComputationResult computeExpression(Expression * expression) {
-	switch (expression->type) {
-		case ADDITION:
-		case DIVISION:
-		case MULTIPLICATION:
-		case SUBTRACTION:
-			ComputationResult leftResult = computeExpression(expression->leftExpression);
-			ComputationResult rightResult = computeExpression(expression->rightExpression);
-			if (leftResult.succeed && rightResult.succeed) {
-				BinaryOperator binaryOperator = _expressionTypeToBinaryOperator(expression->type);
-				return binaryOperator(leftResult.value, rightResult.value);
-			}
-			else {
-				return _invalidComputation();
-			}
-		case FACTOR:
-			return computeFactor(expression->factor);
-		default:
-			return _invalidComputation();
-	}
-}
+//ComputationResult computeExpression(Expression * expression) {
+//	switch (expression->type) {
+//		case ADDITION:
+//		case DIVISION:
+//		case MULTIPLICATION:
+//		case SUBTRACTION:
+//			ComputationResult leftResult = computeExpression(expression->leftExpression);
+//			ComputationResult rightResult = computeExpression(expression->rightExpression);
+//			if (leftResult.succeed && rightResult.succeed) {
+//				BinaryOperator binaryOperator = _expressionTypeToBinaryOperator(expression->type);
+//				return binaryOperator(leftResult.value, rightResult.value);
+//			}
+//			else {
+//				return _invalidComputation();
+//			}
+//		case FACTOR:
+//			return computeFactor(expression->factor);
+//		default:
+//			return _invalidComputation();
+//	}
+//}
 
-ComputationResult computeFactor(Factor * factor) {
-	switch (factor->type) {
-		case CONSTANT:
-			return computeConstant(factor->constant);
-		case EXPRESSION:
-			return computeExpression(factor->expression);
-		default:
-			return _invalidComputation();
-	}
-}
+//ComputationResult computeFactor(Factor * factor) {
+//	switch (factor->type) {
+//		case CONSTANT:
+//			return computeConstant(factor->constant);
+//		case EXPRESSION:
+//			return computeExpression(factor->expression);
+//		default:
+//			return _invalidComputation();
+//	}
+//}

@@ -180,6 +180,14 @@
  */
 %left ADD SUB
 %left MUL DIV
+%left MODULE
+%left AND OR
+%left EQUAL DIFERENT
+%left GREATER GREATER_OR_EQUAL LOWER LOWER_OR_EQUAL
+
+%precedence ELSE
+%precedence ELIF
+%precedence IF
 
 %%
 
@@ -236,11 +244,11 @@ numbers: constant													{ $$ = NumbersSemanticAction($1); }
 expression: expression arithmetic expression						{ $$ = ExpressionAritmethicSemanticAction($1, $2, $3); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
 	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $2); }
-	| constant														{ $$ = ExpressionConstantSemanticAction($1); }
+	/*| constant														{ $$ = ExpressionConstantSemanticAction($1); }*/
 	;
 	
-userRules: userScore asignations constant							{ $$ = UserRuleConstantSemanticAction($1, $2, $3); }
-	| userScore asignations numbers									{ $$ = UserRuleNumberSemanticAction($1, $2, $3); }
+userRules: userScore asignations numbers							{ $$ = UserRuleNumberSemanticAction($1, $2, $3); }
+	/*| userScore asignations constant								{ $$ = UserRuleConstantSemanticAction($1, $2, $3); }*/
 	| userScore asignations numbers arithmetic numbers 				{ $$ = UserRuleAritmethicSemanticAction($1, $2, $3, $4, $5); }
 	| userScore pmOne												{ $$ = UserRulePMOneSemanticAction($1, $2); }
 	;
@@ -294,7 +302,7 @@ tied: TIED															{ $$ = TiedSemanticAction(); }
 inIf: VALUE comparison constant										{ $$ = InIfConstantSemanticAction($2, $3); }
 	| TYPE comparison variable										{ $$ = InIfVariableSemanticAction($2, $3); }
 	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS		{ $$ = InIfSpecialCardsSemanticAction(); }
-	| userScore comparison constant 								{ $$ = InIfComparisonConstantSemanticAction($1, $2, $3); }
+	/*| userScore comparison constant 								{ $$ = InIfComparisonConstantSemanticAction($1, $2, $3); }*/
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
 

@@ -123,7 +123,6 @@
 
 [[:space:]]+						{ IgnoredLexemeAction(createLexicalAnalyzerContext()); }
 
-/*VARIABLE*/
 [[:alnum:]]+                        { return VariablePatternAction(createLexicalAnalyzerContext()); }
 
 .									{ return UnknownLexemeAction(createLexicalAnalyzerContext()); }

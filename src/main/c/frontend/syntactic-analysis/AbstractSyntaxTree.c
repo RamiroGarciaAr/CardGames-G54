@@ -23,6 +23,7 @@ void releaseConstant(Constant * constant) {
 	}
 }
 
+/*
 void releaseExpression(Expression * expression) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (expression != NULL) {
@@ -64,3 +65,4 @@ void releaseProgram(Program * program) {
 		free(program);
 	}
 }
+*/

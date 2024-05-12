@@ -104,16 +104,16 @@ Block * BlockValueSemanticAction(Variable * variable, Constant * constant, Rules
 Block * BlockTypeSemanticAction(Variable * variable, CardTypes * cardTypes, Rules * rules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
-	block->variable = variable;
+	block->variable1 = variable;
 	block->cardTypes = cardTypes;
-	block->rules = rules;
+	block->rules1 = rules;
 	return block;
 }/*listo*/
 
 Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunctions){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
-	block->variable = variable;
+	block->variable2 = variable;
 	block->gameFunctions = gameFunctions;
 	return block;
 }/*listo*/
@@ -121,7 +121,7 @@ Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunction
 Block * BlockDesignSemanticAction(Variable * variable, Design * design){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
-	block->variable = variable;
+	block->variable3 = variable;
 	block->design = design;
 	return block;
 }/*listo*/
@@ -151,7 +151,7 @@ GameFunction * GameFunctionSemanticAction(Constant * cteNumbersOnDeck, CardTypes
 CardTypes * CardTypeRuleSemanticAction(Variable * type ){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	CardTypes * cardTypes = calloc(1, sizeof(CardTypes));
-	cardTypes->type = type;
+	cardTypes->variable = type;
 	return cardTypes;	
 }/*listo*/
 
@@ -159,7 +159,7 @@ CardTypes * CardTypeRuleSemanticAction(Variable * type ){
 CardTypes * MultipleCardTypesRuleSemanticAction(Variable * A, CardTypes *  B){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	CardTypes * cardTypes = calloc(1, sizeof(CardTypes));
-	cardTypes->variable = A;
+	cardTypes->variable1 = A;
 	cardTypes->cardType = B;
 	return cardTypes;	
 }/*listo*/
@@ -187,7 +187,7 @@ Rules * RuleLookAtSemanticAction(HandRef * handRef, Constant * constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->handRef = handRef;
-	rules->constant = constant;
+	rules->constant1 = constant;
 	return rules;
 }/*listo*/
 
@@ -283,19 +283,19 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomi
 	return expression;
 }
 
-Expression * ExpressionConstantSemanticAction(Constant * constant){
+/*Expression * ExpressionConstantSemanticAction(Constant * constant){
 	logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->constant = constant;
 	return expression;
-}
+}*/
 
 #pragma endregion Expresions
 
 
 
 #pragma region UserRules
-UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignation * asignation,Constant * constant)
+/*UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignation * asignation,Constant * constant)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
@@ -303,7 +303,7 @@ UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignation * a
 	userRules->asignation = asignation;
 	userRules->constant = constant;
 	return userRules;
-}
+}*/
 UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignation * asignation,Numbers * numbers)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -317,8 +317,8 @@ UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignation * asi
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
-	userRules->userScore = userScore;
-	userRules->asignation = asignation;
+	userRules->userScore1 = userScore;
+	userRules->asignation1 = asignation;
 	userRules->numbers = leftNum;
 	userRules->arithmetic = arithmetic;
 	userRules->numbers = rightNum;
@@ -328,7 +328,7 @@ UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
-	userRules->userScore = userScore;
+	userRules->userScore2 = userScore;
 	userRules->pmOne = pmOne;
 	return userRules;
 }
@@ -350,14 +350,14 @@ Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrake
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
 	structure->atomic = atomic;
-	structure->inBrakets = inBrakets;
+	structure->inBrakets1 = inBrakets;
 	return structure;
 }
 
 Structures * StructureElseSemanticAction(InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
-	structure->inBrakets = inBrakets;
+	structure->inBrakets2 = inBrakets;
 	return structure;
 }
 
@@ -457,7 +457,7 @@ InIf * InIfConstantSemanticAction(Comparison * comparison, Constant * constant){
 InIf * InIfVariableSemanticAction(Comparison * comparison, Variable * variable){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InIf * inIf = calloc(1, sizeof(InIf));
-	inIf->comparison = comparison;
+	inIf->comparison1 = comparison;
 	inIf->variable = variable;
 	return inIf;
 }
@@ -468,20 +468,20 @@ InIf * InIfSpecialCardsSemanticAction(){
 	return inIf;
 }
 
-InIf * InIfComparisonConstantSemanticAction(UserScore * userScore, Comparison * comparison, Constant * constant){
+/*InIf * InIfComparisonConstantSemanticAction(UserScore * userScore, Comparison * comparison, Constant * constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InIf * inIf = calloc(1, sizeof(InIf));
 	inIf->userScore = userScore;
 	inIf->comparison = comparison;
 	inIf->constant = constant;
 	return inIf;
-}
+}*/
 
 InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Comparison * comparison, Expression * rightExpression){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InIf * inIf = calloc(1, sizeof(InIf));
 	inIf->leftExpression = leftExpression;
-	inIf->comparison = comparison;
+	inIf->comparison2 = comparison;
 	inIf->rightExpression = rightExpression;
 	return inIf;
 }
