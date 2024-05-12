@@ -55,6 +55,8 @@ Asignations * AsignationsSemanticAction();
 PmOne * PMOneSemanticAction();
 HandRef * UserHandRefSemanticAction(User * user);
 HandRef * DeckRefSemanticAction(Deck * deck);
+Deck * DeckSemanticAction();
+User * UserSemanticAction();
 Ifs * IfSemanticAction(InIf * inIf);
 Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf);
 Ifs * IfTiedAction(Tied * tied);
