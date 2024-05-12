@@ -213,7 +213,7 @@ gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
 			; 
 
 cardTypes: variable                                                                      { $$ = CardTypeRuleSemanticAction($1); }
-	| variable COMMA cardTypes															 { $$ = MultipleCardTypesRuleSemanticAction($1, $2); }
+	| variable COMMA cardTypes															 { $$ = MultipleCardTypesRuleSemanticAction($1, $3); }
 	;
 
 rules: structures																		 { $$ = RuleStrcuturesSemanticAction($1); }
@@ -227,8 +227,8 @@ rules: structures																		 { $$ = RuleStrcuturesSemanticAction($1); }
 	| TIED EQUAL bool																	 { $$ = RuleTiedSemanticAction($3); }
 	;
 
-bool: TRUE															{ $$ = BooleanSemanticAction(); }
-	| FALSE															{ $$ = BooleanSemanticAction(); }
+bool: TRUE															{ $$ = BooleanSemanticAction($1); }
+	| FALSE															{ $$ = BooleanSemanticAction($1); }
 	;
 															
 userScore: user DOT SCORE											{ $$ = UserScoreSemanticAction($1); }												
@@ -237,8 +237,8 @@ userScore: user DOT SCORE											{ $$ = UserScoreSemanticAction($1); }
 userCard: user DOT SELECTED_CARD									{ $$ = UserCardSemanticAction($1); }			
 	;
 
-numbers: constant													{ $$ = NumbersSemanticAction($1); }	 			
-	| userScore														{ $$ = NumbersSemanticAction($1); }
+numbers: constant													{ $$ = NumberConstSemanticAction($1); }	 			
+	| userScore														{ $$ = NumberUserSemanticAction($1); }
 	;
 
 expression: expression arithmetic expression						{ $$ = ExpressionArithmeticSemanticAction($1, $2, $3); }

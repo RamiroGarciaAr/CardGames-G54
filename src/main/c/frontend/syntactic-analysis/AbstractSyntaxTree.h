@@ -227,7 +227,7 @@ struct Deck {
 };
 
 struct Tied {
-	Bool * tied;
+	Bool * Tied;
 };
 
 struct Program {

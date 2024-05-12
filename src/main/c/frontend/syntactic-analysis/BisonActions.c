@@ -88,7 +88,7 @@ Program * BlockSemanticAction(CompilerState * compilerState, Block * block) {
 		compilerState->succeed = true;
 	}
 	return program;
-}/*listo*/
+}
 
 #pragma region Block
 
@@ -99,7 +99,7 @@ Block * BlockValueSemanticAction(Variable * variable, Constant * constant, Rules
 	block->constant = constant;
 	block->rules = rules;
 	return block;
-} /*listo*/
+} 
 
 Block * BlockTypeSemanticAction(Variable * variable, CardTypes * cardTypes, Rules * rules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -108,7 +108,7 @@ Block * BlockTypeSemanticAction(Variable * variable, CardTypes * cardTypes, Rule
 	block->cardTypes = cardTypes;
 	block->rules1 = rules;
 	return block;
-}/*listo*/
+}
 
 Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunction){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -116,7 +116,7 @@ Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunction
 	block->variable2 = variable;
 	block->gameFunction = gameFunction;
 	return block;
-}/*listo*/
+}
 
 Block * BlockDesignSemanticAction(Variable * variable, Design * design){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -124,7 +124,7 @@ Block * BlockDesignSemanticAction(Variable * variable, Design * design){
 	block->variable3 = variable;
 	block->design = design;
 	return block;
-}/*listo*/
+}
 
 #pragma endregion Block 
 
@@ -144,7 +144,7 @@ GameFunction * GameFunctionSemanticAction(Constant * cteNumbersOnDeck, CardTypes
 	gameFunction->varCardDesign = varCardDesign;
 	gameFunction->varBackDesign = varBackDesign; 
 	return gameFunction;
-}/*listo*/
+}
 
 #pragma region CardTypes
 
@@ -153,8 +153,7 @@ CardTypes * CardTypeRuleSemanticAction(Variable * type ){
 	CardTypes * cardTypes = calloc(1, sizeof(CardTypes));
 	cardTypes->variable = type;
 	return cardTypes;	
-}/*listo*/
-
+}
 
 CardTypes * MultipleCardTypesRuleSemanticAction(Variable * A, CardTypes *  B){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -162,7 +161,7 @@ CardTypes * MultipleCardTypesRuleSemanticAction(Variable * A, CardTypes *  B){
 	cardTypes->variable1 = A;
 	cardTypes->cardType = B;
 	return cardTypes;	
-}/*listo*/
+}
 #pragma endregion CardTypes
 
 #pragma region Rules
@@ -172,7 +171,7 @@ Rules * RuleStrcuturesSemanticAction(Structures * structures){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->structures = structures;
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRef, Constant * constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -181,7 +180,7 @@ Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRe
 	rules->rightHandRef = rightHandRef;
 	rules->constant = constant;
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleLookAtSemanticAction(HandRef * handRef, Constant * constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -189,46 +188,46 @@ Rules * RuleLookAtSemanticAction(HandRef * handRef, Constant * constant){
 	rules->handRef = handRef;
 	rules->constant1 = constant;
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleRestockDeckSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleWinGameSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleWinnerTypeSemanticAction(Variable * variable){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->variable = variable;
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleActivateSpecialCardsSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleUserSemanticAction(UserRules * userRules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->userRules = userRules;
 	return rules;
-}/*listo*/
+}
 
 Rules * RuleTiedSemanticAction(Tied * boolean){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->tied = boolean;
 	return rules;
-}/*listo*/
+}
 #pragma endregion Rules
 
 #pragma region UserAtomics
@@ -249,10 +248,15 @@ UserCard * UserCardSemanticAction(User * user){
 
 #pragma endregion UserAtomics
 
-Numbers * NumbersSemanticAction(Constant * constant, UserScore * userScore ){
+Numbers * NumberConstSemanticAction(Constant * constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->constant  = constant;
+	return numbers;
+}
+Numbers * NumberUserSemanticAction(UserScore * userScore ){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->userScore = userScore;
 	return numbers;
 }
