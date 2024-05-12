@@ -318,9 +318,9 @@ atomic: VALUE														{ $$ = AtomicSemanticAction(); }
 	| TYPE															{ $$ = AtomicSemanticAction(); }
 	;
 
-design: ROUND_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = DesignSemanticAction($3); }
-	| COLOR_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS		{ $$ = DesignSemanticAction($3); }
-	| BACKGROUND_COLOR OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = DesignSemanticAction($3); }
+design: ROUND_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = RoundBordersDesignSemanticAction($3); }
+	| COLOR_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS		{ $$ = ColorBordersDesignSemanticAction($3); }
+	| BACKGROUND_COLOR OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = BackColorDesignSemanticAction($3); }
 	;
 
 constant: INTEGER													{ $$ = IntegerConstantSemanticAction($1); }

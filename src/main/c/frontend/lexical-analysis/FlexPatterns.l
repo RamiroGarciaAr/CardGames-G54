@@ -74,11 +74,11 @@
 ","                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
 "."                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
 
-"Playing"                           { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
-"Waiting"                           { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
-"Deck"                              { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
-"User"                              { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
-"Machine"                           { return IdentifierLexemeAction(createLexicalAnalyzerContext()); }
+"Playing"                           { return GamingLexemeAction(createLexicalAnalyzerContext()); }
+"Waiting"                           { return GamingLexemeAction(createLexicalAnalyzerContext()); }
+"Deck"                              { return GamingLexemeAction(createLexicalAnalyzerContext()); }
+"User"                              { return GamingLexemeAction(createLexicalAnalyzerContext()); }
+"Machine"                           { return GamingLexemeAction(createLexicalAnalyzerContext()); }
 
 "Hand"                              { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 "SelectedCard"                      { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }

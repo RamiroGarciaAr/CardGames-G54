@@ -423,6 +423,19 @@ HandRef * DeckRefSemanticAction(Deck * deck)
 #pragma endregion handRef
 
 
+Deck * DeckSemanticAction(){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Deck * deck = calloc(1, sizeof(Deck));
+	return deck;
+}
+
+User * UserSemanticAction(){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	User * user = calloc(1, sizeof(User));
+	return user;
+}
+
+
 #pragma region if
 
 
