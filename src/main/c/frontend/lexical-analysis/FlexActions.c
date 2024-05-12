@@ -87,9 +87,17 @@ Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 
 Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
-	lexicalAnalyzerContext->semanticValue->string = strdup(lexicalAnalyzerContext->lexeme);
+	lexicalAnalyzerContext->semanticValue->variable = VARIABLE;
 	return VARIABLE;
 }
+
+/*
+Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
+	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
+	lexicalAnalyzerContext->semanticValue->variable = strdup(lexicalAnalyzerContext->lexeme);
+	return VARIABLE;
+}
+*/
 
 Token ParenthesisLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
@@ -256,7 +264,7 @@ Token ComparationLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 			} else{
 				token = EQUAL;
 			}break;
-		case '!';
+		case '!':
 			if(lexicalAnalyzerContext->lexeme[1] == '='){
 				token = DIFERENT;
 			} break;
@@ -320,7 +328,7 @@ Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerConte
 	if (strcmp(lexicalAnalyzerContext->lexeme, "foreach") == 0) {
 		token = FOREACH;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "if") == 0) {
-		token = IF;
+		token = IFS;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "else") == 0) {
 		token = ELSE;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "elif") == 0) {
