@@ -243,7 +243,7 @@ numbers: constant													{ $$ = NumberConstSemanticAction($1); }
 
 expression: expression arithmetic expression						{ $$ = ExpressionArithmeticSemanticAction($1, $2, $3); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
-	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $2); }
+	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $3); }
 	/*| constant														{ $$ = ExpressionConstantSemanticAction($1); }*/
 	;
 	
