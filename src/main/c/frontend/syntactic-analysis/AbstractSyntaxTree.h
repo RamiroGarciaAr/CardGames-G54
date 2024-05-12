@@ -97,16 +97,16 @@ enum CardTypesType{
 
 enum RuleType {
 	STRUCTURES,
-	MOVE_CARDS,
-	LOOK_AT,
-	WINNER_TYPE,
+	RULE_MOVE_CARDS,
+	RULE_LOOK_AT,
+	RULE_WINNER_TYPE,
 	USER_RULES,
 	TIED_RULE
 };
 
 enum BoolType  {
-	TRUE,
-	FALSE
+	BOOL_TRUE,
+	BOOL_FALSE
 };
 
 enum NumbersType {
@@ -120,16 +120,16 @@ enum PmOneType{
 };
 
 enum AritmethicType {
-	ADD,	
-	DIV,
-	MUL,
-	SUB,
-	MODULE
+	ARIT_ADD,	
+	ARIT_DIV,
+	ARIT_MUL,
+	ARIT_SUB,
+	ARIT_MODULE
 };
 
 enum AsignationsType {
-	EQUAL,
-	ADD_EQUAL,
+	ASIG_EQUAL,
+	ASIG_ADD_EQUAL,
 	SUB_EQUAL
 };
 
@@ -140,10 +140,10 @@ enum UserRulesType{
 };
 
 enum StructuresType {
-	IF,
-	FOREACH,
-	ELIF,
-	ELSE
+	IF_STRUCTURE,
+	FOREACH_STRUCTURE,
+	ELIF_STRUCTURE,
+	ELSE_STRUCTURE
 };
 
 enum InBraketsType{
@@ -153,46 +153,46 @@ enum InBraketsType{
 
 enum HandRefType {
 	USER,
-	DECK
+	HAND_DECK
 };
 
 enum IfType {
 	INIF, 
-	AND,
-	OR,
+	AND_IF,
+	OR_IF,
 	TIED_IF
 };
 
 enum InIfType {
 	VALUE_IF,
 	TYPE_IF,
-	ACTIVATE_SPECIAL_CARDS,
+	ACTIVATE_SPECIAL_CARDS_IF,
 	EXPRESSION_IF
 };
 
 enum ComparisonType{
-	GREATER,
-	LOWER,
-	EQUAL_EQUAL,
-	GREATER_OR_EQUAL,
-	LOWER_OR_EQUAL,
-	DIFERENT
+	COMP_GREATER,
+	COMP_LOWER,
+	COMP_EQUAL_EQUAL,
+	COMP_GREATER_OR_EQUAL,
+	COMP_LOWER_OR_EQUAL,
+	COMP_DIFERENT
 };
 
 enum AtomicType{
-	VALUE,
-	TYPE
+	ATOMIC_VALUE,
+	ATOMIC_TYPE
 };
 
 enum DesignType {
-	ROUND_BORDERS,
-	COLOR_BORDERS,
-	BACKGROUND_COLOR
+	ROUND_BORDERS_DESIGN,
+	COLOR_BORDERS_DESIGN,
+	BACKGROUND_COLOR_DESIGN
 };
 
 enum UserType{
-	PLAYER,
-	IDENTIFIER
+	USER_PLAYER,
+	USER_IDENTIFIER
 };
 
 #pragma endregion 
