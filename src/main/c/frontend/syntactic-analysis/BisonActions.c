@@ -31,50 +31,6 @@ static void _logSyntacticAnalyzerAction(const char * functionName) {
 
 /* PUBLIC FUNCTIONS */
 
-
-
-/*
-Constant * IntegerConstantSemanticAction(const int value) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Constant * constant = calloc(1, sizeof(Constant));
-	constant->value = value;
-	return constant;
-}
-
-Expression * ArithmeticExpressionSemanticAction(Expression * leftExpression, Expression * rightExpression, ExpressionType type) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Expression * expression = calloc(1, sizeof(Expression));
-	expression->leftExpression = leftExpression;
-	expression->rightExpression = rightExpression;
-	expression->type = type;
-	return expression;
-}
-
-Expression * FactorExpressionSemanticAction(Factor * factor) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Expression * expression = calloc(1, sizeof(Expression));
-	expression->factor = factor;
-	expression->type = FACTOR;
-	return expression;
-}
-
-Factor * ConstantFactorSemanticAction(Constant * constant) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Factor * factor = calloc(1, sizeof(Factor));
-	factor->constant = constant;
-	factor->type = CONSTANT;
-	return factor;
-}
-
-Factor * ExpressionFactorSemanticAction(Expression * expression) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Factor * factor = calloc(1, sizeof(Factor));
-	factor->expression = expression;
-	factor->type = EXPRESSION;
-	return factor;
-}
-*/
-
 Program * BlockSemanticAction(CompilerState * compilerState, Block * block) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Program * program = calloc(1, sizeof(Program));
@@ -287,27 +243,11 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomi
 	return expression;
 }
 
-/*Expression * ExpressionConstantSemanticAction(Constant * constant){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Expression * expression = calloc(1, sizeof(Expression));
-	expression->constant = constant;
-	return expression;
-}*/
-
 #pragma endregion Expresions
 
 
 
 #pragma region UserRules
-/*UserRules * UserRuleConstantSemanticAction(UserScore * userScore, Asignations * asignations,Constant * constant)
-{
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	UserRules * userRules = calloc(1,sizeof(UserRules));
-	userRules->userScore = userScore;
-	userRules->asignations = asignations;
-	userRules->constant = constant;
-	return userRules;
-}*/
 UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * numbers)
 {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -482,15 +422,6 @@ InIf * InIfSpecialCardsSemanticAction(){
 	InIf * inIf = calloc(1, sizeof(InIf));
 	return inIf;
 }
-
-/*InIf * InIfComparisonConstantSemanticAction(UserScore * userScore, Comparison * comparison, Constant * constant){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	InIf * inIf = calloc(1, sizeof(InIf));
-	inIf->userScore = userScore;
-	inIf->comparison = comparison;
-	inIf->constant = constant;
-	return inIf;
-}*/
 
 InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Comparison * comparison, Expression * rightExpression){
 	_logSyntacticAnalyzerAction(__FUNCTION__);

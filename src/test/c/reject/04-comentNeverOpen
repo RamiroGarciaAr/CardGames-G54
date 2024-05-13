@@ -1,5 +1,4 @@
-/*
-	A multiline comment.
 */
+
 Lucky7SpecialCard for value 7:
     MoveCards(Deck, Playing.Hand, 2)

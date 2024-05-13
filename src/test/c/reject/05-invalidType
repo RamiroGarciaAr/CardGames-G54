@@ -1,5 +1,5 @@
 MyCardGame game has:
-    NumbersOnTypes(5)
+    NumbersOnTypes(Fire)
     TypesOfCards(Water, Fire, Earth)
     CardsByPlayer(3) 
     Rounds(30) 
@@ -8,4 +8,4 @@ MyCardGame game has:
     WinRoundCondition(WinRoundRule)
     WinGameCondition(WinGameRule)
     CardsDesign(myDesign) 
-    BackgroundDesign(myBackgroundDesign)
+    BackgroundDesign(myBackgroundDesign) 

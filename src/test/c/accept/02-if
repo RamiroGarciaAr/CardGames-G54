@@ -1,3 +1,4 @@
 Unlucky13SpecialCard for type Earth:
-    if(value == 13)
+    if(value == 13){
         MoveCards(Playing.Hand, Deck, 2)
+    }

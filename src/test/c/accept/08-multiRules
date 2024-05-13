@@ -1,0 +1,8 @@
+myDesign design has:
+    if(value == 5 and type == Fire){
+        RoundBorders(2) 
+        ColorBorders(red) 
+    }
+
+myBackgroundDesign design has:
+    BackgroundColor(lightgrey) 

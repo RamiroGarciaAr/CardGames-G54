@@ -200,6 +200,8 @@ block: variable FOR VALUE constant COLON rules					{ $$ = BlockValueSemanticActi
 	| variable DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
 	;
 
+/*block debe tener un lambda, ademas design debe ser rules*/
+
 gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
 			   TYPES_OF_CARDS OPEN_PARENTHESIS cardTypes CLOSE_PARENTHESIS
 			   CARDS_BY_PLAYER OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
@@ -212,6 +214,8 @@ gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS constant CLOSE_PARENTHESIS
 			   BACKGROUND_DESIGN OPEN_PARENTHESIS variable CLOSE_PARENTHESIS            { $$ = GameFunctionSemanticAction($3, $7, $11, $15, $19, $23, $25, $29, $33, $37, $41); }
 			; 
 
+/*cuando termina gamefunction hay que llamar a block pero no deberia poder llamar BlockGameSemanticAction*/
+
 cardTypes: variable                                                                      { $$ = CardTypeRuleSemanticAction($1); }
 	| variable COMMA cardTypes															 { $$ = MultipleCardTypesRuleSemanticAction($1, $3); }
 	;
@@ -221,11 +225,26 @@ rules: structures																		 { $$ = RuleStrcuturesSemanticAction($1); }
 	| LOOK_AT OPEN_PARENTHESIS handRef COMMA constant CLOSE_PARENTHESIS                  { $$ = RuleLookAtSemanticAction($3, $5); }
 	| RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS                                    { $$ = RuleRestockDeckSemanticAction(); }
 	| WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS                             { $$ = RuleWinGameSemanticAction(); }
-	| WINNER_TYPE OPEN_PARENTHESIS variable CLOSE_PARENTHESIS							 { $$ = RuleWinnerTypeSemanticAction($3); }
+	| WINNER_TYPE OPEN_PARENTHESIS variable CLOSE_PARENTHESIS 							 { $$ = RuleWinnerTypeSemanticAction($3); }
 	| ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS                  		 { $$ = RuleActivateSpecialCardsSemanticAction(); }
 	| userRules																			 { $$ = RuleUserSemanticAction($1); }
 	| TIED EQUAL bool																	 { $$ = RuleTiedSemanticAction($3); }
 	;
+
+/*
+rules: structures																		 		{ $$ = RuleStrcuturesSemanticAction($1); }
+	| MOVE_CARDS OPEN_PARENTHESIS handRef COMMA handRef COMMA constant CLOSE_PARENTHESIS rules 	{ $$ = RuleMoveCardsSemanticAction($3, $5, $7, $9); }
+	| LOOK_AT OPEN_PARENTHESIS handRef COMMA constant CLOSE_PARENTHESIS rules                  	{ $$ = RuleLookAtSemanticAction($3, $5, $7); }
+	| RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                   	{ $$ = RuleRestockDeckSemanticAction($4); }
+	| WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                            	{ $$ = RuleWinGameSemanticAction($5); }
+	| WINNER_TYPE OPEN_PARENTHESIS variable CLOSE_PARENTHESIS rules							 	{ $$ = RuleWinnerTypeSemanticAction($3, $5); }
+	| ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                 		 	{ $$ = RuleActivateSpecialCardsSemanticAction($4); }
+	| userRules																			 		{ $$ = RuleUserSemanticAction($1); }
+	| TIED EQUAL bool rules																	 	{ $$ = RuleTiedSemanticAction($3, $4); }
+	| //lambda?????????????????????????
+	| block //hay que permitir varias rules!!!!!!!!!!!!!!!!!!!!!!!
+	;
+*/
 
 bool: TRUE															{ $$ = BooleanSemanticAction($1); }
 	| FALSE															{ $$ = BooleanSemanticAction($1); }
@@ -244,14 +263,19 @@ numbers: constant													{ $$ = NumberConstSemanticAction($1); }
 expression: expression arithmetic expression						{ $$ = ExpressionArithmeticSemanticAction($1, $2, $3); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
 	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $3); }
-	/*| constant														{ $$ = ExpressionConstantSemanticAction($1); }*/
 	;
 	
 userRules: userScore asignations numbers							{ $$ = UserRuleNumberSemanticAction($1, $2, $3); }
-	/*| userScore asignations constant								{ $$ = UserRuleConstantSemanticAction($1, $2, $3); }*/
 	| userScore asignations numbers arithmetic numbers 				{ $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5); }
 	| userScore pmOne												{ $$ = UserRulePMOneSemanticAction($1, $2); }
 	;
+
+/*
+userRules: userScore asignations numbers rules							{ $$ = UserRuleNumberSemanticAction($1, $2, $3, $4); }
+	| userScore asignations numbers arithmetic numbers rules 			{ $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5, $6); }
+	| userScore pmOne rules												{ $$ = UserRulePMOneSemanticAction($1, $2, $3); }
+	;
+*/
 
 arithmetic: ADD														{ $$ = ArithmeticSemanticAction(); }
 	| DIV															{ $$ = ArithmeticSemanticAction(); }
@@ -279,6 +303,8 @@ inBrakets: OPEN_BRAKETS rules CLOSE_BRAKETS							{ $$ = BraketsSemanticAction($
 	| OPEN_BRAKETS rules CLOSE_BRAKETS rules						{ $$ = MultipleBraketsSemanticAction($2, $4); }
 	;
 
+/*si rules tiene lambda entonces podemos borrar el primero*/
+
 handRef: user DOT HAND												{ $$ = UserHandRefSemanticAction($1); }
 	| deck															{ $$ = DeckRefSemanticAction($1); }
 	;
@@ -302,7 +328,6 @@ tied: TIED															{ $$ = TiedSemanticAction(); }
 inIf: VALUE comparison constant										{ $$ = InIfConstantSemanticAction($2, $3); }
 	| TYPE comparison variable										{ $$ = InIfVariableSemanticAction($2, $3); }
 	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS		{ $$ = InIfSpecialCardsSemanticAction(); }
-	/*| userScore comparison constant 								{ $$ = InIfComparisonConstantSemanticAction($1, $2, $3); }*/
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
 
@@ -323,6 +348,8 @@ design: ROUND_BORDERS OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = RoundBo
 	| BACKGROUND_COLOR OPEN_PARENTHESIS variable CLOSE_PARENTHESIS	{ $$ = BackColorDesignSemanticAction($3); }
 	;
 
+/*deberian estar en rules y este no terminal podemos borrarlo*/
+
 constant: INTEGER													{ $$ = IntegerConstantSemanticAction($1); }
 	;
 
@@ -330,16 +357,3 @@ variable: VARIABLE													{ $$ = VariableSemanticAction($1); }
 	;
 
 %%
-
-/*																	{ $$ = BlockSemanticAction(currentCompilerState(), $1); }
-expression: expression[left] ADD expression[right]					{ $$ = ArithmeticExpressionSemanticAction($left, $right, ADDITION); }
-	| expression[left] DIV expression[right]						{ $$ = ArithmeticExpressionSemanticAction($left, $right, DIVISION); }
-	| expression[left] MUL expression[right]						{ $$ = ArithmeticExpressionSemanticAction($left, $right, MULTIPLICATION); }
-	| expression[left] SUB expression[right]						{ $$ = ArithmeticExpressionSemanticAction($left, $right, SUBTRACTION); }
-	| factor														{ $$ = FactorExpressionSemanticAction($1); }
-	;
-
-factor: OPEN_PARENTHESIS expression CLOSE_PARENTHESIS				{ $$ = ExpressionFactorSemanticAction($2); }
-	| constant														{ $$ = ConstantFactorSemanticAction($1); }
-	;
-*/

@@ -1,0 +1,2 @@
+Lucky7SpecialCard for value Fire:
+    MoveCards(Deck, Playing.Hand, 2)

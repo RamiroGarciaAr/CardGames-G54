@@ -1,0 +1,16 @@
+WinRoundRule for game: 
+    if(SpecialCardsOnPlay())   //Nos fijamos si hay cartas especiales en juego 
+        ActivateSpecialCards() //Se activan las cartas especiales
+    //En este juego el valor de la carta es el daño que se le hace al jugador 
+    if(tied){
+        if(User.SelectedCard.value > Machine.SelectedCard.value){
+	          Machine.score -= User.SelectedCard.value
+        }else{ 
+            User.score -= Machine.SelectedCard.value
+        }
+        tied = false 
+    }else{ 
+        GetLoser(ElementalClashRule).score -= GetWinner(ElementalClashRule).SelectedCard.value
+    }
+    //En este juego se restituye el deck una vez que las cartas son tiradas al fin de la ronda
+    RestockDeck()
