@@ -7,6 +7,7 @@
 #include "AbstractSyntaxTree.h"
 #include "SyntacticAnalyzer.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
 /** Initialize module's internal state. */
 void initializeBisonActionsModule();
@@ -19,25 +20,25 @@ void shutdownBisonActionsModule();
  */
 
 Program * BlockSemanticAction(CompilerState * compilerState, Block * block);
-Block * BlockValueSemanticAction(Variable * variable, Constant * constant, Rules * rules);
-Block * BlockTypeSemanticAction(Variable * variable, CardTypes * cardTypes, Rules * rules);
-Block * BlockGameSemanticAction(Variable * variable, GameFunction * gameFunction);
-Block * BlockDesignSemanticAction(Variable * variable, Design * design);
-GameFunction * GameFunctionSemanticAction(Constant * cteNumbersOnDeck, CardTypes * cardTypes,Constant * cteCardsByPlayers,Constant * cteRounds,Constant * cteRoundTimer, Constant * cteUserStartingScore,Constant * cteMachineStartingScore,Variable * varWinRoundCondition,Variable * varWinGameCondition, Variable * varCardDesign,Variable * varBackDesign);
-CardTypes * CardTypeRuleSemanticAction(Variable * type );
-CardTypes * MultipleCardTypesRuleSemanticAction(Variable * A, CardTypes *  B);
+Block * BlockValueSemanticAction(char * variable, int constant, Rules * rules);
+Block * BlockTypeSemanticAction(char * variable, CardTypes * cardTypes, Rules * rules);
+Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction);
+Block * BlockDesignSemanticAction(char * variable, Design * design);
+GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign);
+CardTypes * CardTypeRuleSemanticAction(char * type );
+CardTypes * MultipleCardTypesRuleSemanticAction(char * A, CardTypes *  B);
 Rules * RuleStrcuturesSemanticAction(Structures * structures);
-Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRef, Constant * constant);
-Rules * RuleLookAtSemanticAction(HandRef * handRef, Constant * constant);
+Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRef, int constant);
+Rules * RuleLookAtSemanticAction(HandRef * handRef, int constant);
 Rules * RuleRestockDeckSemanticAction();
 Rules * RuleWinGameSemanticAction();
-Rules * RuleWinnerTypeSemanticAction(Variable * variable);
+Rules * RuleWinnerTypeSemanticAction(char * variable);
 Rules * RuleActivateSpecialCardsSemanticAction();
 Rules * RuleUserSemanticAction(UserRules * userRules);
-Rules * RuleTiedSemanticAction(Tied * boolean);
+Rules * RuleTiedSemanticAction(bool boolean);
 UserScore * UserScoreSemanticAction(User * user );
 UserCard * UserCardSemanticAction(User * user);
-Numbers * NumberConstSemanticAction(Constant * constant);
+Numbers * NumberConstSemanticAction(int constant);
 Numbers * NumberUserSemanticAction(UserScore * userScore);
 Expression * ExpressionArithmeticSemanticAction(Expression * expression1 ,Arithmetic * arithmetic ,Expression * expression2 );
 Expression * ExpressionNumberSemanticAction(Numbers * numbers);
@@ -59,19 +60,15 @@ Deck * DeckSemanticAction();
 User * UserSemanticAction();
 Ifs * IfSemanticAction(InIf * inIf);
 Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf);
-Ifs * IfTiedAction(Tied * tied);
-InIf * InIfConstantSemanticAction(Comparison * comparison, Constant * constant);
-InIf * InIfVariableSemanticAction(Comparison * comparison, Variable * variable);
+Ifs * IfTiedAction(bool tied);
+InIf * InIfConstantSemanticAction(Comparison * comparison, int constant);
+InIf * InIfVariableSemanticAction(Comparison * comparison, char * variable);
 InIf * InIfSpecialCardsSemanticAction();
 InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Comparison * comparison, Expression * rightExpression);
 Comparison * ComparisonSemanticAction();
 Atomic * AtomicSemanticAction();
-Tied * TiedSemanticAction();
-Design * RoundBordersDesignSemanticAction(Variable * variable);
-Design * ColorBordersDesignSemanticAction(Variable * variable);
-Design * BackColorDesignSemanticAction(Variable * variable);
-Constant * IntegerConstantSemanticAction(const int value);
-Variable * VariableSemanticAction(char * name);
-Bool * BooleanSemanticAction(const boolean value);
+Design * RoundBordersDesignSemanticAction(char * variable);
+Design * ColorBordersDesignSemanticAction(char * variable);
+Design * BackColorDesignSemanticAction(char * variable);
 
 #endif

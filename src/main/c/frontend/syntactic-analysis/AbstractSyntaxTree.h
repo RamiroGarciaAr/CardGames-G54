@@ -3,6 +3,7 @@
 
 #include "../../shared/Logger.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
 /** Initialize module's internal state. */
 void initializeAbstractSyntaxTreeModule();
@@ -20,7 +21,6 @@ typedef enum ExpressionType ExpressionType;
 typedef enum BlockType BlockType;
 typedef enum CardTypesType CardTypesType;
 typedef enum RuleType RuleType;
-typedef enum BoolType BoolType;
 typedef enum NumbersType NumbersType;
 typedef enum PmOneType PmOneType;
 typedef enum ArithmeticType ArithmeticType;
@@ -38,12 +38,9 @@ typedef enum UserType UserType;
 #pragma endregion EnumsDefinitions
 
 #pragma region ExpresionDefinitions
-typedef struct Constant Constant;
-typedef struct Variable Variable;
 typedef struct Block Block;
 typedef struct GameFunction GameFunction;
 typedef struct Rules Rules;
-typedef struct Bool Bool;
 typedef struct UserScore UserScore;
 typedef struct UserCard UserCard;
 typedef struct Numbers Numbers;
@@ -59,7 +56,6 @@ typedef struct HandRef HandRef;
 typedef struct InBrakets InBrakets;
 typedef struct Deck Deck;
 typedef struct Ifs Ifs;
-typedef struct Tied Tied;
 typedef struct InIf InIf;
 typedef struct Comparison Comparison;
 typedef struct Atomic Atomic;
@@ -102,11 +98,6 @@ enum RuleType {
 	RULE_WINNER_TYPE,
 	USER_RULES,
 	TIED_RULE
-};
-
-enum BoolType  {
-	BOOL_TRUE,
-	BOOL_FALSE
 };
 
 enum NumbersType {
@@ -198,18 +189,6 @@ enum UserType{
 #pragma endregion 
 /* ------------------------------------------------- EXPRESSIONS ------------------------------------------------- */
 
-struct Constant {
-	int value;
-};
-
-struct Variable{
-	char * name;
-};
-
-struct Bool {
-	boolean value;
-};
-
 struct User{
 	UserType type; 
 };
@@ -224,10 +203,6 @@ struct UserCard {
 
 struct Deck {
 	Deck * deck;
-};
-
-struct Tied {
-	Bool * Tied;
 };
 
 struct Program {
@@ -257,21 +232,21 @@ struct Atomic {
 struct Block {
 	union {
 		struct {
-			Variable * variable;
-			Constant * constant;
+			char * variable;
+			int constant;
 			Rules * rules;
 		};
 		struct {
-			Variable * variable1;
+			char * variable1;
 			CardTypes * cardTypes;
 			Rules * rules1;
 		};
 		struct {
-			Variable * variable2;
+			char * variable2;
 			GameFunction * gameFunction;
 		};
 		struct {
-			Variable * variable3;
+			char * variable3;
 			Design * design;
 		};
 	};
@@ -279,24 +254,24 @@ struct Block {
 };
 
 struct GameFunction { 
-	Constant * cteNumbersOnDeck;
+	int cteNumbersOnDeck;
 	CardTypes * cardTypes;
-	Constant * cteCardsByPlayers;
-	Constant * cteRounds;
-	Constant * cteRoundTimer;		
-	Constant * cteUserStartingScore;	
-	Constant * cteMachineStartingScore;	
-	Variable * varWinRoundCondition;	
-	Variable * varWinGameCondition;	
-	Variable * varCardDesign;	
-	Variable * varBackDesign;	
+	int cteCardsByPlayers;
+	int cteRounds;
+	int cteRoundTimer;		
+	int cteUserStartingScore;	
+	int cteMachineStartingScore;	
+	char * varWinRoundCondition;	
+	char * varWinGameCondition;	
+	char * varCardDesign;	
+	char * varBackDesign;	
 };
 
 struct CardTypes {
 	union {
-		Variable * variable;
+		char * variable;
 		struct {
-			Variable * variable1;
+			char * variable1;
 			CardTypes * cardType;
 		};
 	};
@@ -309,22 +284,22 @@ struct Rules {
         struct {
             HandRef * leftHandRef;
             HandRef * rightHandRef;
-            Constant * constant;
+            int constant;
         };
         struct {
             HandRef * handRef;
-            Constant * constant1;
+            int constant1;
         };
-		Variable * variable;
+		char * variable;
 		UserRules * userRules;
-		Tied * tied;
+		bool tied;
     };
     RuleType type;
 };
 
 struct Numbers{
 	union {
-		Constant * constant;
+		int constant;
 		UserScore * userScore;
 	};
 	NumbersType type;
@@ -410,7 +385,7 @@ struct Ifs {
 			InIf * leftInIf;
 			InIf * rightInIf;
 		};
-		Tied * tied;
+		bool tied;
 	};
 	IfType type;
 };
@@ -419,11 +394,11 @@ struct InIf {
 	union {
 		struct {
 			Comparison * comparison;
-			Constant * constant;
+			int constant;
 		};
 		struct {
 			Comparison * comparison1;
-			Variable * variable;
+			char * variable;
 		};
 		struct {
 			Expression * leftExpression;
@@ -437,19 +412,21 @@ struct InIf {
 
 struct Design {
 	union{
-		Variable * roundBorders;
-		Variable * colorBorders;
-		Variable * backgroundColor;
+		char * roundBorders;
+		char * colorBorders;
+		char * backgroundColor;
 	};
 	DesignType type;
+};
+
+struct Boolean{
+	bool value;
 };
 	
 
 /**
  * Node recursive destructors.
  */
-void releaseConstant(Constant * constant);
-void releaseExpression(Expression * expression);
 void releaseProgram(Program * program);
 
 #endif

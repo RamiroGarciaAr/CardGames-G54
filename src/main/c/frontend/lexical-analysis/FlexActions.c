@@ -87,7 +87,7 @@ Token IntegerLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 
 Token VariablePatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
-	lexicalAnalyzerContext->semanticValue->variable = VARIABLE;
+	lexicalAnalyzerContext->semanticValue->variable = lexicalAnalyzerContext->lexeme;
 	return VARIABLE;
 }
 
