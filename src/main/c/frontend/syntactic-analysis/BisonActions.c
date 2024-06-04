@@ -84,7 +84,7 @@ Block * BlockDesignSemanticAction(char * variable, Design * design){
 
 #pragma endregion Block 
 
-GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign){
+GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign, Block * Block1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	GameFunction * gameFunction = calloc(1,sizeof(GameFunction));
 	gameFunction->cteNumbersOnDeck = cteNumbersOnDeck;
@@ -98,6 +98,7 @@ GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * card
 	gameFunction->varWinGameCondition=varWinGameCondition;
 	gameFunction->varCardDesign = varCardDesign;
 	gameFunction->varBackDesign = varBackDesign; 
+	gameFunction->block1= Block1;
 	return gameFunction;
 }
 
@@ -177,10 +178,11 @@ Rules * RuleUserSemanticAction(UserRules * userRules){
 	return rules;
 }
 
-Rules * RuleTiedSemanticAction(bool boolean){
+Rules * RuleTiedSemanticAction(bool boolean,Rules * rule1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->tied = boolean;
+	rules->rule=rule1; 
 	return rules;
 }
 #pragma endregion Rules

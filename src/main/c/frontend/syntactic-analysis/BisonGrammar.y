@@ -203,7 +203,7 @@ gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS
 			   WIN_ROUND_CONDITION OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
 			   WIN_GAME_CONDITION OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
 			   CARDS_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
-			   BACKGROUND_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS block           { $$ = GameFunctionSemanticAction($3, $7, $11, $15, $19, $23, $25, $29, $33, $37, $41); }
+			   BACKGROUND_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS block           { $$ = GameFunctionSemanticAction($3, $7, $11, $15, $19, $23, $25, $29, $33, $37, $41,$43); }
 			; 
 
 cardTypes: VARIABLE                                                                      { $$ = CardTypeRuleSemanticAction($1); }
@@ -218,7 +218,7 @@ rules: structures																		 { $$ = RuleStrcuturesSemanticAction($1); }
 	| WINNER_TYPE OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules 							 { $$ = RuleWinnerTypeSemanticAction($3); }
 	| ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                  		 { $$ = RuleActivateSpecialCardsSemanticAction(); }
 	| userRules																			 { $$ = RuleUserSemanticAction($1); }
-	| TIED EQUAL boolean rules																 { $$ = RuleTiedSemanticAction($3); }
+	| TIED EQUAL boolean rules																 { $$ = RuleTiedSemanticAction($3,$4); }
 	| block
 	| %empty
 	;

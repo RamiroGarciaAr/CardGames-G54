@@ -265,6 +265,7 @@ struct GameFunction {
 	char * varWinGameCondition;	
 	char * varCardDesign;	
 	char * varBackDesign;	
+	Block * block1; 
 };
 
 struct CardTypes {
@@ -285,6 +286,7 @@ struct Rules {
             HandRef * leftHandRef;
             HandRef * rightHandRef;
             int constant;
+			Rules * rule ; 
         };
         struct {
             HandRef * handRef;
