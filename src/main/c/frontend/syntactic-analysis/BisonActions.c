@@ -46,8 +46,6 @@ Program * BlockSemanticAction(CompilerState * compilerState, Block * block) {
 	return program;
 }
 
-#pragma region Block
-
 Block * BlockValueSemanticAction(char * variable, int constant, Rules * rules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
@@ -74,17 +72,15 @@ Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction){
 	return block;
 }
 
-Block * BlockDesignSemanticAction(char * variable, Design * design){
+Block * BlockDesignSemanticAction(char * variable, Rules * rules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
 	block->variable3 = variable;
-	block->design = design;
+	block->rules2 = rules;
 	return block;
 }
 
-#pragma endregion Block 
-
-GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign, Block * Block1){
+GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign, Block * block){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	GameFunction * gameFunction = calloc(1,sizeof(GameFunction));
 	gameFunction->cteNumbersOnDeck = cteNumbersOnDeck;
@@ -98,11 +94,9 @@ GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * card
 	gameFunction->varWinGameCondition=varWinGameCondition;
 	gameFunction->varCardDesign = varCardDesign;
 	gameFunction->varBackDesign = varBackDesign; 
-	gameFunction->block1= Block1;
+	gameFunction->block = block;
 	return gameFunction;
 }
-
-#pragma region CardTypes
 
 CardTypes * CardTypeRuleSemanticAction(char * type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -118,9 +112,6 @@ CardTypes * MultipleCardTypesRuleSemanticAction(char * A, CardTypes *  B){
 	cardTypes->cardType = B;
 	return cardTypes;	
 }
-#pragma endregion CardTypes
-
-#pragma region Rules
 
 Rules * RuleStrcuturesSemanticAction(Structures * structures){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -129,45 +120,51 @@ Rules * RuleStrcuturesSemanticAction(Structures * structures){
 	return rules;
 }
 
-Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRef, int constant){
+Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRef, int constant, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->leftHandRef = leftHandRef;
 	rules->rightHandRef = rightHandRef;
 	rules->constant = constant;
+	rules->rule = rule;
 	return rules;
 }
 
-Rules * RuleLookAtSemanticAction(HandRef * handRef, int constant){
+Rules * RuleLookAtSemanticAction(HandRef * handRef, int constant, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->handRef = handRef;
 	rules->constant1 = constant;
+	rules->rule1 = rule;
 	return rules;
 }
 
-Rules * RuleRestockDeckSemanticAction(){
+Rules * RuleRestockDeckSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
+	rules->rule2 = rule;
 	return rules;
 }
 
-Rules * RuleWinGameSemanticAction(){
+Rules * RuleWinGameSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
+	rules->rule2 = rule;
 	return rules;
 }
 
-Rules * RuleWinnerTypeSemanticAction(char * variable){
+Rules * RuleWinnerTypeSemanticAction(char * variable, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->variable = variable;
+	rules->rule3 = rule;
 	return rules;
 }
 
-Rules * RuleActivateSpecialCardsSemanticAction(){
+Rules * RuleActivateSpecialCardsSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
+	rules->rule2 = rule;
 	return rules;
 }
 
@@ -178,16 +175,20 @@ Rules * RuleUserSemanticAction(UserRules * userRules){
 	return rules;
 }
 
-Rules * RuleTiedSemanticAction(bool boolean,Rules * rule1){
+Rules * RuleTiedSemanticAction(bool boolean, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->tied = boolean;
-	rules->rule=rule1; 
+	rules->rule4 = rule; 
 	return rules;
 }
-#pragma endregion Rules
 
-#pragma region UserAtomics
+Rules * RuleFinishedSemanticAction(Block * block){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Rules * rules = calloc(1, sizeof(Rules));
+	rules->block = block;
+	return rules;
+}
 
 UserScore * UserScoreSemanticAction(User * user ){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -203,14 +204,13 @@ UserCard * UserCardSemanticAction(User * user){
 	return userCard;
 }
 
-#pragma endregion UserAtomics
-
 Numbers * NumberConstSemanticAction(int constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->constant  = constant;
 	return numbers;
 }
+
 Numbers * NumberUserSemanticAction(UserScore * userScore ){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
@@ -218,13 +218,10 @@ Numbers * NumberUserSemanticAction(UserScore * userScore ){
 	return numbers;
 }
 
-#pragma region Expresions
-
-Expression * ExpressionArithmeticSemanticAction(Expression * expression1 ,Arithmetic * arithmetic ,Expression * expression2 ){
+Expression * ExpressionArithmeticSemanticAction(Expression * expression1, Expression * expression2 ){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->leftExpression = expression1;
-	expression->arithmetic  = arithmetic;
 	expression->rightExpression = expression2;
 	return expression;
 }
@@ -236,7 +233,7 @@ Expression * ExpressionNumberSemanticAction(Numbers * numbers){
 	return expression;
 }
 
-Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomic){
+Expression * ExpressionAtomicSemanticAction(UserCard * usercard, Atomic * atomic){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->userCard = usercard;
@@ -244,21 +241,17 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomi
 	return expression;
 }
 
-#pragma endregion Expresions
-
-
-
-#pragma region UserRules
-UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * numbers)
-{
+UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * numbers, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore = userScore;
 	userRules->asignations = asignations;
 	userRules->numbers = numbers;
+	userRules->rule = rule;
 	return userRules;
 }
-UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum){
+
+UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore1 = userScore;
@@ -266,21 +259,17 @@ UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations 
 	userRules->numbers = leftNum;
 	userRules->arithmetic = arithmetic;
 	userRules->numbers = rightNum;
+	userRules->rule1 = rule;
 	return userRules;
 }
-UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne)
-{
+UserRules * UserRulePMOneSemanticAction(UserScore * userScore, PmOne * pmOne, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
 	userRules->userScore2 = userScore;
 	userRules->pmOne = pmOne;
+	userRules->rule2 = rule;
 	return userRules;
 }
-
-#pragma endregion UserRules
-
-
-#pragma region Structures
 
 Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -305,16 +294,6 @@ Structures * StructureElseSemanticAction(InBrakets * inBrakets){
 	return structure;
 }
 
-#pragma endregion Structures
-
-#pragma region Brackets
-InBrakets * BraketsSemanticAction(Rules * rules){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	InBrakets * inBrakets = calloc(1, sizeof(InBrakets));
-	inBrakets->rules = rules;
-	return inBrakets;
-}
-
 InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InBrakets * inBrakets = calloc(1, sizeof(InBrakets));
@@ -322,8 +301,6 @@ InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules)
 	inBrakets->rightRules = rightRules;
 	return inBrakets;
 }
-
-#pragma endregion Brackets
 
 Arithmetic * ArithmeticSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -343,7 +320,6 @@ PmOne * PMOneSemanticAction(){
 	return pmOne;
 }
 
-#pragma region handRef
 
 HandRef * UserHandRefSemanticAction(User * user)
 {
@@ -361,9 +337,6 @@ HandRef * DeckRefSemanticAction(Deck * deck)
 	return handRef;
 }
 
-#pragma endregion handRef
-
-
 Deck * DeckSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Deck * deck = calloc(1, sizeof(Deck));
@@ -375,10 +348,6 @@ User * UserSemanticAction(){
 	User * user = calloc(1, sizeof(User));
 	return user;
 }
-
-
-#pragma region if
-
 
 Ifs * IfSemanticAction(InIf * inIf){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -433,8 +402,6 @@ InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Compa
 	return inIf;
 }
 
-#pragma endregion if
-
 Comparison * ComparisonSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Comparison * comparison = calloc(1, sizeof(Comparison));
@@ -447,23 +414,26 @@ Atomic * AtomicSemanticAction(){
 	return atomic;
 }
 
-Design * RoundBordersDesignSemanticAction(char * variable){
+Design * RoundBordersDesignSemanticAction(char * variable, Design * design1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Design * design = calloc(1, sizeof(Design));
-	design->roundBorders = variable;
+	design->variable = variable;
+	design->design1 = design1;
 	return design;
 }
-Design * ColorBordersDesignSemanticAction(char * variable)
-{
+
+Design * ColorBordersDesignSemanticAction(char * variable, Design * design1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Design * design = calloc(1, sizeof(Design));
-	design->colorBorders = variable;
+	design->variable = variable;
+	design->design1 = design1;
 	return design;
 }
-Design * BackColorDesignSemanticAction(char * variable)
-{
+
+Design * BackColorDesignSemanticAction(char * variable, Design * design1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Design * design = calloc(1, sizeof(Design));
-	design->backgroundColor = variable;
+	design->variable = variable;
+	design->design1 = design1;
 	return design;
 }

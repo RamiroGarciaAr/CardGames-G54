@@ -203,25 +203,25 @@ gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS
 			   WIN_ROUND_CONDITION OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
 			   WIN_GAME_CONDITION OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
 			   CARDS_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS
-			   BACKGROUND_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS block           { $$ = GameFunctionSemanticAction($3, $7, $11, $15, $19, $23, $25, $29, $33, $37, $41,$43); }
+			   BACKGROUND_DESIGN OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS block           { $$ = GameFunctionSemanticAction($3, $7, $11, $15, $19, $23, $25, $29, $33, $37, $41, $43); }
 			; 
 
-cardTypes: VARIABLE                                                                      { $$ = CardTypeRuleSemanticAction($1); }
-	| VARIABLE COMMA cardTypes															 { $$ = MultipleCardTypesRuleSemanticAction($1, $3); }
+cardTypes: VARIABLE                                             { $$ = CardTypeRuleSemanticAction($1); }
+	| VARIABLE COMMA cardTypes									{ $$ = MultipleCardTypesRuleSemanticAction($1, $3); }
 	;
 
-rules: structures																		 { $$ = RuleStrcuturesSemanticAction($1); }
-	| MOVE_CARDS OPEN_PARENTHESIS handRef COMMA handRef COMMA INTEGER CLOSE_PARENTHESIS rules  { $$ = RuleMoveCardsSemanticAction($3, $5, $7); }
-	| LOOK_AT OPEN_PARENTHESIS handRef COMMA INTEGER CLOSE_PARENTHESIS rules                   { $$ = RuleLookAtSemanticAction($3, $5); }
-	| RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                    { $$ = RuleRestockDeckSemanticAction(); }
-	| WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                             { $$ = RuleWinGameSemanticAction(); }
-	| WINNER_TYPE OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules 							 { $$ = RuleWinnerTypeSemanticAction($3); }
-	| ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                  		 { $$ = RuleActivateSpecialCardsSemanticAction(); }
-	| userRules																			 { $$ = RuleUserSemanticAction($1); }
-	| TIED EQUAL boolean rules																 { $$ = RuleTiedSemanticAction($3,$4); }
-	| block
-	| %empty
-	;
+rules: structures                                                                              { $$ = RuleStrcuturesSemanticAction($1); }
+    | MOVE_CARDS OPEN_PARENTHESIS handRef COMMA handRef COMMA INTEGER CLOSE_PARENTHESIS rules  { $$ = RuleMoveCardsSemanticAction($3, $5, $7, $9); }
+    | LOOK_AT OPEN_PARENTHESIS handRef COMMA INTEGER CLOSE_PARENTHESIS rules                   { $$ = RuleLookAtSemanticAction($3, $5, $7); }
+    | RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                    { $$ = RuleRestockDeckSemanticAction($4); }
+    | WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                             { $$ = RuleWinGameSemanticAction($5); }
+    | WINNER_TYPE OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5); }
+    | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
+    | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
+    | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }
+    | block                                                                  				   { $$ = RuleFinishSemanticAction($1); }
+    | %empty
+    ;
 
 design: ROUND_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design	{ $$ = RoundBordersDesignSemanticAction($3, $5); }
 	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design		{ $$ = ColorBordersDesignSemanticAction($3, $5); }

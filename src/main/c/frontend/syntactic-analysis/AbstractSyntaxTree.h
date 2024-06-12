@@ -15,8 +15,6 @@ void shutdownAbstractSyntaxTreeModule();
  * This typedefs allows self-referencing types.
  */
 /* ------------------------------------------------- TYPEDEF ------------------------------------------------- */
-#pragma region Typedefs
-#pragma region EnumsDefinitions
 typedef enum ExpressionType ExpressionType;
 typedef enum BlockType BlockType;
 typedef enum CardTypesType CardTypesType;
@@ -35,9 +33,7 @@ typedef enum ComparisonType ComparisonType;
 typedef enum AtomicType AtomicType;
 typedef enum DesignType DesignType;
 typedef enum UserType UserType;
-#pragma endregion EnumsDefinitions
 
-#pragma region ExpresionDefinitions
 typedef struct Block Block;
 typedef struct GameFunction GameFunction;
 typedef struct Rules Rules;
@@ -62,16 +58,11 @@ typedef struct Atomic Atomic;
 typedef struct Design Design;
 typedef struct Program Program;
 
-#pragma endregion ExpresionDefinitions
-
-
-#pragma endregion typedefs
 /**
  * Node types for the Abstract Syntax Tree (AST).
  */
  
 /* ------------------------------------------------- ENUMS ------------------------------------------------- */
-#pragma region Enums
 
 enum ExpressionType {
 	ARITHMETIC,
@@ -97,7 +88,8 @@ enum RuleType {
 	RULE_LOOK_AT,
 	RULE_WINNER_TYPE,
 	USER_RULES,
-	TIED_RULE
+	TIED_RULE,
+	FINISH_RULE
 };
 
 enum NumbersType {
@@ -186,7 +178,6 @@ enum UserType{
 	USER_IDENTIFIER
 };
 
-#pragma endregion 
 /* ------------------------------------------------- EXPRESSIONS ------------------------------------------------- */
 
 struct User{
@@ -247,7 +238,7 @@ struct Block {
 		};
 		struct {
 			char * variable3;
-			Design * design;
+			Rules * rules2;
 		};
 	};
 	BlockType type;
@@ -265,7 +256,7 @@ struct GameFunction {
 	char * varWinGameCondition;	
 	char * varCardDesign;	
 	char * varBackDesign;	
-	Block * block1; 
+	Block * block; 
 };
 
 struct CardTypes {
@@ -286,15 +277,24 @@ struct Rules {
             HandRef * leftHandRef;
             HandRef * rightHandRef;
             int constant;
-			Rules * rule ; 
+            Rules * rule;
         };
         struct {
             HandRef * handRef;
             int constant1;
+            Rules * rule1;
         };
-		char * variable;
-		UserRules * userRules;
-		bool tied;
+        Rules * rule2;
+        struct {
+            char * variable;
+            Rules * rule3;
+        };
+        UserRules * userRules;
+        struct {
+            bool tied;
+            Rules * rule4;
+        };
+		Block * block;
     };
     RuleType type;
 };
@@ -311,7 +311,6 @@ struct Expression {
 	union {
 		struct {
 			Expression * leftExpression;
-			Arithmetic * arithmetic;
 			Expression * rightExpression;
 		};
 		Numbers * numbers;
@@ -329,6 +328,7 @@ struct UserRules{
 			UserScore * userScore;
 			Asignations * asignations;
 			Numbers * numbers;
+			Rules * rule;
 		};
 		struct{
 			UserScore * userScore1;
@@ -336,15 +336,16 @@ struct UserRules{
 			Numbers * leftNumber;
 			Arithmetic * arithmetic;
 			Numbers * rightNumber;
+			Rules * rule1;
 		};
 		struct{
 			UserScore * userScore2;
 			PmOne * pmOne;
+			Rules * rule2;
 		};
 	};
 	UserRulesType type;
 };
-
 
 struct Structures {
 	union {
@@ -362,14 +363,8 @@ struct Structures {
 };
 
 struct InBrakets {
-	union {
-		Rules * rules;
-		struct {
-			Rules * leftRules;
-			Rules * rightRules;	
-		};
-	};
-	InBraketsType type;
+	Rules * leftRules;
+	Rules * rightRules;	
 };
 
 struct HandRef{
@@ -414,17 +409,11 @@ struct InIf {
 
 struct Design {
 	union{
-		char * roundBorders;
-		char * colorBorders;
-		char * backgroundColor;
+		char * variable;
+		Design * design1;
 	};
 	DesignType type;
 };
-
-struct Boolean{
-	bool value;
-};
-	
 
 /**
  * Node recursive destructors.
