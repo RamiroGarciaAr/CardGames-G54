@@ -238,7 +238,7 @@ struct Block {
 		};
 		struct {
 			char * variable3;
-			Rules * rules2;
+			Design * design1;
 		};
 	};
 	BlockType type;

@@ -19,9 +19,9 @@ void shutdownGeneratorModule() {
 /** PRIVATE FUNCTIONS */
 
 static const char _expressionTypeToCharacter(const ExpressionType type);
-static void _generateConstant(const unsigned int indentationLevel, Constant * constant);
+//static void _generateConstant(const unsigned int indentationLevel, Constant * constant);
 static void _generateEpilogue(const int value);
-static void _generateExpression(const unsigned int indentationLevel, Expression * expression);
+//static void _generateExpression(const unsigned int indentationLevel, Expression * expression);
 //static void _generateFactor(const unsigned int indentationLevel, Factor * factor);
 static void _generateProgram(Program * program);
 static void _generatePrologue(void);
@@ -47,11 +47,11 @@ static void _output(const unsigned int indentationLevel, const char * const form
 /**
  * Generates the output of a constant.
  */
-static void _generateConstant(const unsigned int indentationLevel, Constant * constant) {
-	_output(indentationLevel, "%s", "[ $C$, circle, draw, black!20\n");
-	_output(1 + indentationLevel, "%s%d%s", "[ $", constant->value, "$, circle, draw ]\n");
-	_output(indentationLevel, "%s", "]\n");
-}
+//static void _generateConstant(const unsigned int indentationLevel, Constant * constant) {
+//	_output(indentationLevel, "%s", "[ $C$, circle, draw, black!20\n");
+//	_output(1 + indentationLevel, "%s%d%s", "[ $", constant->value, "$, circle, draw ]\n");
+//	_output(indentationLevel, "%s", "]\n");
+//}
 
 /**
  * Creates the epilogue of the generated output, that is, the final lines that

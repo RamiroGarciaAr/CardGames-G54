@@ -94,13 +94,13 @@ ComputationResult subtract(const int minuend, const int subtract) {
 	return computationResult;
 }
 
-ComputationResult computeConstant(Constant * constant) {
-	ComputationResult computationResult = {
-		.succeed = true,
-		.value = constant->value
-	};
-	return computationResult;
-}
+//ComputationResult computeConstant(Constant * constant) {
+//	ComputationResult computationResult = {
+//		.succeed = true,
+//		.value = constant->value
+//	};
+//	return computationResult;
+//}
 
 //ComputationResult computeExpression(Expression * expression) {
 //	switch (expression->type) {

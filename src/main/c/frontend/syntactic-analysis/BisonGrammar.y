@@ -190,8 +190,7 @@ program: block													{ $$ = BlockSemanticAction(currentCompilerState(), $1
 block: VARIABLE FOR VALUE INTEGER COLON rules					{ $$ = BlockValueSemanticAction($1, $4, $6); }
 	| VARIABLE FOR TYPE cardTypes COLON rules					{ $$ = BlockTypeSemanticAction($1, $4, $6); }
 	| VARIABLE GAME HAS COLON gameFunction                      { $$ = BlockGameSemanticAction($1, $5); }
-	| VARIABLE DESIGN HAS COLON rules							{ $$ = BlockDesignSemanticAction($1, $5); }
-	| %empty
+	| VARIABLE DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
 	;
 
 gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS
@@ -219,7 +218,7 @@ rules: structures                                                               
     | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
     | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }
-    | block                                                                  				   { $$ = RuleFinishSemanticAction($1); }
+    | block                                                                  				   { $$ = RuleFinishedSemanticAction($1); }
     | %empty
     ;
 

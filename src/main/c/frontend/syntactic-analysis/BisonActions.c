@@ -72,11 +72,11 @@ Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction){
 	return block;
 }
 
-Block * BlockDesignSemanticAction(char * variable, Rules * rules){
+Block * BlockDesignSemanticAction(char * variable, Design * design1){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
 	block->variable3 = variable;
-	block->rules2 = rules;
+	block->design1 = design1;
 	return block;
 }
 
