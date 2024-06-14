@@ -1,11 +1,14 @@
 MyCardGame game has:
-    NumbersOnTypes(5)
+    NumbersOnDeck(5)
     TypesOfCards(Water, Fire, Earth)
     CardsByPlayer(3) 
     Rounds(30) 
-    RoundTimer(30)
+    RoundsTimer(30)
     StartingScore(100, 400) 
     WinRoundCondition(WinRoundRule)
     WinGameCondition(WinGameRule)
     CardsDesign(myDesign) 
     BackgroundDesign(myBackgroundDesign)
+
+myBackgroundDesign design has:
+    BackgroundColor(lightgrey) 

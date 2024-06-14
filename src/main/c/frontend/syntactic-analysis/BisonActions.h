@@ -44,6 +44,7 @@ Numbers * NumberUserSemanticAction(UserScore * userScore);
 Expression * ExpressionArithmeticSemanticAction(Expression * expression1, Expression * expression2 );
 Expression * ExpressionNumberSemanticAction(Numbers * numbers);
 Expression * ExpressionAtomicSemanticAction(UserCard * usercard , Atomic * atomic);
+Expression * ExpressionValueSemanticAction();
 UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations,Numbers * numbers, Rules * rule);
 UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum, Rules * rule);
 UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne, Rules * rule);
@@ -51,6 +52,7 @@ Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets)
 Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrakets);
 Structures * StructureElseSemanticAction(InBrakets * inBrakets);
 InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules);
+InBrakets * MultipleBraketsDesignSemanticAction(Design * leftDesign, Design * rightDesign);
 Arithmetic * ArithmeticSemanticAction();
 Asignations * AsignationsSemanticAction();
 PmOne * PMOneSemanticAction();
@@ -61,14 +63,16 @@ User * UserSemanticAction();
 Ifs * IfSemanticAction(InIf * inIf);
 Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf);
 Ifs * IfTiedAction(bool tied);
-InIf * InIfConstantSemanticAction(Comparison * comparison, int constant);
+//InIf * InIfConstantSemanticAction(Comparison * comparison, int constant);
 InIf * InIfVariableSemanticAction(Comparison * comparison, char * variable);
 InIf * InIfSpecialCardsSemanticAction();
 InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Comparison * comparison, Expression * rightExpression);
 Comparison * ComparisonSemanticAction();
 Atomic * AtomicSemanticAction();
-Design * RoundBordersDesignSemanticAction(char * variable, Design * design1);
+Design * RoundBordersDesignSemanticAction(int constant, Design * design2);
 Design * ColorBordersDesignSemanticAction(char * variable, Design * design1);
 Design * BackColorDesignSemanticAction(char * variable, Design * design1);
+Design * DesignFinishedSemanticAction(Block * block);
+Design * DesignStructuresSemanticAction(Structures * structures);
 
 #endif

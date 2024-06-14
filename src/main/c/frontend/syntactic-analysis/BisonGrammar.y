@@ -219,13 +219,15 @@ rules: structures                                                               
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
     | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }
     | block                                                                  				   { $$ = RuleFinishedSemanticAction($1); }
-    | %empty
+    | %empty {$$ = NULL;}
     ;
 
-design: ROUND_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design	{ $$ = RoundBordersDesignSemanticAction($3, $5); }
+design: ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS design	    { $$ = RoundBordersDesignSemanticAction($3, $5); }
 	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design		{ $$ = ColorBordersDesignSemanticAction($3, $5); }
 	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design	{ $$ = BackColorDesignSemanticAction($3, $5); }
-	| block
+	| block																	{ $$ = DesignFinishedSemanticAction($1); }
+	| structures															{ $$ = DesignStructuresSemanticAction($1); }
+	| %empty {$$ = NULL;}
 	;
 
 boolean: TRUE														{ $$ = true; }
@@ -249,6 +251,7 @@ expression: expression ADD expression								{ $$ = ExpressionArithmeticSemantic
 	| expression MODULE expression									{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
 	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $3); }
+	| VALUE															{ $$ = ExpressionValueSemanticAction(); }
 	;
 
 userRules: userScore asignations numbers rules						{ $$ = UserRuleNumberSemanticAction($1, $2, $3, $4); }
@@ -279,6 +282,7 @@ structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = Structur
 	;
 
 inBrakets: OPEN_BRAKETS rules CLOSE_BRAKETS rules					{ $$ = MultipleBraketsSemanticAction($2, $4); }
+	| OPEN_BRAKETS design CLOSE_BRAKETS design						{ $$ = MultipleBraketsDesignSemanticAction($2, $4); }
 	;
 
 handRef: user DOT HAND												{ $$ = UserHandRefSemanticAction($1); }
@@ -298,11 +302,12 @@ ifs: inIf															{ $$ = IfSemanticAction($1); }
 	| TIED															{ $$ = IfTiedAction($1); }
 	;
 	
-inIf: VALUE comparison INTEGER										{ $$ = InIfConstantSemanticAction($2, $3); }
-	| TYPE comparison VARIABLE										{ $$ = InIfVariableSemanticAction($2, $3); }
+inIf: TYPE comparison VARIABLE										{ $$ = InIfVariableSemanticAction($2, $3); }
 	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS		{ $$ = InIfSpecialCardsSemanticAction(); }
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
+
+//VALUE comparison INTEGER										{ $$ = InIfConstantSemanticAction($2, $3); }
 
 comparison: GREATER													{ $$ = ComparisonSemanticAction(); }
 	| LOWER															{ $$ = ComparisonSemanticAction(); }

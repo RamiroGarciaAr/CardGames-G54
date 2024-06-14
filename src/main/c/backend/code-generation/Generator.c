@@ -114,9 +114,9 @@ static void _generateEpilogue(const int value) {
 /**
  * Generates the output of the program.
  */
-//static void _generateProgram(Program * program) {
+static void _generateProgram(Program * program) {
 //	_generateExpression(3, program->expression);
-//}
+}
 
 /**
  * Creates the prologue of the generated output, a Latex document that renders

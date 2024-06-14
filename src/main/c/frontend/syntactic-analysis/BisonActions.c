@@ -241,6 +241,12 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard, Atomic * atomic
 	return expression;
 }
 
+Expression * ExpressionValueSemanticAction(){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Expression * expression = calloc(1,sizeof(Expression));
+	return expression;
+}
+
 UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * numbers, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
@@ -299,6 +305,14 @@ InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules)
 	InBrakets * inBrakets = calloc(1, sizeof(InBrakets));
 	inBrakets->leftRules = leftRules;
 	inBrakets->rightRules = rightRules;
+	return inBrakets;
+}
+
+InBrakets * MultipleBraketsDesignSemanticAction(Design * leftDesign, Design * rightDesign){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	InBrakets * inBrakets = calloc(1, sizeof(InBrakets));
+	inBrakets->leftDesign = leftDesign;
+	inBrakets->rightDesign = rightDesign;
 	return inBrakets;
 }
 
@@ -371,13 +385,13 @@ Ifs * IfTiedAction(bool tied){
 	return conditional;
 }
 
-InIf * InIfConstantSemanticAction(Comparison * comparison, int constant){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	InIf * inIf = calloc(1, sizeof(InIf));
-	inIf->comparison = comparison;
-	inIf->constant = constant;
-	return inIf;
-}
+//InIf * InIfConstantSemanticAction(Comparison * comparison, int constant){
+//	_logSyntacticAnalyzerAction(__FUNCTION__);
+//	InIf * inIf = calloc(1, sizeof(InIf));
+//	inIf->comparison = comparison;
+//	inIf->constant = constant;
+//	return inIf;
+//}
 
 InIf * InIfVariableSemanticAction(Comparison * comparison, char * variable){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
@@ -414,11 +428,11 @@ Atomic * AtomicSemanticAction(){
 	return atomic;
 }
 
-Design * RoundBordersDesignSemanticAction(char * variable, Design * design1){
+Design * RoundBordersDesignSemanticAction(int constant, Design * design2){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Design * design = calloc(1, sizeof(Design));
-	design->variable = variable;
-	design->design1 = design1;
+	design->constant = constant;
+	design->design2 = design2;
 	return design;
 }
 
@@ -435,5 +449,19 @@ Design * BackColorDesignSemanticAction(char * variable, Design * design1){
 	Design * design = calloc(1, sizeof(Design));
 	design->variable = variable;
 	design->design1 = design1;
+	return design;
+}
+
+Design * DesignFinishedSemanticAction(Block * block){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Design * design = calloc(1, sizeof(Design));
+	design->block = block;
+	return design;
+}
+
+Design * DesignStructuresSemanticAction(Structures * structures){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Design * design = calloc(1, sizeof(Design));
+	design->structures = structures;
 	return design;
 }

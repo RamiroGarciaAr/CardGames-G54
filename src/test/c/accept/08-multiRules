@@ -1,5 +1,5 @@
 myDesign design has:
-    if(value == 5 and type == Fire){
+    if(value == 5 && type == Fire){
         RoundBorders(2) 
         ColorBorders(red) 
     }

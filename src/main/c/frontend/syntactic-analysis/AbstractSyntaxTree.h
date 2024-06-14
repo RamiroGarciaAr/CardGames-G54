@@ -130,8 +130,8 @@ enum StructuresType {
 };
 
 enum InBraketsType{
-	ONE_IF,
-	MULTIPLE_IF
+	MULTIPLE_RULES,
+	MULTIPLE_DESIGNS
 };
 
 enum HandRefType {
@@ -147,7 +147,7 @@ enum IfType {
 };
 
 enum InIfType {
-	VALUE_IF,
+	//VALUE_IF,
 	TYPE_IF,
 	ACTIVATE_SPECIAL_CARDS_IF,
 	EXPRESSION_IF
@@ -170,7 +170,9 @@ enum AtomicType{
 enum DesignType {
 	ROUND_BORDERS_DESIGN,
 	COLOR_BORDERS_DESIGN,
-	BACKGROUND_COLOR_DESIGN
+	BACKGROUND_COLOR_DESIGN,
+	FINISHED_DESIGN,
+	STRUCTURES_DESIGN
 };
 
 enum UserType{
@@ -363,8 +365,15 @@ struct Structures {
 };
 
 struct InBrakets {
-	Rules * leftRules;
-	Rules * rightRules;	
+	union {
+		Rules * leftRules;
+		Rules * rightRules;	
+	};
+	union {
+		Design * leftDesign;
+		Design * rightDesign;
+	};
+	InBraketsType type;
 };
 
 struct HandRef{
@@ -389,10 +398,10 @@ struct Ifs {
 
 struct InIf {
 	union {
-		struct {
-			Comparison * comparison;
-			int constant;
-		};
+		//struct {
+		//	Comparison * comparison;
+		//	int constant;
+		//};
 		struct {
 			Comparison * comparison1;
 			char * variable;
@@ -409,8 +418,16 @@ struct InIf {
 
 struct Design {
 	union{
-		char * variable;
-		Design * design1;
+		struct {
+			int constant;
+			Design * design2;
+		};
+		struct {
+			char * variable;
+			Design * design1;
+		};
+		Block * block;
+		Structures * structures;
 	};
 	DesignType type;
 };
