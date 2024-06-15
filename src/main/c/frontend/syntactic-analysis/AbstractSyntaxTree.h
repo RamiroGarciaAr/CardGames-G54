@@ -90,13 +90,16 @@ enum CardTypesType{
 };
 
 enum RuleType {
-	STRUCTURES,
-	RULE_MOVE_CARDS,
-	RULE_LOOK_AT,
-	RULE_WINNER_TYPE,
-	USER_RULES,
-	TIED_RULE,
-	FINISH_RULE
+    STRUCTURES,
+    RULE_MOVE_CARDS,
+    RULE_LOOK_AT,
+    RESTOCK_DECK,
+    WIN_GAME,
+    RULE_WINNER_TYPE,
+    ACTIVATE_SPECIAL_CARDS,
+    USER_RULES,
+    TIED_RULE,
+    FINISH_RULE
 };
 
 enum NumbersType {
@@ -399,15 +402,17 @@ struct Structures {
 };
 
 struct InBrakets {
-	union {
-		Rules * leftRules;
-		Rules * rightRules;	
-	};
-	union {
-		Design * leftDesign;
-		Design * rightDesign;
-	};
-	InBraketsType type;
+    union {
+        struct {
+            Rules * leftRules;
+            Rules * rightRules;
+        };
+        struct {
+            Design * leftDesign;
+            Design * rightDesign;
+        };
+    };
+    InBraketsType type;
 };
 
 struct HandRef{
