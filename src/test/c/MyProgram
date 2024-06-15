@@ -1,0 +1,80 @@
+MyCardGame game has:
+    NumbersOnDeck(10)
+    TypesOfCards(Water, Fire, Earth)
+    CardsByPlayer(3)
+    Rounds(30)
+    RoundsTimer(30)
+    StartingScore(100, 400)
+    WinRoundCondition(WinRoundRule)
+    WinGameCondition(WinGameRule)
+    CardsDesign(myDesign)
+    BackgroundDesign(myBackgroundDesign)
+    
+ElementalClashRule for type Water, Fire, Earth: 
+    if(type == Earth){
+        WinnerType(Fire)
+    }elif(type == Water){
+        WinnerType(Earth)
+    }else{
+        tied = true
+	}
+
+WinRoundRule for game: 
+    if(SpecialCardsOnPlay()){
+        ActivateSpecialCards()
+    }
+    if(tied){
+        if(User.SelectedCard.value > Machine.SelectedCard.value){
+	          Machine.score -= User.SelectedCard.value
+        }else{ 
+            User.score -= Machine.SelectedCard.value
+        }
+        tied = false 
+    }else{ 
+        GetLoser(ElementalClashRule).score -= GetWinner(ElementalClashRule).SelectedCard.value
+    }
+    RestockDeck()
+
+WinGameRule for game:
+    if(User.score <= 0){
+        WinGame(Machine)
+    }
+    if(Opponent.score <= 0){
+        WinGame(User)
+    }
+
+FireLordSpecialCard for type Fire:
+    if(value == 9){
+        MoveCards(Waiting.Hand, Deck, 2)
+        Waiting.score -= 10
+    }
+
+Unlucky13SpecialCard for type Earth:
+    if(value == 13){
+        MoveCards(Playing.Hand, Deck, 2)
+    }
+
+Lucky7SpecialCard for value 7:
+    MoveCards(Deck, Playing.Hand, 2)
+
+SwapinatorSpecialCard for value 1:
+    if(type == Fire){
+	    MoveCards(Playing.Hand, Waiting.Hand, 2)
+        MoveCards(Waiting.Hand, Playing.Hand, 2)
+    }
+
+XRaySpecialCard for type Water:
+    foreach(value){
+        if(value % 2 == 0){
+            LookAt(Deck, 1)
+        }
+    }
+
+myDesign design has:
+    if(value == 5 && type == Fire){
+        RoundBorders(2)
+        ColorBorders(red)
+    }
+
+myBackgroundDesign design has:
+    BackgroundColor(lightgrey)
