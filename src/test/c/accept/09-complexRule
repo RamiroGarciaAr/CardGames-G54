@@ -1,10 +1,11 @@
+// lo unico que no pasa son los -=
 WinRoundRule for game: 
     if(SpecialCardsOnPlay()){
         ActivateSpecialCards()
     }
     if(tied){
         if(User.SelectedCard.value > Machine.SelectedCard.value){
-	        Machine.score -= User.SelectedCard.value
+            Machine.score -= User.SelectedCard.value
         }else{ 
             User.score -= Machine.SelectedCard.value
         }

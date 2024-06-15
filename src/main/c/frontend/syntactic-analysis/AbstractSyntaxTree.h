@@ -67,7 +67,11 @@ typedef struct Program Program;
 /* ------------------------------------------------- ENUMS ------------------------------------------------- */
 
 enum ExpressionType {
-	ARITHMETIC,
+	ARIT_ADD,
+	ARIT_DIV,
+	ARIT_MUL,
+	ARIT_SUB,
+	ARIT_MODULE,
 	NUMBERS,
 	ATOMIC
 };
