@@ -42,12 +42,12 @@ static void _generateBlock(Block * block){ //listo
 		case VALUE_BLOCK:
 			_generateVariable(block->variable);
 			_generateInteger(block->constant);
-			_generateRule(block->rules);
+			_generateRules(block->rules);
 			break;
 		case TYPE_BLOCK:
 			_generateVariable(block->variable1);
 			_generateCardTypes(block->cardTypes);
-			_generateRule(block->rules1);
+			_generateRules(block->rules1);
 			break;
 		case GAME_BLOCK:
 			_generateVariable(block->variable2);
@@ -55,7 +55,7 @@ static void _generateBlock(Block * block){ //listo
 			break;
 		case DESIGN_BLOCK:
 			_generateVariable(block->variable3);
-			_genearateDesign(block->design1);
+			_generateDesign(block->design1);
 			break;
 		case RULE_BLOCK:
 			_generateVariable(block->variable4);
@@ -83,9 +83,9 @@ static void _generateRules(Rules * rules){ //TODO
 			_generateInteger(rules->constant1);
 			_generateRules(rules->rule1);
 			break;
-		case RESTOCK_DECK:
-		case WIN_GAME:
-		case ACTIVATE_SPECIAL_CARDS:
+		case RULE_RESTOCK_DECK:
+		case RULE_WIN_GAME:
+		case RULE_ACTIVATE_SPECIAL_CARDS:
 			_generateRules(rules->rule2);
 			break;
 		case RULE_WINNER_TYPE:
@@ -110,11 +110,11 @@ static void _generateRules(Rules * rules){ //TODO
 
 static void _generateExpression(Expression * expression){ //listo
 	switch(expression->type){
-		case ARIT_ADD:
-		case ARIT_DIV:
-		case ARIT_MUL:
-		case ARIT_SUB:
-		case ARIT_MODULE:
+		case EXPR_ADD:
+		case EXPR_DIV:
+		case EXPR_MUL:
+		case EXPR_SUB:
+		case EXPR_MODULE:
 			_generateExpression(expression->leftExpression);
 			_generateExpression(expression->rightExpression);
 			break;
@@ -247,6 +247,7 @@ static void _generateArithmetic(Arithmetic * arithmetic){ //TODO
 			//ESTA BIEN EL BREAK A SECAS Y QUE LA FUNCION NO HAGA NADA?? 
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
+			break;
 	}
 }
 
@@ -277,7 +278,7 @@ static void _generateStructures(Structures * structures){ //listo
 			_generateInBrakets(structures->inBrakets);
 			break;
 		case FOREACH_STRUCTURE:
-			_generateAtmomic(structures->atomic);
+			_generateAtomic(structures->atomic);
 			_generateInBrakets(structures->inBrakets1);
 			break;
 		case ELSE_STRUCTURE:

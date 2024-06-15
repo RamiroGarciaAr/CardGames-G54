@@ -67,11 +67,11 @@ typedef struct Program Program;
 /* ------------------------------------------------- ENUMS ------------------------------------------------- */
 
 enum ExpressionType {
-	ARIT_ADD,
-	ARIT_DIV,
-	ARIT_MUL,
-	ARIT_SUB,
-	ARIT_MODULE,
+	EXPR_ADD,
+	EXPR_DIV,
+	EXPR_MUL,
+	EXPR_SUB,
+	EXPR_MODULE,
 	NUMBERS,
 	ATOMIC
 };
@@ -93,10 +93,10 @@ enum RuleType {
     STRUCTURES,
     RULE_MOVE_CARDS,
     RULE_LOOK_AT,
-    RESTOCK_DECK,
-    WIN_GAME,
+    RULE_RESTOCK_DECK,
+    RULE_WIN_GAME,
     RULE_WINNER_TYPE,
-    ACTIVATE_SPECIAL_CARDS,
+    RULE_ACTIVATE_SPECIAL_CARDS,
     USER_RULES,
     TIED_RULE,
     FINISH_RULE
