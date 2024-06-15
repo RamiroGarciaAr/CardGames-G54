@@ -26,6 +26,7 @@
 	UserCard * userCard;
 	Numbers * numbers;
 	UserRules * userRules;
+	Getters * getters;
 	Arithmetic * arithmetic;
 	Asignations * asignations;
 	PmOne * pmOne;
@@ -131,6 +132,8 @@
 %token <token> WINNER_TYPE
 %token <token> SPECIAL_CARDS_ON_PLAY
 %token <token> ACTIVATE_SPECIAL_CARDS
+%token <token> GET_LOSER
+%token <token> GET_WINNER
 
 %token <token> ROUND_BORDERS
 %token <token> COLOR_BORDERS
@@ -151,6 +154,7 @@
 %type <userCard> userCard
 %type <numbers> numbers
 %type <userRules> userRules
+%type <getters> getters
 %type <arithmetic> arithmetic
 %type <asignations> asignations
 %type <pmOne> pmOne
@@ -191,6 +195,7 @@ block: VARIABLE FOR VALUE INTEGER COLON rules					{ $$ = BlockValueSemanticActio
 	| VARIABLE FOR TYPE cardTypes COLON rules					{ $$ = BlockTypeSemanticAction($1, $4, $6); }
 	| VARIABLE GAME HAS COLON gameFunction                      { $$ = BlockGameSemanticAction($1, $5); }
 	| VARIABLE DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
+	| VARIABLE FOR GAME COLON rules								{ $$ = BlockRuleSemanticAction($1, $5); }
 	;
 
 gameFunction: NUMBERS_ON_DECK OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS
@@ -234,10 +239,10 @@ boolean: TRUE														{ $$ = true; }
 	| FALSE															{ $$ = false; }
 	;
 															
-userScore: user DOT SCORE											{ $$ = UserScoreSemanticAction($1); }												
+userScore: user DOT SCORE											{ $$ = UserScoreSemanticAction($1); }
 	;
 
-userCard: user DOT SELECTED_CARD									{ $$ = UserCardSemanticAction($1); }			
+userCard: user DOT SELECTED_CARD									{ $$ = UserCardSemanticAction($1); }
 	;
 
 numbers: INTEGER													{ $$ = NumberConstSemanticAction($1); }	 			
@@ -254,9 +259,15 @@ expression: expression ADD expression								{ $$ = ExpressionArithmeticSemantic
 	| VALUE															{ $$ = ExpressionValueSemanticAction(); }
 	;
 
-userRules: userScore asignations numbers rules						{ $$ = UserRuleNumberSemanticAction($1, $2, $3, $4); }
-	| userScore asignations numbers arithmetic numbers rules 		{ $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5, $6); }
-	| userScore pmOne rules											{ $$ = UserRulePMOneSemanticAction($1, $2, $3); }
+userRules: userScore asignations numbers rules								  { $$ = UserRuleNumberSemanticAction($1, $2, $3, $4); }
+	| userScore asignations userCard DOT VALUE rules						  { $$ = UserRuleCardSemanticAction($1, $2, $3, $6); }
+	| userScore asignations numbers arithmetic numbers rules 				  { $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5, $6); }
+	| userScore pmOne rules													  { $$ = UserRulePMOneSemanticAction($1, $2, $3); }
+	| getters DOT SCORE asignations getters DOT SELECTED_CARD DOT VALUE rules { $$ = UserRuleGetterSemanticAction($1, $4, $5, $10); }
+	;
+
+getters: GET_LOSER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3); }
+	| GET_WINNER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3); }
 	;
 
 arithmetic: ADD														{ $$ = ArithmeticSemanticAction(); }
@@ -306,8 +317,6 @@ inIf: TYPE comparison VARIABLE										{ $$ = InIfVariableSemanticAction($2, $3
 	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS		{ $$ = InIfSpecialCardsSemanticAction(); }
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
-
-//VALUE comparison INTEGER										{ $$ = InIfConstantSemanticAction($2, $3); }
 
 comparison: GREATER													{ $$ = ComparisonSemanticAction(); }
 	| LOWER															{ $$ = ComparisonSemanticAction(); }

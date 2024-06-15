@@ -111,6 +111,8 @@
 "WinnerType"                        { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "SpecialCardsOnPlay"                { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ActivateSpecialCards"              { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"GetLoser"                          { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
+"GetWinner"                         { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 
 "RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ColorBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }

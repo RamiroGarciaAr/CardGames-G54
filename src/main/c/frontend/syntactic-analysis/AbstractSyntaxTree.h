@@ -24,6 +24,7 @@ typedef enum PmOneType PmOneType;
 typedef enum ArithmeticType ArithmeticType;
 typedef enum AsignationsType AsignationsType;
 typedef enum UserRulesType UserRulesType;
+typedef enum GettersType GettersType;
 typedef enum StructuresType StructuresType;
 typedef enum InBraketsType InBraketsType;
 typedef enum HandRefType HandRefType;
@@ -47,6 +48,7 @@ typedef struct PmOne PmOne;
 typedef struct Arithmetic Arithmetic;
 typedef struct Asignations Asignations;
 typedef struct CardTypes CardTypes;
+typedef struct Getters Getters;
 typedef struct Structures Structures;
 typedef struct HandRef HandRef;
 typedef struct InBrakets InBrakets;
@@ -74,7 +76,8 @@ enum BlockType {
 	VALUE_BLOCK,
 	TYPE_BLOCK,
 	GAME_BLOCK,
-	DESIGN_BLOCK
+	DESIGN_BLOCK,
+	RULE_BLOCK
 };
 
 enum CardTypesType{
@@ -118,8 +121,15 @@ enum AsignationsType {
 
 enum UserRulesType{
 	NUMBER_ASSIG,
+	CARD_ASSIG,
 	ARITHMETIC_ASSIG,
-	PMO_ASSIG	
+	PMO_ASSIG,
+	GETTER_ASSIG	
+};
+
+enum GettersType{
+	GETTER_LOSER,
+	GETTER_WINNER
 };
 
 enum StructuresType {
@@ -147,7 +157,6 @@ enum IfType {
 };
 
 enum InIfType {
-	//VALUE_IF,
 	TYPE_IF,
 	ACTIVATE_SPECIAL_CARDS_IF,
 	EXPRESSION_IF
@@ -242,6 +251,10 @@ struct Block {
 			char * variable3;
 			Design * design1;
 		};
+		struct {
+			char * variable4;
+			Rules * rules2;
+		};
 	};
 	BlockType type;
 };
@@ -332,6 +345,12 @@ struct UserRules{
 			Numbers * numbers;
 			Rules * rule;
 		};
+		struct {
+			UserScore * userScore3;
+			Asignations * asignations3;
+			UserCard * userCard;
+			Rules * rule4;
+		};
 		struct{
 			UserScore * userScore1;
 			Asignations * asignations1;
@@ -345,8 +364,19 @@ struct UserRules{
 			PmOne * pmOne;
 			Rules * rule2;
 		};
+		struct {
+			Getters * leftGetter;
+			Asignations * asignations2;
+			Getters * rightGetter;
+			Rules * rule3;
+		};
 	};
 	UserRulesType type;
+};
+
+struct Getters{
+	char * variable;
+	GettersType type;
 };
 
 struct Structures {
@@ -398,10 +428,6 @@ struct Ifs {
 
 struct InIf {
 	union {
-		//struct {
-		//	Comparison * comparison;
-		//	int constant;
-		//};
 		struct {
 			Comparison * comparison1;
 			char * variable;

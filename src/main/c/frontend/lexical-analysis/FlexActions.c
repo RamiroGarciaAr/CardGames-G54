@@ -199,6 +199,10 @@ Token GameFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) 
 		token = SPECIAL_CARDS_ON_PLAY;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "ActivateSpecialCards") == 0) {
 		token = ACTIVATE_SPECIAL_CARDS;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "GetLoser") == 0) {
+		token = GET_LOSER;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "GetWinner") == 0) {
+		token = GET_WINNER;
 	}
 	return token;
 }

@@ -80,6 +80,14 @@ Block * BlockDesignSemanticAction(char * variable, Design * design1){
 	return block;
 }
 
+Block * BlockRuleSemanticAction(char * variable, Rules * rules){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Block * block = calloc(1, sizeof(Block));
+	block->variable4 = variable;
+	block->rules2 = rules;
+	return block;
+}
+
 GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign, Block * block){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	GameFunction * gameFunction = calloc(1,sizeof(GameFunction));
@@ -257,6 +265,16 @@ UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * as
 	return userRules;
 }
 
+UserRules * UserRuleCardSemanticAction(UserScore * userScore, Asignations * asignation, UserCard * userCard, Rules * rule){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	UserRules * userRules = calloc(1,sizeof(UserRules));
+	userRules->userScore3 = userScore;
+	userRules->asignations3 = asignation;
+	userRules->userCard = userCard;
+	userRules->rule4 = rule;
+	return userRules;
+}
+
 UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	UserRules * userRules = calloc(1,sizeof(UserRules));
@@ -275,6 +293,23 @@ UserRules * UserRulePMOneSemanticAction(UserScore * userScore, PmOne * pmOne, Ru
 	userRules->pmOne = pmOne;
 	userRules->rule2 = rule;
 	return userRules;
+}
+
+UserRules * UserRuleGetterSemanticAction(Getters * leftGetter, Asignations * asignation, Getters * rightGetter, Rules * rule){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	UserRules * userRules = calloc(1,sizeof(UserRules));
+	userRules->leftGetter = leftGetter;
+	userRules->asignations2 = asignation;
+	userRules->rightGetter = rightGetter;
+	userRules->rule3 = rule;
+	return userRules;
+}
+
+Getters * GettersSemanticAction(char * variable){
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Getters * getter = calloc(1, sizeof(Getters));
+	getter->variable = variable;
+	return getter;
 }
 
 Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets){
