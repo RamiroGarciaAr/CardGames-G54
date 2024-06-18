@@ -20,7 +20,7 @@ void shutdownGeneratorModule();
 void generate(CompilerState * compilerState);
 
 static void _generateProgram(Program * program);
-static void _generateEpilogue(const int value);
+static void _generateEpilogue(void);
 static void _generatePrologue(void);
 static void _generateProgram(Program * program);
 static void _generateBlock(Block * block);

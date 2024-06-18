@@ -6,6 +6,8 @@ const char _indentationCharacter = ' ';
 const char _indentationSize = 4;
 static Logger * _logger = NULL;
 
+FILE * file;
+
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -20,19 +22,6 @@ void shutdownGeneratorModule() {
 static char * _indentation(const unsigned int indentationLevel);
 static void _output(const unsigned int indentationLevel, const char * const format, ...);
 
-/**
- * Creates the epilogue of the generated output, that is, the final lines that
- * completes a valid Latex document.
- */
-static void _generateEpilogue(const int value) {
-	_output(0, "%s%d%s",
-		"            [ $", value, "$, circle, draw, blue ]\n"
-		"        ]\n"
-		"    \\end{forest}\n"
-		"\\end{document}\n\n"
-	);
-}
-
 static void _generateProgram(Program * program) { //listo
 	_generateBlock(program->block);
 }
@@ -40,8 +29,10 @@ static void _generateProgram(Program * program) { //listo
 static void _generateBlock(Block * block){ //listo
 	switch(block->type){
 		case VALUE_BLOCK:
-			_generateVariable(block->variable);
-			_generateInteger(block->constant);
+			_output(0, "%s", block->variable);
+			_output(0, "%s", " for value ");
+			_output(0, "%d", block->constant);
+			_output(0, "%s", ":\n");
 			_generateRules(block->rules);
 			break;
 		case TYPE_BLOCK:
@@ -67,15 +58,19 @@ static void _generateBlock(Block * block){ //listo
 	}
 }
 
-static void _generateRules(Rules * rules){ //TODO
+static void _generateRules(Rules * rules){ 
 	switch(rules->type){
 		case STRUCTURES:
 			_generateStructures(rules->structures);
 			break;
 		case RULE_MOVE_CARDS:
+			_output(1, "%s", "MoveCards(");
 			_generateHandRef(rules->leftHandRef);
+			_output(0, "%s", ", ");
 			_generateHandRef(rules->rightHandRef);
-			_generateInteger(rules->constant);
+			_output(0, "%s", ", ");
+			_output(0, "%d", rules->constant);
+			_output(0, "%s", ")");
 			_generateRules(rules->rule);
 			break;
 		case RULE_LOOK_AT:
@@ -235,38 +230,47 @@ static void _generateGetters(Getters * getters){
 	}
 }
 
-static void _generateArithmetic(Arithmetic * arithmetic){ //TODO
+static void _generateArithmetic(Arithmetic * arithmetic){ 
 	switch(arithmetic->type){
 		case ARIT_ADD:	
+			// return '+';
 		case ARIT_DIV:
+			// return '/';
 		case ARIT_MUL:
+			// return '*';
 		case ARIT_SUB:
+			// return '-';
 		case ARIT_MODULE:
-			break;
-			//NO ENTIENDO BIEN PORQUE EL EN STRUCT ARITHMETIC SOLO ESTA EL TYPE
-			//ESTA BIEN EL BREAK A SECAS Y QUE LA FUNCION NO HAGA NADA?? 
+			// return '%';
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
 			break;
 	}
 }
 
-static void _generateAsignations(Asignations * asignations){ //TODO
+static void _generateAsignations(Asignations * asignations){ 
 	switch(asignations->type){
 		case ASIG_EQUAL:
+			// return "=";
 		case ASIG_ADD_EQUAL:
+			// return "+=";
 		case SUB_EQUAL:
+			// return "-=";
 		default:
-		//IDEM A LO ANTERIOR
+			logError(_logger, "The specified asignations type is unknown: %d", asignations->type);
+			break;
 	}
 }
 
-static void _generatePmOne(PmOne * pmOne){ //TODO
+static void _generatePmOne(PmOne * pmOne){ 
 	switch(pmOne->type){
 		case INCREASE:
+			// return "++";
 		case DECREASE:
+			// return "--";
 		default:
-		//IDEM A LO ANTERIOR
+			logError(_logger, "The specified pmOne type is unknown: %d", pmOne->type);
+			break;	
 	}
 }
 
@@ -309,6 +313,7 @@ static void _generateHandRef(HandRef * handRef){
 	switch(handRef->type){
 		case USER:
 			_generateUser(handRef->user);
+			_output(0, "%s", ".Hand");
 			break;
 		case HAND_DECK:
 			_generateDeck(handRef->deck);
@@ -319,16 +324,21 @@ static void _generateHandRef(HandRef * handRef){
 	}
 }
 
-static void _generateDeck(Deck * deck){ //no se que onda esta
-	_generateDeck(deck->deck);
+static void _generateDeck(Deck * deck){ 
+	_output(0, "%s", "Deck");
 }
 
 static void _generateUser(User * user){ //TODO
 	switch(user->type){
 		case USER_PLAYER:
+			_output(0, "%s", "Playing");
+			break;
 		case USER_IDENTIFIER:
+			_output(0, "%s", "Machine");
+			break;
 		default:
-		//IDEM A LAS ANTERIORES
+			logError(_logger, "The specified user type is unknown: %d", user->type);
+			break;
 	}
 }
 
@@ -358,7 +368,7 @@ static void _generateInIf(InIf * inIf){ //TODO
 			_generateVariable(inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
-		//IDEM A LOS ANTERIORES
+		
 		case EXPRESSION_IF:
 			_generateExpression(inIf->leftExpression);
 			_generateComparison(inIf->comparison2);
@@ -395,6 +405,7 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 static void _generateDesign(Design * design){
 	switch(design->type){
 		case ROUND_BORDERS_DESIGN:
+			fprintf(file, "RoundBorders(%d)", design->constant);
 			_generateInteger(design->constant);
 			_generateDesign(design->design2);
 			break;
@@ -416,15 +427,18 @@ static void _generateDesign(Design * design){
 }
 
 static void _generateBoolean(bool boolean){
-
+	_output(1, "%s", "boolean\n");
+	printf("boolean\n"); 
 }
 
 static void _generateVariable(char * variable){
-
+	//_output(1, "%s", "variable de output\n");
+	printf("variable\n"); 
 }
 
 static void _generateInteger(int constant){
-
+	_output(1, "%s", "INTEGRER de output\n");
+	printf("INTEGRER\n"); 
 }
 
 /**
@@ -452,26 +466,6 @@ static void _generateInteger(int constant){
 //	_output(indentationLevel, "%s", "]\n");
 //}
 
-/**
- * Creates the prologue of the generated output, a Latex document that renders
- * a tree thanks to the Forest package.
- *
- * @see https://ctan.dcc.uchile.cl/graphics/pgf/contrib/forest/forest-doc.pdf
- */
-static void _generatePrologue(void) {
-	_output(0, "%s",
-		"\\documentclass{standalone}\n\n"
-		"\\usepackage[utf8]{inputenc}\n"
-		"\\usepackage[T1]{fontenc}\n"
-		"\\usepackage{amsmath}\n"
-		"\\usepackage{forest}\n"
-		"\\usepackage{microtype}\n\n"
-		"\\begin{document}\n"
-		"    \\centering\n"
-		"    \\begin{forest}\n"
-		"        [ \\text{$=$}, circle, draw, purple\n"
-	);
-}
 
 /**
  * Generates an indentation string for the specified level.
@@ -494,12 +488,167 @@ static void _output(const unsigned int indentationLevel, const char * const form
 	va_end(arguments);
 }
 
+/**
+ * Creates the prologue of the generated output, a Latex document that renders
+ * a tree thanks to the Forest package.
+ *
+ * @see https://ctan.dcc.uchile.cl/graphics/pgf/contrib/forest/forest-doc.pdf
+ */
+static void _generatePrologue(void) 
+{
+	/*
+	fprintf(file,"=================================PROLOGUE========================================");
+	fprintf(file, "package com.mygdx.game;\n\n");
+    fprintf(file, "import com.badlogic.gdx.ApplicationAdapter;\n");
+    fprintf(file, "import com.badlogic.gdx.Gdx;\n");
+    fprintf(file, "import com.badlogic.gdx.audio.Sound;\n");
+    fprintf(file, "import com.badlogic.gdx.files.FileHandle;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.Color;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.GL20;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.Texture;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.g2d.BitmapFont;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.g2d.Sprite;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.g2d.SpriteBatch;\n");
+    fprintf(file, "import com.badlogic.gdx.graphics.glutils.ShapeRenderer;\n");
+    fprintf(file, "import java.util.Random;\n\n");
+    fprintf(file, "public class MyGdxGame extends ApplicationAdapter {\n");
+    fprintf(file, "    private SpriteBatch batch;\n");
+    fprintf(file, "    private BitmapFont font;\n");
+    fprintf(file, "    private ShapeRenderer shapeRenderer;\n");
+    fprintf(file, "    private GameManager gameManager;\n");
+    fprintf(file, "    private Player player;\n");
+    fprintf(file, "    private AI machine;\n");
+    fprintf(file, "    private float mouseX, mouseY;\n");
+    fprintf(file, "    private Sound placementSound, highlightSound;\n");
+    fprintf(file, "    private static final int NUM_CARDS_IN_HAND = 3;\n");
+    fprintf(file, "    private boolean mouseOverHighlightedCard = false;\n");
+    fprintf(file, "    Texture backgroundTexture = null;\n");
+    fprintf(file, "    private boolean gameEnded = false;\n");
+    fprintf(file, "    private boolean playerWon;\n");
+    fprintf(file, "}\n");
+*/
+}
+
+/**
+ * Creates the epilogue of the generated output, that is, the final lines that
+ * completes a valid Latex document.
+ */
+static void _generateEpilogue(void) 
+{
+	// fprintf(file,"=================================EPILOGUE========================================");
+    // fprintf(file, "    private void LoadRandomBackgroundImage() {\n");
+    // fprintf(file, "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
+    // fprintf(file, "        if (folder.exists() && folder.isDirectory()) {\n");
+    // fprintf(file, "            FileHandle[] backgrounds = folder.list();\n");
+    // fprintf(file, "            if (backgrounds.length > 1) {\n");
+    // fprintf(file, "                int index = new Random().nextInt(backgrounds.length);\n");
+    // fprintf(file, "                backgroundTexture = new Texture(backgrounds[index]);\n");
+    // fprintf(file, "            } else backgroundTexture = new Texture(backgrounds[0]);\n");
+    // fprintf(file, "        } else {\n");
+    // fprintf(file, "            Gdx.app.error(\"TextureManager\", \"Backgrounds directory is missing or not found.\");\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private void LoadSounds() {\n");
+    // fprintf(file, "        FileHandle SFXfolder = Gdx.files.internal(\"assets/Sounds/SFX\");\n");
+    // fprintf(file, "        if (SFXfolder.exists() && SFXfolder.isDirectory()) {\n");
+    // fprintf(file, "            placementSound = Gdx.audio.newSound(SFXfolder.child(\"card_impact_sfx.wav\"));\n");
+    // fprintf(file, "            highlightSound = Gdx.audio.newSound(SFXfolder.child(\"card_highlight_sfx.wav\"));\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private void highlightCardUnderMouse() {\n");
+    // fprintf(file, "        float mouseX = Gdx.input.getX();\n");
+    // fprintf(file, "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Invertir el eje Y\n\n");
+
+    // fprintf(file, "        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);\n");
+    // fprintf(file, "        shapeRenderer.setColor(Color.YELLOW); // Definir el color una vez fuera del bucle\n\n");
+
+    // fprintf(file, "        boolean highlightFound = false;\n\n");
+
+    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
+    // fprintf(file, "            if (card.isTouched(mouseX, mouseY)) {\n");
+    // fprintf(file, "                card.highlightCard(shapeRenderer); // Resaltar la carta sin llamar a begin/end dentro del bucle\n");
+    // fprintf(file, "                highlightFound = true;\n");
+    // fprintf(file, "            }\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "        if (highlightFound && !mouseOverHighlightedCard && highlightSound != null) {\n");
+    // fprintf(file, "            highlightSound.play(0.25f);\n");
+    // fprintf(file, "            mouseOverHighlightedCard = true;\n");
+    // fprintf(file, "        } else if (!highlightFound) {\n");
+    // fprintf(file, "            mouseOverHighlightedCard = false;\n");
+    // fprintf(file, "        }\n\n");
+
+    // fprintf(file, "        shapeRenderer.end();\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private void drawPlayerCardsBatch(Player player, float startX, float startY) {\n");
+    // fprintf(file, "        float cardSpacing = 20;\n");
+    // fprintf(file, "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
+    // fprintf(file, "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+
+    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
+    // fprintf(file, "            card.setCardPosition(currentX, startY);\n");
+    // fprintf(file, "            card.drawCardBatch(batch, font);\n");
+    // fprintf(file, "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private void drawPlayerCardsShape(Player player, float startX, float startY) {\n");
+    // fprintf(file, "        float cardSpacing = 20;\n");
+    // fprintf(file, "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
+    // fprintf(file, "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+
+    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
+    // fprintf(file, "            card.setCardPosition(currentX, startY);\n");
+    // fprintf(file, "            //card.drawCardShape(shapeRenderer);\n");
+    // fprintf(file, "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private Card getSelectedCard(float mouseX, float mouseY) {\n");
+    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
+    // fprintf(file, "            if (card.isTouched(mouseX, mouseY)) return card;\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "        return null;\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    private void drawScores() {\n");
+    // fprintf(file, "        String playerScoreText = \"Player Score: \" + player.getScore();\n");
+    // fprintf(file, "        String machineScoreText = \"Machine Score: \" + machine.getScore();\n");
+    // fprintf(file, "        font.draw(batch, playerScoreText, 50, 50);\n");
+    // fprintf(file, "        font.draw(batch, machineScoreText, 50, 100);\n");
+    // fprintf(file, "    }\n\n");
+
+    // fprintf(file, "    @Override\n");
+    // fprintf(file, "    public void dispose() {\n");
+    // fprintf(file, "        batch.dispose();\n");
+    // fprintf(file, "        shapeRenderer.dispose();\n");
+    // fprintf(file, "        font.dispose();\n");
+    // fprintf(file, "    }\n");
+    // fprintf(file, "}\n\n");
+
+    // fprintf(file, "class CardComparator {\n");
+    // fprintf(file, "    public static int compare(Card o1, Card o2) {\n");
+    // fprintf(file, "        if (o1.getType().canBeat(o2.getType())) {\n");
+    // fprintf(file, "            return 1;\n");
+    // fprintf(file, "        } else if (o2.getType().canBeat(o1.getType())) {\n");
+    // fprintf(file, "            return -1;\n");
+    // fprintf(file, "        } else {\n");
+    // fprintf(file, "            return o1.compareTo(o2);\n");
+    // fprintf(file, "        }\n");
+    // fprintf(file, "    }\n");
+    // fprintf(file, "}\n");
+}
+
 /** PUBLIC FUNCTIONS */
 
 void generate(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
+	//file = fopen("MyGdxGame.java", "w");
 	_generatePrologue();
 	_generateProgram(compilerState->abstractSyntaxtTree);
-	_generateEpilogue(compilerState->value);
+	_generateEpilogue();
+	//fclose(file);
 	logDebugging(_logger, "Generation is done.");
 }
