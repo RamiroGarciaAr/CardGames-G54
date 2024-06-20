@@ -242,29 +242,37 @@ static void _generateGetters(Getters * getters){
 static void _generateArithmetic(Arithmetic * arithmetic){ 
 	switch(arithmetic->type){
 		case ARIT_ADD:	
-			// return '+';
+			_output(0, "%s", "+");
+			break;
 		case ARIT_DIV:
-			// return '/';
+			_output(0, "%s", "/");
+			break;
 		case ARIT_MUL:
-			// return '*';
+			_output(0, "%s", "*");
+			break;
 		case ARIT_SUB:
-			// return '-';
+			_output(0, "%s", "-");
+			break;
 		case ARIT_MODULE:
-			// return '%';
+			_output(0, "%s", "%");
+			break;
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
 			break;
 	}
 }
 
-static void _generateAsignations(Asignations * asignations){ 
+static void _generateAsignations(Asignations * asignations){ //Creo que esta
 	switch(asignations->type){
 		case ASIG_EQUAL:
-			// return "=";
+			_output(0, "%s", "=");
+			break;
 		case ASIG_ADD_EQUAL:
-			// return "+=";
+			_output(0, "%s", "+=");
+			break;
 		case SUB_EQUAL:
-			// return "-=";
+			_output(0, "%s", "-=");
+			break;
 		default:
 			logError(_logger, "The specified asignations type is unknown: %d", asignations->type);
 			break;
@@ -274,9 +282,11 @@ static void _generateAsignations(Asignations * asignations){
 static void _generatePmOne(PmOne * pmOne){ 
 	switch(pmOne->type){
 		case INCREASE:
-			// return "++";
+			_output(0, "%s", "++");
+			break;
 		case DECREASE:
-			// return "--";
+			_output(0, "%s", "--");
+			break;
 		default:
 			logError(_logger, "The specified pmOne type is unknown: %d", pmOne->type);
 			break;	
@@ -311,10 +321,11 @@ static void _generateHandRef(HandRef * handRef){
 	switch(handRef->type){
 		case USER:
 			_generateUser(handRef->user);
-			_output(0, "%s", ".Hand");
+			_output(0, "%s", ".getCardsInHand()");
 			break;
 		case HAND_DECK:
 			_generateDeck(handRef->deck);
+			_output(0, "%s", ".getDeck()");
 			break;
 		default:
 			logError(_logger, "The specified handRef type is unknown: %d", handRef->type);
@@ -322,17 +333,17 @@ static void _generateHandRef(HandRef * handRef){
 	}
 }
 
-static void _generateDeck(Deck * deck){ 
-	_output(0, "%s", "Deck");
+static void _generateDeck(Deck * deck){  
+	_output(0, "%s", "deck");
 }
 
 static void _generateUser(User * user){ //TODO
 	switch(user->type){
 		case USER_PLAYER:
-			_output(0, "%s", "Playing");
+			_output(0, "%s", "player");
 			break;
 		case USER_IDENTIFIER:
-			_output(0, "%s", "Machine");
+			_output(0, "%s", "machine");
 			break;
 		default:
 			logError(_logger, "The specified user type is unknown: %d", user->type);
@@ -379,24 +390,37 @@ static void _generateInIf(InIf * inIf){ //TODO
 }
 
 static void _generateComparison(Comparison * comparison){ //TODO
-	switch(comparison->type){
-		case COMP_GREATER:
-		case COMP_LOWER:
-		case COMP_EQUAL_EQUAL:
-		case COMP_GREATER_OR_EQUAL:
-		case COMP_LOWER_OR_EQUAL:
-		case COMP_DIFERENT:
-		default:
-		//IDEM A LOS ANTERIORES
+	switch (comparison->type) {
+	case COMP_GREATER:
+		_output(1,"%s","<");
+		break;
+	case COMP_LOWER:
+		_output(1,"%s",">");
+		break;
+	case COMP_EQUAL_EQUAL:
+		_output(1,"%s","==");
+		break;
+	case COMP_GREATER_OR_EQUAL:
+		_output(1,"%s",">=");
+		break;
+	case COMP_LOWER_OR_EQUAL:
+		_output(1,"%s","<=");
+		break;
+	case COMP_DIFERENT:
+		_output(1,"%s","!=");
+		break;
+	default:
+		_output(1,"%s","!");
 	}
 }
 
 static void _generateAtomic(Atomic * atomic){ //TODO
-	switch(atomic->type){
-		case ATOMIC_VALUE:
-		case ATOMIC_TYPE:
+	switch (atomic->type) {
+	case ATOMIC_VALUE:
+	case ATOMIC_TYPE:
 		//IDEM A LOS ANTERIORES
-		default:
+	default:
+		;
 	}
 }
 
@@ -406,7 +430,7 @@ static void _generateBoolean(bool boolean){
 }
 
 static void _generateVariable(char * variable){
-	//_output(1, "%s", "variable de output\n");
+	_output(1, "%s", "variable de output\n");
 	printf("variable\n"); 
 }
 
@@ -457,6 +481,7 @@ static void _output(const unsigned int indentationLevel, const char * const form
 	char * indentation = _indentation(indentationLevel);
 	char * effectiveFormat = concatenate(2, indentation, format);
 	vfprintf(stdout, effectiveFormat, arguments);
+	fflush(stdout); 
 	free(effectiveFormat);
 	free(indentation);
 	va_end(arguments);
