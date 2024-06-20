@@ -26,7 +26,6 @@ typedef enum AsignationsType AsignationsType;
 typedef enum UserRulesType UserRulesType;
 typedef enum GettersType GettersType;
 typedef enum StructuresType StructuresType;
-typedef enum InBraketsType InBraketsType;
 typedef enum HandRefType HandRefType;
 typedef enum IfType IfType;
 typedef enum InIfType InIfType;
@@ -145,10 +144,6 @@ enum StructuresType {
 	FOREACH_STRUCTURE,
 	ELIF_STRUCTURE,
 	ELSE_STRUCTURE
-};
-
-enum InBraketsType{
-	MULTIPLE_RULES
 };
 
 enum HandRefType {

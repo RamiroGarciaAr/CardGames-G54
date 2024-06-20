@@ -46,7 +46,7 @@ const int main(const int count, const char ** arguments) {
 		// 	logError(logger, "The computation phase rejects the input program.");
 		// 	compilationStatus = FAILED;
 		// }
-//		generate(&compilerState);
+		generate(&compilerState);
 		logDebugging(logger, "Releasing AST resources...");
 		releaseProgram(program);
 	}

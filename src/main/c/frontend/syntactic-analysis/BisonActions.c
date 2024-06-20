@@ -52,6 +52,7 @@ Block * BlockValueSemanticAction(char * variable, int constant, Rules * rules){
 	block->variable = variable;
 	block->constant = constant;
 	block->rules = rules;
+	block->type = VALUE_BLOCK;
 	return block;
 } 
 
@@ -61,6 +62,7 @@ Block * BlockTypeSemanticAction(char * variable, CardTypes * cardTypes, Rules * 
 	block->variable1 = variable;
 	block->cardTypes = cardTypes;
 	block->rules1 = rules;
+	block->type = TYPE_BLOCK;
 	return block;
 }
 
@@ -69,6 +71,7 @@ Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction){
 	Block * block = calloc(1, sizeof(Block));
 	block->variable2 = variable;
 	block->gameFunction = gameFunction;
+	block->type = GAME_BLOCK;
 	return block;
 }
 
@@ -77,6 +80,7 @@ Block * BlockDesignSemanticAction(char * variable, Rules * rules3){
 	Block * block = calloc(1, sizeof(Block));
 	block->variable3 = variable;
 	block->rules3 = rules3;
+	block->type = DESIGN_BLOCK;
 	return block;
 }
 
@@ -85,6 +89,7 @@ Block * BlockRuleSemanticAction(char * variable, Rules * rules){
 	Block * block = calloc(1, sizeof(Block));
 	block->variable4 = variable;
 	block->rules2 = rules;
+	block->type = RULE_BLOCK;
 	return block;
 }
 
@@ -110,6 +115,7 @@ CardTypes * CardTypeRuleSemanticAction(char * type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	CardTypes * cardTypes = calloc(1, sizeof(CardTypes));
 	cardTypes->variable = type;
+	cardTypes->type = ONE_TYPE;
 	return cardTypes;	
 }
 
@@ -118,6 +124,7 @@ CardTypes * MultipleCardTypesRuleSemanticAction(char * A, CardTypes *  B){
 	CardTypes * cardTypes = calloc(1, sizeof(CardTypes));
 	cardTypes->variable1 = A;
 	cardTypes->cardType = B;
+	cardTypes->type = MULTIPLE_TYPE;
 	return cardTypes;	
 }
 
@@ -125,6 +132,7 @@ Rules * RuleStrcuturesSemanticAction(Structures * structures){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->structures = structures;
+	rules->type = STRUCTURES;
 	return rules;
 }
 
@@ -135,6 +143,7 @@ Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRe
 	rules->rightHandRef = rightHandRef;
 	rules->constant = constant;
 	rules->rule = rule;
+	rules->type = RULE_MOVE_CARDS;
 	return rules;
 }
 
@@ -144,6 +153,7 @@ Rules * RuleLookAtSemanticAction(HandRef * handRef, int constant, Rules * rule){
 	rules->handRef = handRef;
 	rules->constant1 = constant;
 	rules->rule1 = rule;
+	rules->type = RULE_LOOK_AT;
 	return rules;
 }
 
@@ -151,6 +161,7 @@ Rules * RuleRestockDeckSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->rule2 = rule;
+	rules->type = RULE_RESTOCK_DECK;
 	return rules;
 }
 
@@ -158,6 +169,7 @@ Rules * RuleWinGameSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->rule2 = rule;
+	rules->type = RULE_WIN_GAME;
 	return rules;
 }
 
@@ -166,6 +178,7 @@ Rules * RuleWinnerTypeSemanticAction(char * variable, Rules * rule){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->variable = variable;
 	rules->rule3 = rule;
+	rules->type = RULE_WINNER_TYPE;
 	return rules;
 }
 
@@ -173,6 +186,7 @@ Rules * RuleActivateSpecialCardsSemanticAction(Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->rule2 = rule;
+	rules->type = RULE_ACTIVATE_SPECIAL_CARDS;
 	return rules;
 }
 
@@ -180,6 +194,7 @@ Rules * RuleUserSemanticAction(UserRules * userRules){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->userRules = userRules;
+	rules->type = USER_RULES;
 	return rules;
 }
 
@@ -188,6 +203,7 @@ Rules * RuleTiedSemanticAction(bool boolean, Rules * rule){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->tied = boolean;
 	rules->rule4 = rule; 
+	rules->type = TIED_RULE;
 	return rules;
 }
 
@@ -195,6 +211,7 @@ Rules * RuleFinishedSemanticAction(Block * block){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->block = block;
+	rules->type = FINISH_RULE;
 	return rules;
 }
 
@@ -216,6 +233,7 @@ Numbers * NumberConstSemanticAction(int constant){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->constant  = constant;
+	numbers->type = CONSTANT;
 	return numbers;
 }
 
@@ -223,14 +241,16 @@ Numbers * NumberUserSemanticAction(UserScore * userScore ){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Numbers * numbers  = calloc(1, sizeof(Numbers));
 	numbers->userScore = userScore;
+	numbers->type = USER_SCORE;
 	return numbers;
 }
 
-Expression * ExpressionArithmeticSemanticAction(Expression * expression1, Expression * expression2 ){
+Expression * ExpressionArithmeticSemanticAction(Expression * expression1, Expression * expression2, ExpressionType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->leftExpression = expression1;
 	expression->rightExpression = expression2;
+	expression->type = type;
 	return expression;
 }
 
@@ -238,6 +258,7 @@ Expression * ExpressionNumberSemanticAction(Numbers * numbers){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->numbers = numbers;
+	expression->type = NUMBERS;
 	return expression;
 }
 
@@ -246,6 +267,7 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard, Atomic * atomic
 	Expression * expression = calloc(1, sizeof(Expression));
 	expression->userCard = usercard;
 	expression->atomic = atomic;
+	expression->type = ATOMIC;
 	return expression;
 }
 
@@ -262,6 +284,7 @@ UserRules * UserRuleNumberSemanticAction(UserScore * userScore, Asignations * as
 	userRules->asignations = asignations;
 	userRules->numbers = numbers;
 	userRules->rule = rule;
+	userRules->type = NUMBER_ASSIG;
 	return userRules;
 }
 
@@ -272,6 +295,7 @@ UserRules * UserRuleCardSemanticAction(UserScore * userScore, Asignations * asig
 	userRules->asignations3 = asignation;
 	userRules->userCard = userCard;
 	userRules->rule4 = rule;
+	userRules->type = CARD_ASSIG;
 	return userRules;
 }
 
@@ -284,6 +308,7 @@ UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations 
 	userRules->arithmetic = arithmetic;
 	userRules->numbers = rightNum;
 	userRules->rule1 = rule;
+	userRules->type = ARITHMETIC_ASSIG;
 	return userRules;
 }
 UserRules * UserRulePMOneSemanticAction(UserScore * userScore, PmOne * pmOne, Rules * rule){
@@ -292,6 +317,7 @@ UserRules * UserRulePMOneSemanticAction(UserScore * userScore, PmOne * pmOne, Ru
 	userRules->userScore2 = userScore;
 	userRules->pmOne = pmOne;
 	userRules->rule2 = rule;
+	userRules->type = PMO_ASSIG;
 	return userRules;
 }
 
@@ -302,21 +328,24 @@ UserRules * UserRuleGetterSemanticAction(Getters * leftGetter, Asignations * asi
 	userRules->asignations2 = asignation;
 	userRules->rightGetter = rightGetter;
 	userRules->rule3 = rule;
+	userRules->type = GETTER_ASSIG;
 	return userRules;
 }
 
-Getters * GettersSemanticAction(char * variable){
+Getters * GettersSemanticAction(char * variable, GettersType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Getters * getter = calloc(1, sizeof(Getters));
 	getter->variable = variable;
+	getter->type = type;
 	return getter;
 }
 
-Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets){
+Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets, StructuresType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
 	structure->conditional = conditional;
 	structure->inBrakets = inBrakets;
+	structure->type = type;
 	return structure;
 }
 
@@ -325,6 +354,7 @@ Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrake
 	Structures * structure = calloc(1, sizeof(Structures));
 	structure->atomic = atomic;
 	structure->inBrakets1 = inBrakets;
+	structure->type = FOREACH_STRUCTURE;
 	return structure;
 }
 
@@ -332,6 +362,7 @@ Structures * StructureElseSemanticAction(InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));
 	structure->inBrakets2 = inBrakets;
+	structure->type = ELSE_STRUCTURE;
 	return structure;
 }
 
@@ -343,21 +374,24 @@ InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules)
 	return inBrakets;
 }
 
-Arithmetic * ArithmeticSemanticAction(){
+Arithmetic * ArithmeticSemanticAction(ArithmeticType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Arithmetic * arithmetic = calloc(1,sizeof(Arithmetic));
+	arithmetic->type = type;
 	return arithmetic;
 }
 
-Asignations * AsignationsSemanticAction(){
+Asignations * AsignationsSemanticAction(AsignationsType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Asignations * asignations = calloc(1, sizeof(Asignations));
+	asignations->type = type;
 	return asignations;
 }
 
-PmOne * PMOneSemanticAction(){
+PmOne * PMOneSemanticAction(PmOneType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	PmOne * pmOne = calloc(1, sizeof(PmOne));
+	pmOne->type = type;
 	return pmOne;
 }
 
@@ -367,6 +401,7 @@ HandRef * UserHandRefSemanticAction(User * user)
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	HandRef * handRef = calloc(1, sizeof(HandRef));
 	handRef->user = user;
+	handRef->type = USER;
 	return handRef;
 }
 
@@ -375,6 +410,7 @@ HandRef * DeckRefSemanticAction(Deck * deck)
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	HandRef * handRef = calloc(1, sizeof(HandRef));
 	handRef->deck = deck;
+	handRef->type = HAND_DECK;
 	return handRef;
 }
 
@@ -384,9 +420,10 @@ Deck * DeckSemanticAction(){
 	return deck;
 }
 
-User * UserSemanticAction(){
+User * UserSemanticAction(UserType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	User * user = calloc(1, sizeof(User));
+	user->type = type;
 	return user;
 }
 
@@ -394,14 +431,16 @@ Ifs * IfSemanticAction(InIf * inIf){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->inIf = inIf;
+	conditional->type = INIF;
 	return conditional;
 }
 
-Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf){
+Ifs * IfChainSemanticAction(InIf * leftInIf, InIf * rightInIf, IfType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->leftInIf = leftInIf;
 	conditional->rightInIf = rightInIf;
+	conditional->type = type;
 	return conditional;
 }
 
@@ -409,28 +448,23 @@ Ifs * IfTiedAction(bool tied){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Ifs * conditional = calloc(1, sizeof(Ifs));
 	conditional->tied = tied;
+	conditional->type = TIED_IF;
 	return conditional;
 }
-
-//InIf * InIfConstantSemanticAction(Comparison * comparison, int constant){
-//	_logSyntacticAnalyzerAction(__FUNCTION__);
-//	InIf * inIf = calloc(1, sizeof(InIf));
-//	inIf->comparison = comparison;
-//	inIf->constant = constant;
-//	return inIf;
-//}
 
 InIf * InIfVariableSemanticAction(Comparison * comparison, char * variable){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InIf * inIf = calloc(1, sizeof(InIf));
 	inIf->comparison1 = comparison;
 	inIf->variable = variable;
+	inIf->type = TYPE_IF;
 	return inIf;
 }
 
 InIf * InIfSpecialCardsSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	InIf * inIf = calloc(1, sizeof(InIf));
+	inIf->type = ACTIVATE_SPECIAL_CARDS_IF;
 	return inIf;
 }
 
@@ -440,18 +474,21 @@ InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Compa
 	inIf->leftExpression = leftExpression;
 	inIf->comparison2 = comparison;
 	inIf->rightExpression = rightExpression;
+	inIf->type = EXPRESSION_IF;
 	return inIf;
 }
 
-Comparison * ComparisonSemanticAction(){
+Comparison * ComparisonSemanticAction(ComparisonType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Comparison * comparison = calloc(1, sizeof(Comparison));
+	comparison->type = type;
 	return comparison;
 }
 
-Atomic * AtomicSemanticAction(){
+Atomic * AtomicSemanticAction(AtomicType type){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Atomic * atomic = calloc(1, sizeof(Atomic));
+	atomic->type = type;
 	return atomic;
 }
 
@@ -460,6 +497,7 @@ Rules * RoundBordersDesignSemanticAction(int constant, Rules * rule){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->constant2 = constant;
 	rules->rule5 = rule;
+	rules->type = ROUND_BORDERS_DESIGN;
 	return rules;
 }
 
@@ -468,6 +506,7 @@ Rules * ColorBordersDesignSemanticAction(char * variable, Rules * rule){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->variable = variable;
 	rules->rule3 = rule;
+	rules->type = COLOR_BORDERS_DESIGN;
 	return rules;
 }
 
@@ -476,5 +515,6 @@ Rules * BackColorDesignSemanticAction(char * variable, Rules * rule){
 	Rules * rules = calloc(1, sizeof(Rules));
 	rules->variable = variable;
 	rules->rule3 = rule;
+	rules->type = BACKGROUND_COLOR_DESIGN;
 	return rules;
 }

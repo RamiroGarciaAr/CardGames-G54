@@ -242,11 +242,11 @@ numbers: INTEGER													{ $$ = NumberConstSemanticAction($1); }
 	| userScore														{ $$ = NumberUserSemanticAction($1); }
 	;
 
-expression: expression ADD expression								{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
-	| expression DIV expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
-	| expression MUL expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
-	| expression SUB expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
-	| expression MODULE expression									{ $$ = ExpressionArithmeticSemanticAction($1, $3); }
+expression: expression ADD expression								{ $$ = ExpressionArithmeticSemanticAction($1, $3, EXPR_ADD); }
+	| expression DIV expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3, EXPR_DIV); }
+	| expression MUL expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3, EXPR_MUL); }
+	| expression SUB expression										{ $$ = ExpressionArithmeticSemanticAction($1, $3, EXPR_SUB); }
+	| expression MODULE expression									{ $$ = ExpressionArithmeticSemanticAction($1, $3, EXPR_MODULE); }
 	| numbers														{ $$ = ExpressionNumberSemanticAction($1); }
 	| userCard DOT atomic											{ $$ = ExpressionAtomicSemanticAction($1, $3); }
 	| VALUE															{ $$ = ExpressionValueSemanticAction(); }
@@ -259,29 +259,29 @@ userRules: userScore asignations numbers rules								  { $$ = UserRuleNumberSem
 	| getters DOT SCORE asignations getters DOT SELECTED_CARD DOT VALUE rules { $$ = UserRuleGetterSemanticAction($1, $4, $5, $10); }
 	;
 
-getters: GET_LOSER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3); }
-	| GET_WINNER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3); }
+getters: GET_LOSER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3, GETTER_LOSER); }
+	| GET_WINNER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3, GETTER_WINNER); }
 	;
 
-arithmetic: ADD														{ $$ = ArithmeticSemanticAction(); }
-	| DIV															{ $$ = ArithmeticSemanticAction(); }
-	| MUL															{ $$ = ArithmeticSemanticAction(); }
-	| SUB															{ $$ = ArithmeticSemanticAction(); }
-	| MODULE														{ $$ = ArithmeticSemanticAction(); }
+arithmetic: ADD														{ $$ = ArithmeticSemanticAction(ARIT_ADD); }
+	| DIV															{ $$ = ArithmeticSemanticAction(ARIT_DIV); }
+	| MUL															{ $$ = ArithmeticSemanticAction(ARIT_MUL); }
+	| SUB															{ $$ = ArithmeticSemanticAction(ARIT_SUB); }
+	| MODULE														{ $$ = ArithmeticSemanticAction(ARIT_MODULE); }
 	;
 
-asignations: EQUAL													{ $$ = AsignationsSemanticAction(); }
-	| ADD_EQUAL 													{ $$ = AsignationsSemanticAction(); }
-	| SUBSTRACT_EQUAL												{ $$ = AsignationsSemanticAction(); }
+asignations: EQUAL													{ $$ = AsignationsSemanticAction(ASIG_EQUAL); }
+	| ADD_EQUAL 													{ $$ = AsignationsSemanticAction(ASIG_ADD_EQUAL); }
+	| SUBSTRACT_EQUAL												{ $$ = AsignationsSemanticAction(SUB_EQUAL); }
 	;
 
-pmOne: ADD_ONE														{ $$ = PMOneSemanticAction(); }
-	| SUBSTRACT_ONE													{ $$ = PMOneSemanticAction(); }
+pmOne: ADD_ONE														{ $$ = PMOneSemanticAction(INCREASE); }
+	| SUBSTRACT_ONE													{ $$ = PMOneSemanticAction(DECREASE); }
 	;
 
-structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = StructureIfSemanticAction($3, $5); }
+structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = StructureIfSemanticAction($3, $5, IF_STRUCTURE); }
 	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS inBrakets	{ $$ = StructureForeachSemanticAction($3, $5); }
-	| ELIF OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5); }
+	| ELIF OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5, ELIF_STRUCTURE); }
 	| ELSE inBrakets												{ $$ = StructureElseSemanticAction($2); }
 	;
 
@@ -295,13 +295,13 @@ handRef: user DOT HAND												{ $$ = UserHandRefSemanticAction($1); }
 deck: DECK															{ $$ = DeckSemanticAction(); }
 	;
 
-user: PLAYER														{ $$ = UserSemanticAction(); }
-	| IDENTIFIER													{ $$ = UserSemanticAction(); }
+user: PLAYER														{ $$ = UserSemanticAction(USER_PLAYER); }
+	| IDENTIFIER													{ $$ = UserSemanticAction(USER_IDENTIFIER); }
 	;
 
 ifs: inIf															{ $$ = IfSemanticAction($1); }
-	| inIf AND inIf													{ $$ = IfChainSemanticAction($1, $3); }
-	| inIf OR inIf													{ $$ = IfChainSemanticAction($1, $3); }
+	| inIf AND inIf													{ $$ = IfChainSemanticAction($1, $3, AND_IF); }
+	| inIf OR inIf													{ $$ = IfChainSemanticAction($1, $3, OR_IF); }
 	| TIED															{ $$ = IfTiedAction($1); }
 	;
 	
@@ -310,16 +310,16 @@ inIf: TYPE comparison VARIABLE										{ $$ = InIfVariableSemanticAction($2, $3
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
 
-comparison: GREATER													{ $$ = ComparisonSemanticAction(); }
-	| LOWER															{ $$ = ComparisonSemanticAction(); }
-	| EQUAL_EQUAL													{ $$ = ComparisonSemanticAction(); }
-	| GREATER_OR_EQUAL												{ $$ = ComparisonSemanticAction(); }
-	| LOWER_OR_EQUAL												{ $$ = ComparisonSemanticAction(); }
-	| DIFERENT														{ $$ = ComparisonSemanticAction(); }
+comparison: GREATER													{ $$ = ComparisonSemanticAction(COMP_GREATER); }
+	| LOWER															{ $$ = ComparisonSemanticAction(COMP_LOWER); }
+	| EQUAL_EQUAL													{ $$ = ComparisonSemanticAction(COMP_EQUAL_EQUAL); }
+	| GREATER_OR_EQUAL												{ $$ = ComparisonSemanticAction(COMP_GREATER_OR_EQUAL); }
+	| LOWER_OR_EQUAL												{ $$ = ComparisonSemanticAction(COMP_LOWER_OR_EQUAL); }
+	| DIFERENT														{ $$ = ComparisonSemanticAction(COMP_DIFERENT); }
 	;
 
-atomic: VALUE														{ $$ = AtomicSemanticAction(); }
-	| TYPE															{ $$ = AtomicSemanticAction(); }
+atomic: VALUE														{ $$ = AtomicSemanticAction(ATOMIC_VALUE); }
+	| TYPE															{ $$ = AtomicSemanticAction(ATOMIC_TYPE); }
 	;
 
 %%

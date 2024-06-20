@@ -59,54 +59,56 @@ static void _generateBlock(Block * block){ //listo
 }
 
 static void _generateRules(Rules * rules){ 
-	switch(rules->type){
-		case STRUCTURES:
-			_generateStructures(rules->structures);
-			break;
-		case RULE_MOVE_CARDS:
-			_output(1, "%s", "MoveCards(");
-			_generateHandRef(rules->leftHandRef);
-			_output(0, "%s", ", ");
-			_generateHandRef(rules->rightHandRef);
-			_output(0, "%s", ", ");
-			_output(0, "%d", rules->constant);
-			_output(0, "%s", ")");
-			_generateRules(rules->rule);
-			break;
-		case RULE_LOOK_AT:
-			_generateHandRef(rules->handRef);
-			_generateInteger(rules->constant1);
-			_generateRules(rules->rule1);
-			break;
-		case RULE_RESTOCK_DECK:
-		case RULE_WIN_GAME:
-		case RULE_ACTIVATE_SPECIAL_CARDS:
-			_generateRules(rules->rule2);
-			break;
-		case RULE_WINNER_TYPE:
-			_generateVariable(rules->variable);
-			_generateRules(rules->rule3);
-			break;
-		case ROUND_BORDERS_DESIGN:
-			//completar
-			break;
-		case COLOR_BORDERS_DESIGN:
-		case BACKGROUND_COLOR_DESIGN:
-			//completar
-			break;
-		case USER_RULES:
-			_generateUserRules(rules->userRules);
-			break;
-		case TIED_RULE:
-			_generateBoolean(rules->tied);
-			_generateRules(rules->rule4);
-			break;
-		case FINISH_RULE:
-			_generateBlock(rules->block);
-			break;
-		default:
-			logError(_logger, "The specified rule type is unknown: %d", rules->type);
-			break;
+	if(rules != NULL){
+		switch(rules->type){
+			case STRUCTURES:
+				_generateStructures(rules->structures);
+				break;
+			case RULE_MOVE_CARDS:
+				_output(1, "%s", "MoveCards(");
+				_generateHandRef(rules->leftHandRef);
+				_output(0, "%s", ", ");
+				_generateHandRef(rules->rightHandRef);
+				_output(0, "%s", ", ");
+				_output(0, "%d", rules->constant);
+				_output(0, "%s", ")");
+				_generateRules(rules->rule);
+				break;
+			case RULE_LOOK_AT:
+				_generateHandRef(rules->handRef);
+				_generateInteger(rules->constant1);
+				_generateRules(rules->rule1);
+				break;
+			case RULE_RESTOCK_DECK:
+			case RULE_WIN_GAME:
+			case RULE_ACTIVATE_SPECIAL_CARDS:
+				_generateRules(rules->rule2);
+				break;
+			case RULE_WINNER_TYPE:
+				_generateVariable(rules->variable);
+				_generateRules(rules->rule3);
+				break;
+			case ROUND_BORDERS_DESIGN:
+				//completar
+				break;
+			case COLOR_BORDERS_DESIGN:
+			case BACKGROUND_COLOR_DESIGN:
+				//completar
+				break;
+			case USER_RULES:
+				_generateUserRules(rules->userRules);
+				break;
+			case TIED_RULE:
+				_generateBoolean(rules->tied);
+				_generateRules(rules->rule4);
+				break;
+			case FINISH_RULE:
+				_generateBlock(rules->block);
+				break;
+			default:
+				logError(_logger, "The specified rule type is unknown: %d", rules->type);
+				break;
+		}
 	}
 }
 
