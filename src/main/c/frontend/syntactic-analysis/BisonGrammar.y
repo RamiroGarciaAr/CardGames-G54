@@ -39,7 +39,6 @@
 	InIf * inIf;
 	Comparison * comparison;
 	Atomic * atomic;
-	Design * design;
 	bool boolean;
 }
 
@@ -167,7 +166,6 @@
 %type <inIf> inIf
 %type <comparison> comparison
 %type <atomic> atomic
-%type <design> design
 %type <boolean> boolean
 
 /**
@@ -194,7 +192,7 @@ program: block													{ $$ = BlockSemanticAction(currentCompilerState(), $1
 block: VARIABLE FOR VALUE INTEGER COLON rules					{ $$ = BlockValueSemanticAction($1, $4, $6); }
 	| VARIABLE FOR TYPE cardTypes COLON rules					{ $$ = BlockTypeSemanticAction($1, $4, $6); }
 	| VARIABLE GAME HAS COLON gameFunction                      { $$ = BlockGameSemanticAction($1, $5); }
-	| VARIABLE DESIGN HAS COLON design							{ $$ = BlockDesignSemanticAction($1, $5); }
+	| VARIABLE DESIGN HAS COLON rules							{ $$ = BlockDesignSemanticAction($1, $5); }
 	| VARIABLE FOR GAME COLON rules								{ $$ = BlockRuleSemanticAction($1, $5); }
 	;
 
@@ -221,19 +219,14 @@ rules: structures                                                               
     | WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                             { $$ = RuleWinGameSemanticAction($5); }
     | WINNER_TYPE OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5); }
     | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
+	| ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS rules	    				   { $$ = RoundBordersDesignSemanticAction($3, $5); }
+	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules						   { $$ = ColorBordersDesignSemanticAction($3, $5); }
+	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules					   { $$ = BackColorDesignSemanticAction($3, $5); }
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
     | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }
     | block                                                                  				   { $$ = RuleFinishedSemanticAction($1); }
     | %empty {$$ = NULL;}
     ;
-
-design: ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS design	    { $$ = RoundBordersDesignSemanticAction($3, $5); }
-	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design		{ $$ = ColorBordersDesignSemanticAction($3, $5); }
-	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS design	{ $$ = BackColorDesignSemanticAction($3, $5); }
-	| block																	{ $$ = DesignFinishedSemanticAction($1); }
-	| structures															{ $$ = DesignStructuresSemanticAction($1); }
-	| %empty {$$ = NULL;}
-	;
 
 boolean: TRUE														{ $$ = true; }
 	| FALSE															{ $$ = false; }
@@ -293,7 +286,6 @@ structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = Structur
 	;
 
 inBrakets: OPEN_BRAKETS rules CLOSE_BRAKETS rules					{ $$ = MultipleBraketsSemanticAction($2, $4); }
-	| OPEN_BRAKETS design CLOSE_BRAKETS design						{ $$ = MultipleBraketsDesignSemanticAction($2, $4); }
 	;
 
 handRef: user DOT HAND												{ $$ = UserHandRefSemanticAction($1); }

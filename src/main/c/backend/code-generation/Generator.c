@@ -46,7 +46,7 @@ static void _generateBlock(Block * block){ //listo
 			break;
 		case DESIGN_BLOCK:
 			_generateVariable(block->variable3);
-			_generateDesign(block->design1);
+			_generateRules(block->rules3);
 			break;
 		case RULE_BLOCK:
 			_generateVariable(block->variable4);
@@ -86,6 +86,13 @@ static void _generateRules(Rules * rules){
 		case RULE_WINNER_TYPE:
 			_generateVariable(rules->variable);
 			_generateRules(rules->rule3);
+			break;
+		case ROUND_BORDERS_DESIGN:
+			//completar
+			break;
+		case COLOR_BORDERS_DESIGN:
+		case BACKGROUND_COLOR_DESIGN:
+			//completar
 			break;
 		case USER_RULES:
 			_generateUserRules(rules->userRules);
@@ -294,19 +301,8 @@ static void _generateStructures(Structures * structures){ //listo
 }
 
 static void _generateInBrakets(InBrakets * inBrakets){ //listo
-	switch(inBrakets->type){
-		case MULTIPLE_RULES:
-			_generateRules(inBrakets->leftRules);
-			_generateRules(inBrakets->rightRules);
-			break;
-		case MULTIPLE_DESIGNS:
-			_generateDesign(inBrakets->leftDesign);
-			_generateDesign(inBrakets->rightDesign);
-			break;
-		default:
-			logError(_logger, "The specified inBrakets type is unknown: %d", inBrakets->type);
-			break;
-	}
+	_generateRules(inBrakets->leftRules);
+	_generateRules(inBrakets->rightRules);
 }
 
 static void _generateHandRef(HandRef * handRef){
@@ -399,30 +395,6 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 		case ATOMIC_TYPE:
 		//IDEM A LOS ANTERIORES
 		default:
-	}
-}
-
-static void _generateDesign(Design * design){
-	switch(design->type){
-		case ROUND_BORDERS_DESIGN:
-			fprintf(file, "RoundBorders(%d)", design->constant);
-			_generateInteger(design->constant);
-			_generateDesign(design->design2);
-			break;
-		case COLOR_BORDERS_DESIGN:
-		case BACKGROUND_COLOR_DESIGN:
-			_generateVariable(design->variable);
-			_generateDesign(design->design1);
-			break;
-		case FINISHED_DESIGN:
-			_generateBlock(design->block);
-			break;
-		case STRUCTURES_DESIGN:
-			_generateStructures(design->structures);
-			break;
-		default:
-			logError(_logger, "The specified design type is unknown: %d", design->type);
-			break;
 	}
 }
 

@@ -23,7 +23,7 @@ Program * BlockSemanticAction(CompilerState * compilerState, Block * block);
 Block * BlockValueSemanticAction(char * variable, int constant, Rules * rules);
 Block * BlockTypeSemanticAction(char * variable, CardTypes * cardTypes, Rules * rules);
 Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction);
-Block * BlockDesignSemanticAction(char * variable, Design * design1);
+Block * BlockDesignSemanticAction(char * variable, Rules * rules3);
 Block * BlockRuleSemanticAction(char * variable, Rules * rules);
 GameFunction * GameFunctionSemanticAction(int cteNumbersOnDeck, CardTypes * cardTypes, int cteCardsByPlayers, int cteRounds, int cteRoundTimer, int cteUserStartingScore, int cteMachineStartingScore, char * varWinRoundCondition, char * varWinGameCondition, char * varCardDesign, char * varBackDesign, Block * block);
 CardTypes * CardTypeRuleSemanticAction(char * type );
@@ -56,7 +56,6 @@ Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets)
 Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrakets);
 Structures * StructureElseSemanticAction(InBrakets * inBrakets);
 InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules);
-InBrakets * MultipleBraketsDesignSemanticAction(Design * leftDesign, Design * rightDesign);
 Arithmetic * ArithmeticSemanticAction();
 Asignations * AsignationsSemanticAction();
 PmOne * PMOneSemanticAction();
@@ -72,10 +71,8 @@ InIf * InIfSpecialCardsSemanticAction();
 InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Comparison * comparison, Expression * rightExpression);
 Comparison * ComparisonSemanticAction();
 Atomic * AtomicSemanticAction();
-Design * RoundBordersDesignSemanticAction(int constant, Design * design2);
-Design * ColorBordersDesignSemanticAction(char * variable, Design * design1);
-Design * BackColorDesignSemanticAction(char * variable, Design * design1);
-Design * DesignFinishedSemanticAction(Block * block);
-Design * DesignStructuresSemanticAction(Structures * structures);
+Rules * RoundBordersDesignSemanticAction(int constant, Rules * rule);
+Rules * ColorBordersDesignSemanticAction(char * variable, Rules * rule);
+Rules * BackColorDesignSemanticAction(char * variable, Rules * rule);
 
 #endif

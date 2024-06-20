@@ -229,7 +229,7 @@ Token OperatorPatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 				token = ADD_ONE;
 			}
 			if (lexicalAnalyzerContext->lexeme[1] == '='){
-				token = ADD;
+				token = ADD_EQUAL;
 			}
 			break;
 		case '-':
@@ -237,7 +237,7 @@ Token OperatorPatternAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 				token = SUBSTRACT_ONE;
 			}
 			if (lexicalAnalyzerContext->lexeme[1]=='='){
-				token = SUB;	
+				token = SUBSTRACT_EQUAL;	
 			}
 			break;
 	}

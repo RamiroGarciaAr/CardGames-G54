@@ -44,7 +44,6 @@ static void _generateIfs(Ifs * ifs);
 static void _generateInIf(InIf * inIf);
 static void _generateComparison(Comparison * comparison);
 static void _generateAtomic(Atomic * atomic);
-static void _generateDesign(Design * design);
 static void _generateBoolean(bool boolean);
 static void _generateVariable(char * variable);
 static void _generateInteger(int constant);

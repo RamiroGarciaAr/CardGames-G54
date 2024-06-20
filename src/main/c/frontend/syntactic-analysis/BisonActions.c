@@ -72,11 +72,11 @@ Block * BlockGameSemanticAction(char * variable, GameFunction * gameFunction){
 	return block;
 }
 
-Block * BlockDesignSemanticAction(char * variable, Design * design1){
+Block * BlockDesignSemanticAction(char * variable, Rules * rules3){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Block * block = calloc(1, sizeof(Block));
 	block->variable3 = variable;
-	block->design1 = design1;
+	block->rules3 = rules3;
 	return block;
 }
 
@@ -343,14 +343,6 @@ InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules)
 	return inBrakets;
 }
 
-InBrakets * MultipleBraketsDesignSemanticAction(Design * leftDesign, Design * rightDesign){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	InBrakets * inBrakets = calloc(1, sizeof(InBrakets));
-	inBrakets->leftDesign = leftDesign;
-	inBrakets->rightDesign = rightDesign;
-	return inBrakets;
-}
-
 Arithmetic * ArithmeticSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Arithmetic * arithmetic = calloc(1,sizeof(Arithmetic));
@@ -463,40 +455,26 @@ Atomic * AtomicSemanticAction(){
 	return atomic;
 }
 
-Design * RoundBordersDesignSemanticAction(int constant, Design * design2){
+Rules * RoundBordersDesignSemanticAction(int constant, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Design * design = calloc(1, sizeof(Design));
-	design->constant = constant;
-	design->design2 = design2;
-	return design;
+	Rules * rules = calloc(1, sizeof(Rules));
+	rules->constant2 = constant;
+	rules->rule5 = rule;
+	return rules;
 }
 
-Design * ColorBordersDesignSemanticAction(char * variable, Design * design1){
+Rules * ColorBordersDesignSemanticAction(char * variable, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Design * design = calloc(1, sizeof(Design));
-	design->variable = variable;
-	design->design1 = design1;
-	return design;
+	Rules * rules = calloc(1, sizeof(Rules));
+	rules->variable = variable;
+	rules->rule3 = rule;
+	return rules;
 }
 
-Design * BackColorDesignSemanticAction(char * variable, Design * design1){
+Rules * BackColorDesignSemanticAction(char * variable, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Design * design = calloc(1, sizeof(Design));
-	design->variable = variable;
-	design->design1 = design1;
-	return design;
-}
-
-Design * DesignFinishedSemanticAction(Block * block){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Design * design = calloc(1, sizeof(Design));
-	design->block = block;
-	return design;
-}
-
-Design * DesignStructuresSemanticAction(Structures * structures){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Design * design = calloc(1, sizeof(Design));
-	design->structures = structures;
-	return design;
+	Rules * rules = calloc(1, sizeof(Rules));
+	rules->variable = variable;
+	rules->rule3 = rule;
+	return rules;
 }

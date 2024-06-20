@@ -32,7 +32,6 @@ typedef enum IfType IfType;
 typedef enum InIfType InIfType;
 typedef enum ComparisonType ComparisonType;
 typedef enum AtomicType AtomicType;
-typedef enum DesignType DesignType;
 typedef enum UserType UserType;
 
 typedef struct Block Block;
@@ -57,7 +56,6 @@ typedef struct Ifs Ifs;
 typedef struct InIf InIf;
 typedef struct Comparison Comparison;
 typedef struct Atomic Atomic;
-typedef struct Design Design;
 typedef struct Program Program;
 
 /**
@@ -97,6 +95,9 @@ enum RuleType {
     RULE_WIN_GAME,
     RULE_WINNER_TYPE,
     RULE_ACTIVATE_SPECIAL_CARDS,
+	ROUND_BORDERS_DESIGN,
+	COLOR_BORDERS_DESIGN,
+	BACKGROUND_COLOR_DESIGN,
     USER_RULES,
     TIED_RULE,
     FINISH_RULE
@@ -147,8 +148,7 @@ enum StructuresType {
 };
 
 enum InBraketsType{
-	MULTIPLE_RULES,
-	MULTIPLE_DESIGNS
+	MULTIPLE_RULES
 };
 
 enum HandRefType {
@@ -181,14 +181,6 @@ enum ComparisonType{
 enum AtomicType{
 	ATOMIC_VALUE,
 	ATOMIC_TYPE
-};
-
-enum DesignType {
-	ROUND_BORDERS_DESIGN,
-	COLOR_BORDERS_DESIGN,
-	BACKGROUND_COLOR_DESIGN,
-	FINISHED_DESIGN,
-	STRUCTURES_DESIGN
 };
 
 enum UserType{
@@ -256,7 +248,7 @@ struct Block {
 		};
 		struct {
 			char * variable3;
-			Design * design1;
+			Rules * rules3;
 		};
 		struct {
 			char * variable4;
@@ -311,6 +303,10 @@ struct Rules {
             char * variable;
             Rules * rule3;
         };
+		struct{
+			int constant2;
+			Rules * rule5;
+		};
         UserRules * userRules;
         struct {
             bool tied;
@@ -402,17 +398,8 @@ struct Structures {
 };
 
 struct InBrakets {
-    union {
-        struct {
-            Rules * leftRules;
-            Rules * rightRules;
-        };
-        struct {
-            Design * leftDesign;
-            Design * rightDesign;
-        };
-    };
-    InBraketsType type;
+    Rules * leftRules;
+    Rules * rightRules;
 };
 
 struct HandRef{
@@ -448,23 +435,6 @@ struct InIf {
 		};
 	};
 	InIfType type;
-};
-
-
-struct Design {
-	union{
-		struct {
-			int constant;
-			Design * design2;
-		};
-		struct {
-			char * variable;
-			Design * design1;
-		};
-		Block * block;
-		Structures * structures;
-	};
-	DesignType type;
 };
 
 /**
