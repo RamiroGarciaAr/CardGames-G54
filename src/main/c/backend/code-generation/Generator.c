@@ -26,7 +26,7 @@ static void _generateProgram(Program * program) { //listo
 	_generateBlock(program->block);
 }
 
-static void _generateBlock(Block * block){ //listo
+static void _generateBlock(Block * block){
 	switch(block->type){
 		case VALUE_BLOCK:
 			_output(0, "%s", block->variable);
@@ -36,20 +36,23 @@ static void _generateBlock(Block * block){ //listo
 			_generateRules(block->rules);
 			break;
 		case TYPE_BLOCK:
-			_generateVariable(block->variable1);
+			_output(0, "%s", block->variable1);
+			_output(0, "%s", " for type ");
 			_generateCardTypes(block->cardTypes);
+			_output(0, "%s", ":\n");
 			_generateRules(block->rules1);
 			break;
 		case GAME_BLOCK:
-			_generateVariable(block->variable2);
+			_output(0, "%s", block->variable2);
+			_output(0, "%s", " game has:\n");
 			_generateGameFunction(block->gameFunction);
 			break;
 		case DESIGN_BLOCK:
-			_generateVariable(block->variable3);
+			_output(0, "%s", block->variable3);
 			_generateRules(block->rules3);
 			break;
 		case RULE_BLOCK:
-			_generateVariable(block->variable4);
+			_output(0, "%s", block->variable4);
 			_generateRules(block->rules2);
 			break;
 		default:
@@ -76,7 +79,7 @@ static void _generateRules(Rules * rules){
 				break;
 			case RULE_LOOK_AT:
 				_generateHandRef(rules->handRef);
-				_generateInteger(rules->constant1);
+				_output(0, "%d", rules->constant1);
 				_generateRules(rules->rule1);
 				break;
 			case RULE_RESTOCK_DECK:
@@ -85,7 +88,7 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WINNER_TYPE:
-				_generateVariable(rules->variable);
+				_output(0, "%s", rules->variable);
 				_generateRules(rules->rule3);
 				break;
 			case ROUND_BORDERS_DESIGN:
@@ -128,6 +131,9 @@ static void _generateExpression(Expression * expression){ //listo
 		case ATOMIC:
 			_generateUserCard(expression->userCard);
 			_generateAtomic(expression->atomic);
+			break;
+		case EXPR_VALUE:
+			_output(0, "%s", "value");
 			break;
 		default:
 			logError(_logger, "The specified expression type is unknown: %d", expression->type);
@@ -179,28 +185,48 @@ static void _generateUserScore(UserScore * userScore){ //listo
 }
 
 static void _generateGameFunction(GameFunction * gameFunction){ //listo
-	_generateInteger(gameFunction->cteNumbersOnDeck);
-	_generateCardTypes(gameFunction->cardTypes);
-	_generateInteger(gameFunction->cteCardsByPlayers);
-	_generateInteger(gameFunction->cteRounds);
-	_generateInteger(gameFunction->cteRoundTimer);		
-	_generateInteger(gameFunction->cteUserStartingScore);	
-	_generateInteger(gameFunction->cteMachineStartingScore);
-	_generateVariable(gameFunction->varWinRoundCondition);
-	_generateVariable(gameFunction->varWinRoundCondition);	
-	_generateVariable(gameFunction->varWinGameCondition);	
-	_generateVariable(gameFunction->varCardDesign);	
-	_generateVariable(gameFunction->varBackDesign);	
+	_output(1, "%s", "NumbersOnDeck(");
+	_output(0, "%d", gameFunction->cteNumbersOnDeck);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "TypesOfCards(");
+	_output(0, "%s", gameFunction->cardTypes);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "CardsByPlayer(");
+	_output(0, "%d", gameFunction->cteCardsByPlayers);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "Rounds(");
+	_output(0, "%d", gameFunction->cteRounds);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "RoundsTimer(");
+	_output(0, "%d", gameFunction->cteRoundTimer);	
+	_output(0, "%s", ")\n");	
+	_output(1, "%s", "StartingScore(");
+	_output(0, "%d", gameFunction->cteUserStartingScore);	
+	_output(0, "%s", ", ");
+	_output(0, "%d", gameFunction->cteMachineStartingScore);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "WinRoundCondition(");
+	_output(0, "%s", gameFunction->varWinRoundCondition);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "WinGameCondition(");	
+	_output(0, "%s", gameFunction->varWinGameCondition);	
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "CardsDesign(");
+	_output(0, "%s", gameFunction->varCardDesign);
+	_output(0, "%s", ")\n");	
+	_output(1, "%s", "BackgroundDesign(");
+	_output(0, "%s", gameFunction->varBackDesign);	
+	_output(0, "%s", ")\n");
 	_generateBlock(gameFunction->block); 
 }
 
 static void _generateCardTypes(CardTypes * cardTypes){ //listo
 	switch(cardTypes->type){
 		case ONE_TYPE:
-			_generateVariable(cardTypes->variable);
+			_output(0, "%s", cardTypes->variable);
 			break;
 		case MULTIPLE_TYPE:
-			_generateVariable(cardTypes->variable1);
+			_output(0, "%s ,", cardTypes->variable1);
 			_generateCardTypes(cardTypes->cardType);
 			break;
 		default:
@@ -216,7 +242,7 @@ static void _generateUserCard(UserCard * userCard){ //listo
 static void _generateNumbers(Numbers * numbers){ //listo
 	switch(numbers->type){
 		case CONSTANT:
-			_generateInteger(numbers->constant);
+			_output(0, "%d", numbers->constant);
 			break;
 		case USER_SCORE:
 			_generateUserScore(numbers->userScore);
@@ -230,8 +256,9 @@ static void _generateNumbers(Numbers * numbers){ //listo
 static void _generateGetters(Getters * getters){
 	switch(getters->type){
 		case GETTER_LOSER:
+			break;
 		case GETTER_WINNER:
-			_generateVariable(getters->variable);
+			_output(0, "%s", getters->variable);
 			break;
 		default:
 			logError(_logger, "The specified getters type is unknown: %d", getters->type);
@@ -242,14 +269,19 @@ static void _generateGetters(Getters * getters){
 static void _generateArithmetic(Arithmetic * arithmetic){ 
 	switch(arithmetic->type){
 		case ARIT_ADD:	
+			break;
 			// return '+';
 		case ARIT_DIV:
+			break;
 			// return '/';
 		case ARIT_MUL:
+			break;
 			// return '*';
 		case ARIT_SUB:
+			break;
 			// return '-';
 		case ARIT_MODULE:
+			break;
 			// return '%';
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
@@ -260,10 +292,13 @@ static void _generateArithmetic(Arithmetic * arithmetic){
 static void _generateAsignations(Asignations * asignations){ 
 	switch(asignations->type){
 		case ASIG_EQUAL:
+			break;
 			// return "=";
 		case ASIG_ADD_EQUAL:
+			break;
 			// return "+=";
 		case SUB_EQUAL:
+			break;
 			// return "-=";
 		default:
 			logError(_logger, "The specified asignations type is unknown: %d", asignations->type);
@@ -274,8 +309,10 @@ static void _generateAsignations(Asignations * asignations){
 static void _generatePmOne(PmOne * pmOne){ 
 	switch(pmOne->type){
 		case INCREASE:
+			break;
 			// return "++";
 		case DECREASE:
+			break;
 			// return "--";
 		default:
 			logError(_logger, "The specified pmOne type is unknown: %d", pmOne->type);
@@ -286,16 +323,27 @@ static void _generatePmOne(PmOne * pmOne){
 static void _generateStructures(Structures * structures){ //listo
 	switch(structures->type){
 		case IF_STRUCTURE:
-		case ELIF_STRUCTURE:
+			_output(1, "%s", "if(");
 			_generateIfs(structures->conditional);
+			_output(0, "%s", "){\n");
+			_generateInBrakets(structures->inBrakets);
+			break;
+		case ELIF_STRUCTURE:
+			_output(1, "%s", "elif(");
+			_generateIfs(structures->conditional);
+			_output(0, "%s", "){\n");
 			_generateInBrakets(structures->inBrakets);
 			break;
 		case FOREACH_STRUCTURE:
+			_output(1, "%s", "foreach(");
 			_generateAtomic(structures->atomic);
+			_output(0, "%s", "){\n");
 			_generateInBrakets(structures->inBrakets1);
 			break;
 		case ELSE_STRUCTURE:
+			_output(1, "%s", "else{\n");
 			_generateInBrakets(structures->inBrakets2);
+			break;
 		default:
 			logError(_logger, "The specified structures type is unknown: %d", structures->type);
 			break;
@@ -304,6 +352,7 @@ static void _generateStructures(Structures * structures){ //listo
 
 static void _generateInBrakets(InBrakets * inBrakets){ //listo
 	_generateRules(inBrakets->leftRules);
+	_output(1, "%s", "\n}\n");
 	_generateRules(inBrakets->rightRules);
 }
 
@@ -346,12 +395,18 @@ static void _generateIfs(Ifs * ifs){
 			_generateInIf(ifs->inIf);
 			break;
 		case AND_IF:
+			_generateInIf(ifs->leftInIf);
+			_output(0, "%s", " && ");
+			_generateInIf(ifs->rightInIf);
+			break;
 		case OR_IF:
 			_generateInIf(ifs->leftInIf);
+			_output(0, "%s", " || ");
 			_generateInIf(ifs->rightInIf);
 			break;
 		case TIED_IF:
-			_generateBoolean(ifs->tied);
+			_output(0, "%s", ifs->tied);
+			//_generateBoolean(ifs->tied);
 			break;	
 		default:
 			logError(_logger, "The specified ifs type is unknown: %d", ifs->type);
@@ -362,13 +417,15 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){ //TODO
 	switch(inIf->type){
 		case TYPE_IF:
+			_output(0, "%s", "type ");
 			_generateComparison(inIf->comparison1);
-			_generateVariable(inIf->variable);
+			_output(0, "%s", inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
-		
+			_output(0, "%s", "ActivateSpecialCards()");
+			break;
 		case EXPRESSION_IF:
-			_generateExpression(inIf->leftExpression);
+			_generateExpression(inIf->leftExpression);  //aca estoy
 			_generateComparison(inIf->comparison2);
 			_generateExpression(inIf->rightExpression);
 			break;
@@ -383,11 +440,15 @@ static void _generateComparison(Comparison * comparison){ //TODO
 		case COMP_GREATER:
 		case COMP_LOWER:
 		case COMP_EQUAL_EQUAL:
+			_output(0, "%s", " == ");
+			break;
 		case COMP_GREATER_OR_EQUAL:
 		case COMP_LOWER_OR_EQUAL:
 		case COMP_DIFERENT:
+			break;
 		default:
-		//IDEM A LOS ANTERIORES
+			logError(_logger, "The specified inIf type is unknown: %d", comparison->type);
+			break;
 	}
 }
 
@@ -401,19 +462,19 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 }
 
 static void _generateBoolean(bool boolean){
-	_output(1, "%s", "boolean\n");
-	printf("boolean\n"); 
+	_output(1, "%s", "boolean");
+	//printf("boolean\n"); 
 }
 
-static void _generateVariable(char * variable){
-	//_output(1, "%s", "variable de output\n");
-	printf("variable\n"); 
-}
+// static void _generateVariable(char * variable){
+// 	_output(1, "%s", "variable de output\n");
+// 	printf("variable\n"); 
+// }
 
-static void _generateInteger(int constant){
-	_output(1, "%s", "INTEGRER de output\n");
-	printf("INTEGRER\n"); 
-}
+// static void _generateInteger(int constant){
+// 	_output(1, "%s", "INTEGRER de output\n");
+// 	printf("INTEGRER\n"); 
+// }
 
 /**
  * Converts and expression type to the proper character of the operation
