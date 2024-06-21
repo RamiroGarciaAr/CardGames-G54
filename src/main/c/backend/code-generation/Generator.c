@@ -28,17 +28,33 @@ static void _generateProgram(Program * program) { //listo
 
 static void _generateBlock(Block * block){ //listo
 	switch(block->type){
-		case VALUE_BLOCK:
-			_output(0, "%s", block->variable);
-			_output(0, "%s", " for value ");
-			_output(0, "%d", block->constant);
-			_output(0, "%s", ":\n");
-			_generateRules(block->rules);
+
+		case VALUE_BLOCK: //Falta cambiar el codigo para cuando tenemos type y numero
+			_output(0,"//%s Rule\n",block->variable);
+			if (block->rules->structures->conditional->inIf->comparison2->type == COMP_EQUAL_EQUAL)
+			{
+				_output(0,"//%s Rule\n",block->variable);
+				printf("[PRINTF] block has conditional\n");
+				_output(0,"for (String typeName : typeNames) {");
+				_output(0, "%s", "\n");
+				_output(0,"deck.AddSpecialAbilityTo(typeName,%d,", block->constant);
+				_generateRules(block->rules);
+				_output(0, ");%s", "\n");
+				_output(0,"}");
+			}
 			break;
 		case TYPE_BLOCK:
-			_generateVariable(block->variable1);
-			_generateCardTypes(block->cardTypes);
-			_generateRules(block->rules1);
+			_output(0,"//%s Rule\n",block->variable);
+			if ( block->rules->structures->conditional->inIf->comparison2->type == COMP_EQUAL_EQUAL)
+			{
+
+				_output(0,"deck.AddSpecialAbilityTo(");
+				_generateCardTypes(block->cardTypes);
+				_output(0,",");
+				_generateRules(block->rules);
+				_output(0, ");%s", "\n");
+			}
+			
 			break;
 		case GAME_BLOCK:
 			_generateVariable(block->variable2);
@@ -62,10 +78,11 @@ static void _generateRules(Rules * rules){
 	if(rules != NULL){
 		switch(rules->type){
 			case STRUCTURES:
+				printf("structure\n");
 				_generateStructures(rules->structures);
 				break;
 			case RULE_MOVE_CARDS:
-				_output(1, "%s", "MoveCards(");
+				_output(1, "%s", "new MoveCardsAction(");
 				_generateHandRef(rules->leftHandRef);
 				_output(0, "%s", ", ");
 				_generateHandRef(rules->rightHandRef);
@@ -214,7 +231,8 @@ static void _generateUserCard(UserCard * userCard){ //listo
 }
 
 static void _generateNumbers(Numbers * numbers){ //listo
-	switch(numbers->type){
+	switch(numbers->type)
+	{
 		case CONSTANT:
 			_generateInteger(numbers->constant);
 			break;
@@ -297,6 +315,7 @@ static void _generateStructures(Structures * structures){ //listo
 	switch(structures->type){
 		case IF_STRUCTURE:
 		case ELIF_STRUCTURE:
+			printf("IFs\n");
 			_generateIfs(structures->conditional);
 			_generateInBrakets(structures->inBrakets);
 			break;
@@ -354,6 +373,7 @@ static void _generateUser(User * user){ //TODO
 static void _generateIfs(Ifs * ifs){
 	switch(ifs->type){
 		case INIF:
+			printf("infs\n");
 			_generateInIf(ifs->inIf);
 			break;
 		case AND_IF:
@@ -425,18 +445,15 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 }
 
 static void _generateBoolean(bool boolean){
-	_output(1, "%s", "boolean\n");
-	printf("boolean\n"); 
+	_output(0, "%s", "boolean\n");
 }
 
 static void _generateVariable(char * variable){
-	_output(1, "%s", "variable de output\n");
-	printf("variable\n"); 
+	_output(0, "%s", variable);
 }
 
 static void _generateInteger(int constant){
-	_output(1, "%s", "INTEGRER de output\n");
-	printf("INTEGRER\n"); 
+	_output(0, "%d", constant);
 }
 
 /**
