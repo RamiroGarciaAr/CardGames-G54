@@ -7,11 +7,11 @@ struct key {
 };
 
 typedef enum VarType {
-    VAR_RBT,
-    VAR_BST,
-    VAR_AVL,
-    VAR_INT,
-    VAR_BOOL
+    VAR_DECK,
+    VAR_PLAYING,
+    VAR_WAITING,
+    VAR_USER,
+    VAR_MACHINE
 } VarType;
 
 struct metadata {
