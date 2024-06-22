@@ -336,14 +336,14 @@ void TypeRelation(Ifs * ifs){
 static void _generateStructures(Structures * structures){
 	switch(structures->type){
 		case IF_STRUCTURE:
-			//if(structures->conditional->inIf->type == TYPE_IF){
-			//	TypeRelation(structures->conditional); 
-			//}else{
+			if(structures->conditional->inIf->type == TYPE_IF){
+				TypeRelation(structures->conditional); 
+			}else{
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);
 				_output(0, "%s", "){\n");
 				_generateInBrakets(structures->inBrakets);
-			//}
+			}
 			break;
 		case ELIF_STRUCTURE:
 			_output(1, "%s", "elif(");
@@ -433,7 +433,6 @@ static void _generateInIf(InIf * inIf){
 	switch(inIf->type){ //if(type xxx varable)
 		case TYPE_IF:
 			strType = inIf->variable;
-			printf("[PRINTF] %s",strType);
 			//_output(0, "%s", "typeName");
 			//_generateComparison(inIf->comparison1);
 			//_output(0, "%s", "\"");
