@@ -6,6 +6,8 @@ const char _indentationCharacter = ' ';
 const char _indentationSize = 4;
 static Logger * _logger = NULL;
 
+char * strType = "";
+
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -430,11 +432,13 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){
 	switch(inIf->type){ //if(type xxx varable)
 		case TYPE_IF:
-			_output(0, "%s", "typeName");
-			_generateComparison(inIf->comparison1);
-			_output(0, "%s", "\"");
-			_output(0, "%s", inIf->variable);
-			_output(0, "%s", "\"");
+			strType = inIf->variable;
+			printf("[PRINTF] %s");
+			//_output(0, "%s", "typeName");
+			//_generateComparison(inIf->comparison1);
+			//_output(0, "%s", "\"");
+			//_output(0, "%s", inIf->variable);
+			//_output(0, "%s", "\"");
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
 			_output(0, "%s", "SpecialCardsOnPlay()");
