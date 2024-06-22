@@ -433,7 +433,7 @@ static void _generateInIf(InIf * inIf){
 	switch(inIf->type){ //if(type xxx varable)
 		case TYPE_IF:
 			strType = inIf->variable;
-			printf("[PRINTF] %s");
+			printf("[PRINTF] %s",strType);
 			//_output(0, "%s", "typeName");
 			//_generateComparison(inIf->comparison1);
 			//_output(0, "%s", "\"");
