@@ -102,12 +102,16 @@ static void _generateRules(Rules * rules){
 				_generateUserRules(rules->userRules);
 				break;
 			case TIED_RULE:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 				_generateBoolean(rules->tied);
 =======
 				_output(0, "%s", "tied = ");
 				_output(0, "%s", rules->tied? "true" : "false");
 >>>>>>> Stashed changes
+=======
+				_generateBoolean(rules->tied);
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 				_generateRules(rules->rule4);
 				break;
 			case FINISH_RULE:
@@ -502,7 +506,10 @@ static void _output(const unsigned int indentationLevel, const char * const form
  */
 static void _generatePrologue(void) 
 {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 	/*
 	fprintf(file,"=================================PROLOGUE========================================");
 	fprintf(file, "package com.mygdx.game;\n\n");
@@ -534,6 +541,7 @@ static void _generatePrologue(void)
     fprintf(file, "    private boolean playerWon;\n");
     fprintf(file, "}\n");
 */
+<<<<<<< HEAD
 =======
 	_output(0, "%s", "package com.mygdx.game;\n");
 	_output(0, "%s", "import com.badlogic.gdx.ApplicationAdapter;\n");
@@ -585,6 +593,8 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
 	_output(0, "%s", "        musicPlayer.play();\n\n\n");
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 }
 
 /**
@@ -593,7 +603,10 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 	// fprintf(file,"=================================EPILOGUE========================================");
     // fprintf(file, "    private void LoadRandomBackgroundImage() {\n");
     // fprintf(file, "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
@@ -698,6 +711,7 @@ static void _generateEpilogue(void)
     // fprintf(file, "        }\n");
     // fprintf(file, "    }\n");
     // fprintf(file, "}\n");
+<<<<<<< HEAD
 =======
 	_output(0, "%s", "\n\n        player = new Player(0, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        machine = new AI(0, numbersOfCardsInHand);\n\n");
@@ -834,6 +848,8 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    }\n");
 	_output(0, "%s", "}\n");
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 }
 
 /** PUBLIC FUNCTIONS */
