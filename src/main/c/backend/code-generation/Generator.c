@@ -338,6 +338,7 @@ static void _generateStructures(Structures * structures){
 	switch(structures->type){
 		case IF_STRUCTURE:
 			if(structures->conditional->inIf->type == TYPE_IF){
+				_generateIfs(structures->conditional);
 				TypeRelation(structures->conditional); 
 				_generateInBrakets(structures->inBrakets);
 				_output(1,"%s",");");
@@ -398,10 +399,10 @@ static void _generateDeck(Deck * deck){
 static void _generateUser(User * user){
 	switch(user->type){
 		case USER_PLAYER:
-			_output(0, "%s", "Playing");
+			_output(0, "%s", "player");
 			break;
 		case USER_IDENTIFIER:
-			_output(0, "%s", "Machine");
+			_output(0, "%s", "machine");
 			break;
 		default:
 			logError(_logger, "The specified user type is unknown: %d", user->type);
