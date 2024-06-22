@@ -53,6 +53,7 @@ static void _generateBlock(Block * block){
 			break;
 		case RULE_BLOCK:
 			_output(0, "%s", block->variable4);
+			_output(0, "%s", " for game:\n");
 			_generateRules(block->rules2);
 			break;
 		default:
@@ -85,6 +86,7 @@ static void _generateRules(Rules * rules){
 			case RULE_RESTOCK_DECK:
 			case RULE_WIN_GAME:
 			case RULE_ACTIVATE_SPECIAL_CARDS:
+				_output(1, "%s", "ActivateSpecialCards()");
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WINNER_TYPE:
@@ -102,7 +104,9 @@ static void _generateRules(Rules * rules){
 				_generateUserRules(rules->userRules);
 				break;
 			case TIED_RULE:
-				_generateBoolean(rules->tied);
+				_output(0, "%s", "tied = ");
+				_output(0, "%s", rules->tied? "true" : "false");
+				//_generateBoolean(rules->tied);
 				_generateRules(rules->rule4);
 				break;
 			case FINISH_RULE:
@@ -405,8 +409,7 @@ static void _generateIfs(Ifs * ifs){
 			_generateInIf(ifs->rightInIf);
 			break;
 		case TIED_IF:
-			_output(0, "%s", ifs->tied);
-			//_generateBoolean(ifs->tied);
+			_output(0, "%s", ifs->tied? "true" : "false");
 			break;	
 		default:
 			logError(_logger, "The specified ifs type is unknown: %d", ifs->type);
@@ -422,7 +425,7 @@ static void _generateInIf(InIf * inIf){ //TODO
 			_output(0, "%s", inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
-			_output(0, "%s", "ActivateSpecialCards()");
+			_output(0, "%s", "SpecialCardsOnPlay()");
 			break;
 		case EXPRESSION_IF:
 			_generateExpression(inIf->leftExpression);  //aca estoy
@@ -518,6 +521,7 @@ static void _output(const unsigned int indentationLevel, const char * const form
 	char * indentation = _indentation(indentationLevel);
 	char * effectiveFormat = concatenate(2, indentation, format);
 	vfprintf(stdout, effectiveFormat, arguments);
+	fflush(stdout);
 	free(effectiveFormat);
 	free(indentation);
 	va_end(arguments);
@@ -531,37 +535,7 @@ static void _output(const unsigned int indentationLevel, const char * const form
  */
 static void _generatePrologue(void) 
 {
-	/*
-	fprintf(file,"=================================PROLOGUE========================================");
-	fprintf(file, "package com.mygdx.game;\n\n");
-    fprintf(file, "import com.badlogic.gdx.ApplicationAdapter;\n");
-    fprintf(file, "import com.badlogic.gdx.Gdx;\n");
-    fprintf(file, "import com.badlogic.gdx.audio.Sound;\n");
-    fprintf(file, "import com.badlogic.gdx.files.FileHandle;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.Color;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.GL20;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.Texture;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.g2d.BitmapFont;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.g2d.Sprite;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.g2d.SpriteBatch;\n");
-    fprintf(file, "import com.badlogic.gdx.graphics.glutils.ShapeRenderer;\n");
-    fprintf(file, "import java.util.Random;\n\n");
-    fprintf(file, "public class MyGdxGame extends ApplicationAdapter {\n");
-    fprintf(file, "    private SpriteBatch batch;\n");
-    fprintf(file, "    private BitmapFont font;\n");
-    fprintf(file, "    private ShapeRenderer shapeRenderer;\n");
-    fprintf(file, "    private GameManager gameManager;\n");
-    fprintf(file, "    private Player player;\n");
-    fprintf(file, "    private AI machine;\n");
-    fprintf(file, "    private float mouseX, mouseY;\n");
-    fprintf(file, "    private Sound placementSound, highlightSound;\n");
-    fprintf(file, "    private static final int NUM_CARDS_IN_HAND = 3;\n");
-    fprintf(file, "    private boolean mouseOverHighlightedCard = false;\n");
-    fprintf(file, "    Texture backgroundTexture = null;\n");
-    fprintf(file, "    private boolean gameEnded = false;\n");
-    fprintf(file, "    private boolean playerWon;\n");
-    fprintf(file, "}\n");
-*/
+
 }
 
 /**
@@ -570,110 +544,7 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	// fprintf(file,"=================================EPILOGUE========================================");
-    // fprintf(file, "    private void LoadRandomBackgroundImage() {\n");
-    // fprintf(file, "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
-    // fprintf(file, "        if (folder.exists() && folder.isDirectory()) {\n");
-    // fprintf(file, "            FileHandle[] backgrounds = folder.list();\n");
-    // fprintf(file, "            if (backgrounds.length > 1) {\n");
-    // fprintf(file, "                int index = new Random().nextInt(backgrounds.length);\n");
-    // fprintf(file, "                backgroundTexture = new Texture(backgrounds[index]);\n");
-    // fprintf(file, "            } else backgroundTexture = new Texture(backgrounds[0]);\n");
-    // fprintf(file, "        } else {\n");
-    // fprintf(file, "            Gdx.app.error(\"TextureManager\", \"Backgrounds directory is missing or not found.\");\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "    }\n\n");
 
-    // fprintf(file, "    private void LoadSounds() {\n");
-    // fprintf(file, "        FileHandle SFXfolder = Gdx.files.internal(\"assets/Sounds/SFX\");\n");
-    // fprintf(file, "        if (SFXfolder.exists() && SFXfolder.isDirectory()) {\n");
-    // fprintf(file, "            placementSound = Gdx.audio.newSound(SFXfolder.child(\"card_impact_sfx.wav\"));\n");
-    // fprintf(file, "            highlightSound = Gdx.audio.newSound(SFXfolder.child(\"card_highlight_sfx.wav\"));\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    private void highlightCardUnderMouse() {\n");
-    // fprintf(file, "        float mouseX = Gdx.input.getX();\n");
-    // fprintf(file, "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Invertir el eje Y\n\n");
-
-    // fprintf(file, "        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);\n");
-    // fprintf(file, "        shapeRenderer.setColor(Color.YELLOW); // Definir el color una vez fuera del bucle\n\n");
-
-    // fprintf(file, "        boolean highlightFound = false;\n\n");
-
-    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
-    // fprintf(file, "            if (card.isTouched(mouseX, mouseY)) {\n");
-    // fprintf(file, "                card.highlightCard(shapeRenderer); // Resaltar la carta sin llamar a begin/end dentro del bucle\n");
-    // fprintf(file, "                highlightFound = true;\n");
-    // fprintf(file, "            }\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "        if (highlightFound && !mouseOverHighlightedCard && highlightSound != null) {\n");
-    // fprintf(file, "            highlightSound.play(0.25f);\n");
-    // fprintf(file, "            mouseOverHighlightedCard = true;\n");
-    // fprintf(file, "        } else if (!highlightFound) {\n");
-    // fprintf(file, "            mouseOverHighlightedCard = false;\n");
-    // fprintf(file, "        }\n\n");
-
-    // fprintf(file, "        shapeRenderer.end();\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    private void drawPlayerCardsBatch(Player player, float startX, float startY) {\n");
-    // fprintf(file, "        float cardSpacing = 20;\n");
-    // fprintf(file, "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
-    // fprintf(file, "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
-
-    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
-    // fprintf(file, "            card.setCardPosition(currentX, startY);\n");
-    // fprintf(file, "            card.drawCardBatch(batch, font);\n");
-    // fprintf(file, "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    private void drawPlayerCardsShape(Player player, float startX, float startY) {\n");
-    // fprintf(file, "        float cardSpacing = 20;\n");
-    // fprintf(file, "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
-    // fprintf(file, "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
-
-    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
-    // fprintf(file, "            card.setCardPosition(currentX, startY);\n");
-    // fprintf(file, "            //card.drawCardShape(shapeRenderer);\n");
-    // fprintf(file, "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    private Card getSelectedCard(float mouseX, float mouseY) {\n");
-    // fprintf(file, "        for (Card card : player.getCardsInHand()) {\n");
-    // fprintf(file, "            if (card.isTouched(mouseX, mouseY)) return card;\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "        return null;\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    private void drawScores() {\n");
-    // fprintf(file, "        String playerScoreText = \"Player Score: \" + player.getScore();\n");
-    // fprintf(file, "        String machineScoreText = \"Machine Score: \" + machine.getScore();\n");
-    // fprintf(file, "        font.draw(batch, playerScoreText, 50, 50);\n");
-    // fprintf(file, "        font.draw(batch, machineScoreText, 50, 100);\n");
-    // fprintf(file, "    }\n\n");
-
-    // fprintf(file, "    @Override\n");
-    // fprintf(file, "    public void dispose() {\n");
-    // fprintf(file, "        batch.dispose();\n");
-    // fprintf(file, "        shapeRenderer.dispose();\n");
-    // fprintf(file, "        font.dispose();\n");
-    // fprintf(file, "    }\n");
-    // fprintf(file, "}\n\n");
-
-    // fprintf(file, "class CardComparator {\n");
-    // fprintf(file, "    public static int compare(Card o1, Card o2) {\n");
-    // fprintf(file, "        if (o1.getType().canBeat(o2.getType())) {\n");
-    // fprintf(file, "            return 1;\n");
-    // fprintf(file, "        } else if (o2.getType().canBeat(o1.getType())) {\n");
-    // fprintf(file, "            return -1;\n");
-    // fprintf(file, "        } else {\n");
-    // fprintf(file, "            return o1.compareTo(o2);\n");
-    // fprintf(file, "        }\n");
-    // fprintf(file, "    }\n");
-    // fprintf(file, "}\n");
 }
 
 /** PUBLIC FUNCTIONS */
