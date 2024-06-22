@@ -330,7 +330,8 @@ static void _generatePmOne(PmOne * pmOne){
 }
 // if (type == Earth)
 void TypeRelation(Ifs * ifs){
-	_output(1, "%s", "gameManager.addTypeRelation();"); 
+	_output(1, "%s", "gameManager.addTypeRelation("); 
+	_output(1, "%s,", strType); 
 }
 
 static void _generateStructures(Structures * structures){
@@ -339,6 +340,7 @@ static void _generateStructures(Structures * structures){
 			if(structures->conditional->inIf->type == TYPE_IF){
 				TypeRelation(structures->conditional); 
 				_generateInBrakets(structures->inBrakets);
+				_output(1,"%s",");");
 			}else{
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);
