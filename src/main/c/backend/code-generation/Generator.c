@@ -456,11 +456,12 @@ static void _generateComparison(Comparison * comparison){ //TODO
 }
 
 static void _generateAtomic(Atomic * atomic){ //TODO
-	switch(atomic->type){
-		case ATOMIC_VALUE:
-		case ATOMIC_TYPE:
+	switch (atomic->type) {
+	case ATOMIC_VALUE:
+	case ATOMIC_TYPE:
 		//IDEM A LOS ANTERIORES
-		default:
+	default:
+		;
 	}
 }
 
