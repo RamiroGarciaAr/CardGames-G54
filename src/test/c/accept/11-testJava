@@ -1,0 +1,34 @@
+MyCardGame game has:
+    NumbersOnDeck(5)
+    TypesOfCards(Water, Fire, Earth)
+    CardsByPlayer(3) 
+    Rounds(30) 
+    RoundsTimer(30)
+    StartingScore(100, 400) 
+    WinRoundCondition(WinRoundRule)
+    WinGameCondition(WinGameRule)
+    CardsDesign(myDesign) 
+    BackgroundDesign(myBackgroundDesign)
+
+ElementalClashRule for type Water, Fire, Earth: 
+    if(type == Earth){
+        WinnerType(Fire)
+    }
+    if(type == Water){
+        WinnerType(Earth)
+    }else{
+        tied = true
+    }
+
+WinRoundRule for game: 
+    if(tied){
+        if(User.SelectedCard.value > Machine.SelectedCard.value){
+            Machine.score -= User.SelectedCard.value
+        }else{ 
+            User.score -= Machine.SelectedCard.value
+        }
+        tied = false 
+    }else{ 
+        GetLoser(ElementalClashRule).score -= GetWinner(ElementalClashRule).SelectedCard.value
+    }
+    RestockDeck()
