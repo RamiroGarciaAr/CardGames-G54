@@ -340,7 +340,8 @@ static void _generateStructures(Structures * structures){
 			if(structures->conditional->inIf->type == TYPE_IF){
 				_generateIfs(structures->conditional);
 				TypeRelation(structures->conditional); 
-				_generateInBrakets(structures->inBrakets);
+				_generateRules(structures->inBrakets);
+				//_generateInBrakets(structures->inBrakets);
 				_output(1,"%s",");");
 			}else{
 				_output(1, "%s", "if(");
