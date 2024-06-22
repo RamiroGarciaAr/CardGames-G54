@@ -102,7 +102,12 @@ static void _generateRules(Rules * rules){
 				_generateUserRules(rules->userRules);
 				break;
 			case TIED_RULE:
+<<<<<<< Updated upstream
 				_generateBoolean(rules->tied);
+=======
+				_output(0, "%s", "tied = ");
+				_output(0, "%s", rules->tied? "true" : "false");
+>>>>>>> Stashed changes
 				_generateRules(rules->rule4);
 				break;
 			case FINISH_RULE:
@@ -417,7 +422,7 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){ //TODO
 	switch(inIf->type){
 		case TYPE_IF:
-			_output(0, "%s", "type ");
+			_output(0, "%s", "type");
 			_generateComparison(inIf->comparison1);
 			_output(0, "%s", inIf->variable);
 			break;
@@ -457,51 +462,16 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 	case ATOMIC_VALUE:
 	case ATOMIC_TYPE:
 		//IDEM A LOS ANTERIORES
+<<<<<<< Updated upstream
 	default:
 		;
+=======
+			break;
+		default:
+			break;
+>>>>>>> Stashed changes
 	}
 }
-
-static void _generateBoolean(bool boolean){
-	_output(1, "%s", "boolean");
-	//printf("boolean\n"); 
-}
-
-// static void _generateVariable(char * variable){
-// 	_output(1, "%s", "variable de output\n");
-// 	printf("variable\n"); 
-// }
-
-// static void _generateInteger(int constant){
-// 	_output(1, "%s", "INTEGRER de output\n");
-// 	printf("INTEGRER\n"); 
-// }
-
-/**
- * Converts and expression type to the proper character of the operation
- * involved, or returns '\0' if that's not possible.
- */
-//static const char _expressionTypeToCharacter(const ExpressionType type) {
-//	switch (type) {
-//		case ADDITION: return '+';
-//		case DIVISION: return '/';
-//		case MULTIPLICATION: return '*';
-//		case SUBTRACTION: return '-';
-//		default:
-//			logError(_logger, "The specified expression type cannot be converted into character: %d", type);
-//			return '\0';
-//	}
-//}
-
-/**
- * Generates the output of a constant.
- */
-//static void _generateConstant(const unsigned int indentationLevel, Constant * constant) {
-//	_output(indentationLevel, "%s", "[ $C$, circle, draw, black!20\n");
-//	_output(1 + indentationLevel, "%s%d%s", "[ $", constant->value, "$, circle, draw ]\n");
-//	_output(indentationLevel, "%s", "]\n");
-//}
-
 
 /**
  * Generates an indentation string for the specified level.
@@ -532,6 +502,7 @@ static void _output(const unsigned int indentationLevel, const char * const form
  */
 static void _generatePrologue(void) 
 {
+<<<<<<< Updated upstream
 	/*
 	fprintf(file,"=================================PROLOGUE========================================");
 	fprintf(file, "package com.mygdx.game;\n\n");
@@ -563,6 +534,57 @@ static void _generatePrologue(void)
     fprintf(file, "    private boolean playerWon;\n");
     fprintf(file, "}\n");
 */
+=======
+	_output(0, "%s", "package com.mygdx.game;\n");
+	_output(0, "%s", "import com.badlogic.gdx.ApplicationAdapter;\n");
+	_output(0, "%s", "import com.badlogic.gdx.Gdx;\n");
+	_output(0, "%s", "import com.badlogic.gdx.audio.Sound;\n");
+	_output(0, "%s", "import com.badlogic.gdx.files.FileHandle;\n");
+	_output(0, "%s", "import com.badlogic.gdx.graphics.*;\n");
+	_output(0, "%s", "import com.badlogic.gdx.graphics.g2d.BitmapFont;\n");
+	_output(0, "%s", "import com.badlogic.gdx.graphics.g2d.Sprite;\n");
+	_output(0, "%s", "import com.badlogic.gdx.graphics.g2d.SpriteBatch;\n");
+	_output(0, "%s", "import com.badlogic.gdx.graphics.glutils.ShapeRenderer;\n");
+	_output(0, "%s", "import com.badlogic.gdx.scenes.scene2d.Stage;\n");
+	_output(0, "%s", "import com.badlogic.gdx.utils.viewport.FitViewport;\n");
+	_output(0, "%s", "import com.badlogic.gdx.utils.viewport.Viewport;\n");
+	_output(0, "%s", "import com.mygdx.game.Cards.Card;\n");
+	_output(0, "%s", "import com.mygdx.game.Cards.Colors;\n");
+	_output(0, "%s", "import com.mygdx.game.Cards.Deck;\n");
+	_output(0, "%s", "import com.mygdx.game.Cards.MoveCardsAction;\n");
+	_output(0, "%s", "import com.mygdx.game.Managers.MusicPlayer;\n");
+	_output(0, "%s", "import com.mygdx.game.Players.AI;\n");
+	_output(0, "%s", "import com.mygdx.game.Players.Player;\n");
+	_output(0, "%s", "import java.util.ArrayList;\n");
+	_output(0, "%s", "import java.util.Random;\n\n");
+	_output(0, "%s", "public class MyGdxGame extends ApplicationAdapter{\n");
+	_output(0, "%s", "    private SpriteBatch batch;\n");
+	_output(0, "%s", "    private BitmapFont font;\n");
+	_output(0, "%s", "    private ShapeRenderer shapeRenderer;\n");
+	_output(0, "%s", "    private Sound placementSound,highlightSound;\n");
+	_output(0, "%s", "    Texture backgroundTexture = null;\n");
+	_output(0, "%s", "    private Viewport viewport;\n");
+	_output(0, "%s", "    private Camera camera;\n");
+	_output(0, "%s", "    private Stage stage;\n\n");
+	_output(0, "%s", "    private GameManager gameManager;\n");
+	_output(0, "%s", "    private Player player;\n");
+	_output(0, "%s", "    private AI machine;\n");
+	_output(0, "%s", "    private boolean mouseOverHighlightedCard = false;\n\n");
+	_output(0, "%s", "    @Override\n");
+	_output(0, "%s", "    public void create() {\n");
+	_output(0, "%s", "        camera = new PerspectiveCamera();\n");
+	_output(0, "%s", "        viewport = new FitViewport(800, 480,camera);\n");
+	_output(0, "%s", "        stage = new Stage(viewport);\n");
+	_output(0, "%s", "        batch = new SpriteBatch();\n");
+	_output(0, "%s", "        shapeRenderer = new ShapeRenderer();\n");
+	_output(0, "%s", "        LoadRandomBackgroundImage();\n");
+	_output(0, "%s", "        LoadSounds();\n");
+	_output(0, "%s", "        font = new BitmapFont();\n");
+	_output(0, "%s", "        font.setColor(Color.WHITE);\n");
+	_output(0, "%s", "        MusicPlayer musicPlayer = new MusicPlayer();\n");
+	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
+	_output(0, "%s", "        musicPlayer.play();\n\n\n");
+>>>>>>> Stashed changes
 }
 
 /**
@@ -571,6 +593,7 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
+<<<<<<< Updated upstream
 	// fprintf(file,"=================================EPILOGUE========================================");
     // fprintf(file, "    private void LoadRandomBackgroundImage() {\n");
     // fprintf(file, "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
@@ -675,6 +698,142 @@ static void _generateEpilogue(void)
     // fprintf(file, "        }\n");
     // fprintf(file, "    }\n");
     // fprintf(file, "}\n");
+=======
+	_output(0, "%s", "\n\n        player = new Player(0, numbersOfCardsInHand);\n");
+	_output(0, "%s", "        machine = new AI(0, numbersOfCardsInHand);\n\n");
+	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
+	_output(0, "%s", "        gameManager.dealInitialCards(machine, numbersOfCardsInHand, deck);\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    @Override\n");
+	_output(0, "%s", "    public void render() {\n");
+	_output(0, "%s", "        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);\n");
+	_output(0, "%s", "        stage.draw();\n");
+	_output(0, "%s", "        // Draw player cards and Background using SpriteBatch\n");
+	_output(0, "%s", "        batch.begin();\n");
+	_output(0, "%s", "        if (backgroundTexture != null) {\n");
+	_output(0, "%s", "            Sprite backgroundSprite = new Sprite(backgroundTexture,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());\n");
+	_output(0, "%s", "            backgroundSprite.draw(batch);\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "        drawPlayerCardsBatch(player, 50, 0);\n");
+	_output(0, "%s", "        batch.end();\n");
+	_output(0, "%s", "        // Draw scores\n");
+	_output(0, "%s", "        batch.begin();\n");
+	_output(0, "%s", "        drawScores();\n");
+	_output(0, "%s", "        batch.end();\n\n");
+	_output(0, "%s", "        // Resaltar la carta bajo el mouse\n");
+	_output(0, "%s", "        highlightCardUnderMouse();\n\n");
+	_output(0, "%s", "        // Draw player cards using ShapeRenderer\n");
+	_output(0, "%s", "        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);\n");
+	_output(0, "%s", "        drawPlayerCardsShape(player, 50, Gdx.graphics.getHeight() - 450);\n");
+	_output(0, "%s", "        shapeRenderer.end();\n");
+	_output(0, "%s", "        float mouseX = Gdx.input.getX();\n");
+	_output(0, "%s", "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();\n");
+	_output(0, "%s", "        // Handle input for playing a round\n");
+	_output(0, "%s", "        if (Gdx.input.justTouched()) {\n\n");
+	_output(0, "%s", "            Card selectedCard = getSelectedCard(mouseX, mouseY);\n");
+	_output(0, "%s", "            if (selectedCard != null){\n");
+	_output(0, "%s", "                selectedCard.animateToPosition((float) viewport.getScreenX() /2, (float) viewport.getScreenY() /2,2f);\n");
+	_output(0, "%s", "                stage.addActor(selectedCard);\n");
+	_output(0, "%s", "                System.out.println(\"Pressed \" + selectedCard.toString());\n");
+	_output(0, "%s", "                placementSound.play(0.5f);\n");
+	_output(0, "%s", "                gameManager.playRound(selectedCard,player,machine);\n");
+	_output(0, "%s", "            }\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    @Override\n");
+	_output(0, "%s", "    public void resize(int width, int height) {\n");
+	_output(0, "%s", "        viewport.update(width, height, true);\n");
+	_output(0, "%s", "        for (Card card : player.getCardsInHand())\n");
+	_output(0, "%s", "            updateCardPosition(card);\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void updateCardPosition(Card card) {\n");
+	_output(0, "%s", "        float initialX = (viewport.getScreenX() - card.getWidth()) / 2f;\n");
+	_output(0, "%s", "        float initialY = 10; // bottom of the screen\n");
+	_output(0, "%s", "        card.setCardPosition(initialX, initialY);\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    //Esto puede ser un metodo abstracto que se crea en al GM\n");
+	_output(0, "%s", "    private boolean winGameCondition(Player player) {\n");
+	_output(0, "%s", "        return player.getScore() == 2;\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void LoadRandomBackgroundImage() {\n");
+	_output(0, "%s", "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
+	_output(0, "%s", "        if (folder.exists() && folder.isDirectory()) {\n");
+	_output(0, "%s", "            FileHandle[] backgrounds = folder.list();\n");
+	_output(0, "%s", "            if (backgrounds.length > 1) {\n");
+	_output(0, "%s", "                int index = new Random().nextInt(backgrounds.length);\n");
+	_output(0, "%s", "                backgroundTexture = new Texture(backgrounds[index]);\n");
+	_output(0, "%s", "            } else backgroundTexture = new Texture(backgrounds[0]);\n");
+	_output(0, "%s", "        } else {\n");
+	_output(0, "%s", "            Gdx.app.error(\"TextureManager\", \"Backgrounds directory is missing or not found.\");\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void LoadSounds() {\n");
+	_output(0, "%s", "        FileHandle SFXfolder = Gdx.files.internal(\"assets/Sounds/SFX\");\n");
+	_output(0, "%s", "        if (SFXfolder.exists() && SFXfolder.isDirectory()) {\n");
+	_output(0, "%s", "            placementSound = Gdx.audio.newSound(SFXfolder.child(\"card_impact_sfx.wav\"));\n");
+	_output(0, "%s", "            highlightSound = Gdx.audio.newSound(SFXfolder.child(\"card_highlight_sfx.wav\"));\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void highlightCardUnderMouse() {\n");
+	_output(0, "%s", "        float mouseX = Gdx.input.getX();\n");
+	_output(0, "%s", "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Invertir el eje Y\n\n");
+	_output(0, "%s", "        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);\n");
+	_output(0, "%s", "        shapeRenderer.setColor(Color.YELLOW); // Definir el color una vez fuera del bucle\n\n");
+	_output(0, "%s", "        boolean highlightFound = false;\n\n");
+	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
+	_output(0, "%s", "            if (card.isTouched(mouseX, mouseY)) {\n");
+	_output(0, "%s", "                card.highlightCard(shapeRenderer); // Resaltar la carta sin llamar a begin/end dentro del bucle\n");
+	_output(0, "%s", "                highlightFound = true;\n");
+	_output(0, "%s", "            }\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "        if (highlightFound && !mouseOverHighlightedCard && highlightSound != null) {\n");
+	_output(0, "%s", "            highlightSound.play(0.25f);\n");
+	_output(0, "%s", "            mouseOverHighlightedCard = true;\n");
+	_output(0, "%s", "        } else if (!highlightFound) {\n");
+	_output(0, "%s", "            mouseOverHighlightedCard = false;\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "        shapeRenderer.end();\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void drawPlayerCardsBatch(Player player, float startX, float startY) {\n");
+	_output(0, "%s", "        float cardSpacing = 20;\n");
+	_output(0, "%s", "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
+	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
+	_output(0, "%s", "            card.setCardPosition(currentX, startY);\n");
+	_output(0, "%s", "            card.drawCardBatch(batch, font);\n");
+	_output(0, "%s", "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void drawPlayerCardsShape(Player player, float startX, float startY) {\n");
+	_output(0, "%s", "        float cardSpacing = 20;\n");
+	_output(0, "%s", "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
+	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
+	_output(0, "%s", "            card.setCardPosition(currentX, startY);\n");
+	_output(0, "%s", "            //card.drawCardShape(shapeRenderer);\n");
+	_output(0, "%s", "            currentX += Card.CARD_WIDTH + cardSpacing;\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private Card getSelectedCard(float mouseX,float mouseY) {\n");
+	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
+	_output(0, "%s", "            if (card.isTouched(mouseX,mouseY)) return card;\n");
+	_output(0, "%s", "        }\n");
+	_output(0, "%s", "        return null;\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void drawScores() {\n");
+	_output(0, "%s", "        String playerScoreText = \"Player Score: \" + player.getScore();\n");
+	_output(0, "%s", "        String machineScoreText = \"Machine Score: \" + machine.getScore();\n");
+	_output(0, "%s", "        font.draw(batch, playerScoreText, 50, 50);\n");
+	_output(0, "%s", "        font.draw(batch, machineScoreText, 50, 100);\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    @Override\n");
+	_output(0, "%s", "    public void dispose() {\n");
+	_output(0, "%s", "        batch.dispose();\n");
+	_output(0, "%s", "        shapeRenderer.dispose();\n");
+	_output(0, "%s", "        font.dispose();\n");
+	_output(0, "%s", "    }\n");
+	_output(0, "%s", "}\n");
+>>>>>>> Stashed changes
 }
 
 /** PUBLIC FUNCTIONS */
