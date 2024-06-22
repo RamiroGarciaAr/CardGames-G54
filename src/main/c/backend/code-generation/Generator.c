@@ -229,7 +229,7 @@ static void _generateCardTypes(CardTypes * cardTypes){ //listo
 			_output(0, "%s", cardTypes->variable);
 			break;
 		case MULTIPLE_TYPE:
-			_output(0, "%s", cardTypes->variable1);
+			_output(0, "%s, ", cardTypes->variable1);
 			_generateCardTypes(cardTypes->cardType);
 			break;
 		default:
@@ -259,6 +259,7 @@ static void _generateNumbers(Numbers * numbers){
 static void _generateGetters(Getters * getters){
 	switch(getters->type){
 		case GETTER_LOSER:
+			break;
 		case GETTER_WINNER:
 			_output(0, "%s", getters->variable);
 			break;
@@ -271,14 +272,19 @@ static void _generateGetters(Getters * getters){
 static void _generateArithmetic(Arithmetic * arithmetic){ 
 	switch(arithmetic->type){
 		case ARIT_ADD:	
+			break;
 			// return '+';
 		case ARIT_DIV:
+			break;
 			// return '/';
 		case ARIT_MUL:
+			break;
 			// return '*';
 		case ARIT_SUB:
+			break;
 			// return '-';
 		case ARIT_MODULE:
+			break;
 			// return '%';
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
@@ -289,10 +295,13 @@ static void _generateArithmetic(Arithmetic * arithmetic){
 static void _generateAsignations(Asignations * asignations){ 
 	switch(asignations->type){
 		case ASIG_EQUAL:
+			break;
 			// return "=";
 		case ASIG_ADD_EQUAL:
+			break;
 			// return "+=";
 		case SUB_EQUAL:
+			break;
 			// return "-=";
 		default:
 			logError(_logger, "The specified asignations type is unknown: %d", asignations->type);
@@ -303,8 +312,10 @@ static void _generateAsignations(Asignations * asignations){
 static void _generatePmOne(PmOne * pmOne){ 
 	switch(pmOne->type){
 		case INCREASE:
+			break;
 			// return "++";
 		case DECREASE:
+			break;
 			// return "--";
 		default:
 			logError(_logger, "The specified pmOne type is unknown: %d", pmOne->type);
@@ -335,6 +346,7 @@ static void _generateStructures(Structures * structures){ //listo
 		case ELSE_STRUCTURE:
 			_output(1, "%s", "else{\n");
 			_generateInBrakets(structures->inBrakets2);
+			break;
 		default:
 			logError(_logger, "The specified structures type is unknown: %d", structures->type);
 			break;
@@ -396,17 +408,17 @@ static void _generateIfs(Ifs * ifs){
 			_generateInIf(ifs->rightInIf);
 			break;
 		case TIED_IF:
-			_output(0, "%s", ifs->tied? "true":"false");
+			_output(0, "%s", ifs->tied? "true" : "false");
 			break;	
 		default:
 			logError(_logger, "The specified ifs type is unknown: %d", ifs->type);
 			break;
 	}
 }
-
 static void _generateInIf(InIf * inIf){ //TODO
 	switch(inIf->type){
 		case TYPE_IF:
+			_output(0, "%s", "type");
 			_generateComparison(inIf->comparison1);
 			_output(0, "%s", inIf->variable);
 			break;
@@ -423,7 +435,6 @@ static void _generateInIf(InIf * inIf){ //TODO
 			break;
 	}
 }
-
 static void _generateComparison(Comparison * comparison){ //TODO
 	switch(comparison->type){
 		case COMP_GREATER:
@@ -434,9 +445,10 @@ static void _generateComparison(Comparison * comparison){ //TODO
 		case COMP_GREATER_OR_EQUAL:
 		case COMP_LOWER_OR_EQUAL:
 		case COMP_DIFERENT:
-		default:
 			break;
-		//IDEM A LOS ANTERIORES
+		default:
+			logError(_logger, "The specified comparison type is unknown: %d", comparison->type);
+			break;
 	}
 }
 
@@ -449,6 +461,31 @@ static void _generateAtomic(Atomic * atomic){ //TODO
 			break;
 	}
 }
+
+/**
+ * Converts and expression type to the proper character of the operation
+ * involved, or returns '\0' if that's not possible.
+ */
+//static const char _expressionTypeToCharacter(const ExpressionType type) {
+//	switch (type) {
+//		case ADDITION: return '+';
+//		case DIVISION: return '/';
+//		case MULTIPLICATION: return '*';
+//		case SUBTRACTION: return '-';
+//		default:
+//			logError(_logger, "The specified expression type cannot be converted into character: %d", type);
+//			return '\0';
+//	}
+//}
+
+/**
+ * Generates the output of a constant.
+ */
+//static void _generateConstant(const unsigned int indentationLevel, Constant * constant) {
+//	_output(indentationLevel, "%s", "[ $C$, circle, draw, black!20\n");
+//	_output(1 + indentationLevel, "%s%d%s", "[ $", constant->value, "$, circle, draw ]\n");
+//	_output(indentationLevel, "%s", "]\n");
+//}
 
 /**
  * Generates an indentation string for the specified level.
@@ -466,6 +503,7 @@ static void _output(const unsigned int indentationLevel, const char * const form
 	char * indentation = _indentation(indentationLevel);
 	char * effectiveFormat = concatenate(2, indentation, format);
 	vfprintf(stdout, effectiveFormat, arguments);
+	fflush(stdout);
 	free(effectiveFormat);
 	free(indentation);
 	va_end(arguments);
@@ -492,14 +530,13 @@ static void _generatePrologue(void)
 	_output(0, "%s", "import com.badlogic.gdx.scenes.scene2d.Stage;\n");
 	_output(0, "%s", "import com.badlogic.gdx.utils.viewport.FitViewport;\n");
 	_output(0, "%s", "import com.badlogic.gdx.utils.viewport.Viewport;\n");
-	_output(0, "%s", "import com.mygdx.game.Cards.Card;\n");
+	_output(0, "%s", "import com.mygdx.game.Cards.*;\n");
 	_output(0, "%s", "import com.mygdx.game.Cards.Colors;\n");
-	_output(0, "%s", "import com.mygdx.game.Cards.Deck;\n");
-	_output(0, "%s", "import com.mygdx.game.Cards.MoveCardsAction;\n");
 	_output(0, "%s", "import com.mygdx.game.Managers.MusicPlayer;\n");
 	_output(0, "%s", "import com.mygdx.game.Players.AI;\n");
 	_output(0, "%s", "import com.mygdx.game.Players.Player;\n");
 	_output(0, "%s", "import java.util.ArrayList;\n");
+	_output(0, "%s", "import java.util.Objects;\n");
 	_output(0, "%s", "import java.util.Random;\n\n");
 	_output(0, "%s", "public class MyGdxGame extends ApplicationAdapter{\n");
 	_output(0, "%s", "    private SpriteBatch batch;\n");
@@ -513,6 +550,8 @@ static void _generatePrologue(void)
 	_output(0, "%s", "    private GameManager gameManager;\n");
 	_output(0, "%s", "    private Player player;\n");
 	_output(0, "%s", "    private AI machine;\n");
+	_output(0, "%s", "    private int startingMachineScore=0;\n");
+	_output(0, "%s", "    private int startingPlayerScore=0;\n");
 	_output(0, "%s", "    private boolean mouseOverHighlightedCard = false;\n\n");
 	_output(0, "%s", "    @Override\n");
 	_output(0, "%s", "    public void create() {\n");
@@ -527,7 +566,8 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        font.setColor(Color.WHITE);\n");
 	_output(0, "%s", "        MusicPlayer musicPlayer = new MusicPlayer();\n");
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
-	_output(0, "%s", "        musicPlayer.play();\n\n\n");
+	_output(0, "%s", "        musicPlayer.play();\n");
+	_output(0, "%s", "        ArrayList<String> typeNames = new ArrayList<String>();\n\n\n");
 }
 
 /**
@@ -536,8 +576,8 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	_output(0, "%s", "\n\n        player = new Player(0, numbersOfCardsInHand);\n");
-	_output(0, "%s", "        machine = new AI(0, numbersOfCardsInHand);\n\n");
+	_output(0, "%s", "\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
+	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(machine, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "    }\n\n");
@@ -630,6 +670,10 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "            mouseOverHighlightedCard = false;\n");
 	_output(0, "%s", "        }\n");
 	_output(0, "%s", "        shapeRenderer.end();\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void StartingScore(int playerScore,int machineScore){\n");
+	_output(0, "%s", "        this.startingPlayerScore = playerScore;\n");
+	_output(0, "%s", "        this.startingMachineScore = machineScore;\n");
 	_output(0, "%s", "    }\n\n");
 	_output(0, "%s", "    private void drawPlayerCardsBatch(Player player, float startX, float startY) {\n");
 	_output(0, "%s", "        float cardSpacing = 20;\n");
