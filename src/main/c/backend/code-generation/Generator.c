@@ -340,14 +340,14 @@ static void _generateStructures(Structures * structures){
 			if(structures->conditional->inIf->type == TYPE_IF){
 				_generateIfs(structures->conditional);
 				TypeRelation(structures->conditional); 
-				_generateRules(structures->inBrakets);
+				_generateRules(structures->inBrakets->leftRules);
 				//_generateInBrakets(structures->inBrakets);
 				_output(1,"%s",");");
 			}else{
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);
 				_output(0, "%s", "){\n");
-				_generateInBrakets(structures->inBrakets->leftRules);
+				_generateInBrakets(structures->inBrakets);
 			}
 			break;
 		case ELIF_STRUCTURE:
