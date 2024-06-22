@@ -103,12 +103,16 @@ static void _generateRules(Rules * rules){
 				break;
 			case TIED_RULE:
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 				_generateBoolean(rules->tied);
 =======
 				_output(0, "%s", "tied = ");
 				_output(0, "%s", rules->tied? "true" : "false");
 >>>>>>> Stashed changes
+=======
+				_generateBoolean(rules->tied);
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 =======
 				_generateBoolean(rules->tied);
 >>>>>>> parent of 32fdf70 (Solved last generator errors)
@@ -507,7 +511,10 @@ static void _output(const unsigned int indentationLevel, const char * const form
 static void _generatePrologue(void) 
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 =======
 >>>>>>> parent of 32fdf70 (Solved last generator errors)
 	/*
@@ -541,6 +548,7 @@ static void _generatePrologue(void)
     fprintf(file, "    private boolean playerWon;\n");
     fprintf(file, "}\n");
 */
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	_output(0, "%s", "package com.mygdx.game;\n");
@@ -595,6 +603,8 @@ static void _generatePrologue(void)
 >>>>>>> Stashed changes
 =======
 >>>>>>> parent of 32fdf70 (Solved last generator errors)
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 }
 
 /**
@@ -604,7 +614,10 @@ static void _generatePrologue(void)
 static void _generateEpilogue(void) 
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 =======
 >>>>>>> parent of 32fdf70 (Solved last generator errors)
 	// fprintf(file,"=================================EPILOGUE========================================");
@@ -711,6 +724,7 @@ static void _generateEpilogue(void)
     // fprintf(file, "        }\n");
     // fprintf(file, "    }\n");
     // fprintf(file, "}\n");
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	_output(0, "%s", "\n\n        player = new Player(0, numbersOfCardsInHand);\n");
@@ -848,6 +862,8 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    }\n");
 	_output(0, "%s", "}\n");
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 32fdf70 (Solved last generator errors)
 =======
 >>>>>>> parent of 32fdf70 (Solved last generator errors)
 }
