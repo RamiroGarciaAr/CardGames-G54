@@ -1,5 +1,4 @@
 #include "BisonActions.h"
-#include "../../backend/semantic-analysis/symbolTable.h"
 
 /* MODULE INTERNAL STATE */
 
@@ -7,14 +6,12 @@ static Logger * _logger = NULL;
 
 void initializeBisonActionsModule() {
 	_logger = createLogger("BisonActions");
-	symbolTableInit();
 }
 
 void shutdownBisonActionsModule() {
 	if (_logger != NULL) {
 		destroyLogger(_logger);
 	}
-	symbolTableDestroy();
 }
 
 /** IMPORTED FUNCTIONS */
@@ -56,16 +53,6 @@ Block * BlockValueSemanticAction(char * variable, int constant, Rules * rules){
 	block->constant = constant;
 	block->rules = rules;
 	block->type = VALUE_BLOCK;
-	
-	struct key key;
-	key.varname = variable;
-
-	struct value value;
-	value.type = VAR_PLAYING; // decirle de que tipo es esto 
-	value.metadata.hasValue = true;
-
-	symbolTableInsert(&key, &value);
-	
 	return block;
 } 
 
@@ -287,6 +274,7 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard, Atomic * atomic
 Expression * ExpressionValueSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1,sizeof(Expression));
+	expression->type = EXPR_VALUE;
 	return expression;
 }
 

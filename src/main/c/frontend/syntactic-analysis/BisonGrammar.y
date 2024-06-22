@@ -11,6 +11,7 @@
 
 	int integer;
 	char * variable;
+	bool boolean;
 
 	Token token;
 
@@ -39,7 +40,6 @@
 	InIf * inIf;
 	Comparison * comparison;
 	Atomic * atomic;
-	bool boolean;
 }
 
 /**
