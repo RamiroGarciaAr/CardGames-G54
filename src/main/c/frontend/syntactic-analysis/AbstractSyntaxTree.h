@@ -70,8 +70,7 @@ enum ExpressionType {
 	EXPR_SUB,
 	EXPR_MODULE,
 	NUMBERS,
-	ATOMIC,
-	EXPR_VALUE
+	ATOMIC
 };
 
 enum BlockType {

@@ -287,7 +287,6 @@ Expression * ExpressionAtomicSemanticAction(UserCard * usercard, Atomic * atomic
 Expression * ExpressionValueSemanticAction(){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Expression * expression = calloc(1,sizeof(Expression));
-	expression->type = EXPR_VALUE;
 	return expression;
 }
 
