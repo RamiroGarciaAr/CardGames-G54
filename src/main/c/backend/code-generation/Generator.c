@@ -347,7 +347,7 @@ static void _generateStructures(Structures * structures){
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);
 				_output(0, "%s", "){\n");
-				_generateInBrakets(structures->inBrakets);
+				_generateInBrakets(structures->inBrakets->leftRules);
 			}
 			break;
 		case ELIF_STRUCTURE:
