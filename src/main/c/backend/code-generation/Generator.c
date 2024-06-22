@@ -338,6 +338,7 @@ static void _generateStructures(Structures * structures){
 		case IF_STRUCTURE:
 			if(structures->conditional->inIf->type == TYPE_IF){
 				TypeRelation(structures->conditional); 
+				_generateInBrakets(structures->inBrakets);
 			}else{
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);

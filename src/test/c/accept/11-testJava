@@ -16,7 +16,9 @@ ElementalClashRule for type Water, Fire, Earth:
     }
     if(type == Water){
         WinnerType(Earth)
-    }else{
+    }
+    else
+    {
         tied = true
     }
 
