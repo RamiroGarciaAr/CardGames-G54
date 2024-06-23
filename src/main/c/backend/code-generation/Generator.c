@@ -6,6 +6,8 @@ const char _indentationCharacter = ' ';
 const char _indentationSize = 4;
 static Logger * _logger = NULL;
 
+FILE * file;
+
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -320,22 +322,14 @@ static void _generatePmOne(PmOne * pmOne){
 			break;	
 	}
 }
-// if (type == Earth)
-void TypeRelation(Ifs * ifs){
-	_output(1, "%s", "gameManager.addTypeRelation();"); 
-}
 
 static void _generateStructures(Structures * structures){ //listo
 	switch(structures->type){
 		case IF_STRUCTURE:
-			//if(structures->conditional->inIf->type == TYPE_IF){
-			//	TypeRelation(structures->conditional); 
-			//}else{
-				_output(1, "%s", "if(");
-				_generateIfs(structures->conditional);
-				_output(0, "%s", "){\n");
-				_generateInBrakets(structures->inBrakets);
-			//}
+			_output(1, "%s", "if(");
+			_generateIfs(structures->conditional);
+			_output(0, "%s", "){\n");
+			_generateInBrakets(structures->inBrakets);
 			break;
 		case ELIF_STRUCTURE:
 			_output(1, "%s", "elif(");
@@ -424,11 +418,9 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){ //TODO
 	switch(inIf->type){
 		case TYPE_IF:
-			_output(0, "%s", "typeName");
+			_output(0, "%s", "type");
 			_generateComparison(inIf->comparison1);
-			_output(0, "%s", "\"");
 			_output(0, "%s", inIf->variable);
-			_output(0, "%s", "\"");
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
 			_output(0, "%s", "SpecialCardsOnPlay()");
