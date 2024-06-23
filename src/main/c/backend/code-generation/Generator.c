@@ -6,8 +6,6 @@ const char _indentationCharacter = ' ';
 const char _indentationSize = 4;
 static Logger * _logger = NULL;
 
-char * strType = "";
-
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -36,7 +34,6 @@ static void _generateBlock(Block * block){
 			_generateRules(block->rules);
 			break;
 		case TYPE_BLOCK:
-			//_output(1, "%s" "//");
 			_output(0, "%s", block->variable1);
 			_output(0, "%s", " for type ");
 			_generateCardTypes(block->cardTypes);
@@ -44,7 +41,6 @@ static void _generateBlock(Block * block){
 			_generateRules(block->rules1);
 			break;
 		case GAME_BLOCK:
-			//_output(1, "%s" "//");
 			_output(0, "%s", block->variable2);
 			_output(0, "%s", " game has:\n");
 			_generateGameFunction(block->gameFunction);
@@ -120,7 +116,7 @@ static void _generateRules(Rules * rules){
 	}
 }
 
-static void _generateExpression(Expression * expression){
+static void _generateExpression(Expression * expression){ //listo
 	switch(expression->type){
 		case EXPR_ADD:
 		case EXPR_DIV:
@@ -146,7 +142,7 @@ static void _generateExpression(Expression * expression){
 	}
 }
 
-static void _generateUserRules(UserRules * userRules){
+static void _generateUserRules(UserRules * userRules){ //listo
 	switch(userRules->type){
 		case NUMBER_ASSIG:
 			_generateUserScore(userRules->userScore);
@@ -185,31 +181,31 @@ static void _generateUserRules(UserRules * userRules){
 	}
 }
 
-static void _generateUserScore(UserScore * userScore){
+static void _generateUserScore(UserScore * userScore){ //listo
 	_generateUser(userScore->user);
 }
 
 static void _generateGameFunction(GameFunction * gameFunction){
-	_output(1, "%s", "int numbersOnDeck = ");			//OK
-	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
-	_output(0, "%s", ";\n\n");							//OK
-	_output(1, "%s", "String[] typeNames = {");		//OK
-	_generateCardTypes(gameFunction->cardTypes);	//OK
-	_output(0, "%s", "};\n\n");						//OK
-	_output(1, "%s", "int numbersOfCardsInHand = ");	//OK
-	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
-	_output(0, "%s", ";\n\n");							//OK
-	_output(1, "%s", "int rounds = ");			//OK
-	_output(0, "%d", gameFunction->cteRounds);	//OK
-	_output(0, "%s", ";\n");					//OK
-	_output(1, "%s", "int roundTimer = ");			//OK
-	_output(0, "%d", gameFunction->cteRoundTimer);	//OK	
-	_output(0, "%s", ";\n");						//OK
-	_output(1, "%s", "StartingScore(");						//OK
-	_output(0, "%d", gameFunction->cteUserStartingScore);	//OK	
-	_output(0, "%s", ", ");									//OK
-	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
-	_output(0, "%s", ");\n");								//OK
+	_output(1, "%s", "NumbersOnDeck(");
+	_output(0, "%d", gameFunction->cteNumbersOnDeck);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "TypesOfCards(");
+	_generateCardTypes(gameFunction->cardTypes);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "CardsByPlayer(");
+	_output(0, "%d", gameFunction->cteCardsByPlayers);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "Rounds(");
+	_output(0, "%d", gameFunction->cteRounds);
+	_output(0, "%s", ")\n");
+	_output(1, "%s", "RoundsTimer(");
+	_output(0, "%d", gameFunction->cteRoundTimer);	
+	_output(0, "%s", ")\n");	
+	_output(1, "%s", "StartingScore(");
+	_output(0, "%d", gameFunction->cteUserStartingScore);	
+	_output(0, "%s", ", ");
+	_output(0, "%d", gameFunction->cteMachineStartingScore);
+	_output(0, "%s", ")\n");
 	_output(1, "%s", "WinRoundCondition(");
 	_output(0, "%s", gameFunction->varWinRoundCondition);
 	_output(0, "%s", ")\n");
@@ -228,14 +224,10 @@ static void _generateGameFunction(GameFunction * gameFunction){
 static void _generateCardTypes(CardTypes * cardTypes){ //listo
 	switch(cardTypes->type){
 		case ONE_TYPE:
-			_output(0, "%s", "\"");
 			_output(0, "%s", cardTypes->variable);
-			_output(0, "%s", "\"");
 			break;
-		case MULTIPLE_TYPE: 
-			_output(0, "%s", "\"");
-			_output(0, "%s", cardTypes->variable1);
-			_output(0, "%s", "\", ");
+		case MULTIPLE_TYPE:
+			_output(0, "%s, ", cardTypes->variable1);
 			_generateCardTypes(cardTypes->cardType);
 			break;
 		default:
@@ -330,25 +322,20 @@ static void _generatePmOne(PmOne * pmOne){
 }
 // if (type == Earth)
 void TypeRelation(Ifs * ifs){
-	_output(1, "%s", "gameManager.addTypeRelation("); 
-	_output(1, "%s,", strType); 
+	_output(1, "%s", "gameManager.addTypeRelation();"); 
 }
 
-static void _generateStructures(Structures * structures){
+static void _generateStructures(Structures * structures){ //listo
 	switch(structures->type){
 		case IF_STRUCTURE:
-			if(structures->conditional->inIf->type == TYPE_IF){
-				_generateIfs(structures->conditional);
-				TypeRelation(structures->conditional); 
-				_generateRules(structures->inBrakets->leftRules);
-				//_generateInBrakets(structures->inBrakets);
-				_output(1,"%s",");");
-			}else{
+			//if(structures->conditional->inIf->type == TYPE_IF){
+			//	TypeRelation(structures->conditional); 
+			//}else{
 				_output(1, "%s", "if(");
 				_generateIfs(structures->conditional);
 				_output(0, "%s", "){\n");
 				_generateInBrakets(structures->inBrakets);
-			}
+			//}
 			break;
 		case ELIF_STRUCTURE:
 			_output(1, "%s", "elif(");
@@ -372,7 +359,7 @@ static void _generateStructures(Structures * structures){
 	}
 }
 
-static void _generateInBrakets(InBrakets * inBrakets){
+static void _generateInBrakets(InBrakets * inBrakets){ //listo
 	_generateRules(inBrakets->leftRules);
 	_output(1, "%s", "\n}\n");
 	_generateRules(inBrakets->rightRules);
@@ -397,7 +384,7 @@ static void _generateDeck(Deck * deck){
 	_output(0, "%s", "Deck");
 }
 
-static void _generateUser(User * user){
+static void _generateUser(User * user){ //TODO
 	switch(user->type){
 		case USER_PLAYER:
 			_output(0, "%s", "player");
@@ -434,15 +421,14 @@ static void _generateIfs(Ifs * ifs){
 			break;
 	}
 }
-static void _generateInIf(InIf * inIf){
-	switch(inIf->type){ //if(type xxx varable)
+static void _generateInIf(InIf * inIf){ //TODO
+	switch(inIf->type){
 		case TYPE_IF:
-			strType = inIf->variable;
-			//_output(0, "%s", "typeName");
-			//_generateComparison(inIf->comparison1);
-			//_output(0, "%s", "\"");
-			//_output(0, "%s", inIf->variable);
-			//_output(0, "%s", "\"");
+			_output(0, "%s", "typeName");
+			_generateComparison(inIf->comparison1);
+			_output(0, "%s", "\"");
+			_output(0, "%s", inIf->variable);
+			_output(0, "%s", "\"");
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
 			_output(0, "%s", "SpecialCardsOnPlay()");
@@ -457,8 +443,7 @@ static void _generateInIf(InIf * inIf){
 			break;
 	}
 }
-
-static void _generateComparison(Comparison * comparison){
+static void _generateComparison(Comparison * comparison){ //TODO
 	switch(comparison->type){
 		case COMP_GREATER:
 		case COMP_LOWER:
@@ -475,7 +460,7 @@ static void _generateComparison(Comparison * comparison){
 	}
 }
 
-static void _generateAtomic(Atomic * atomic){
+static void _generateAtomic(Atomic * atomic){ //TODO
 	switch(atomic->type){
 		case ATOMIC_VALUE:
 		case ATOMIC_TYPE:
@@ -590,7 +575,7 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        MusicPlayer musicPlayer = new MusicPlayer();\n");
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
 	_output(0, "%s", "        musicPlayer.play();\n");
-	_output(0,"%s","=======================================================================YOUR CODE STARTS HERE==============================================================\n");
+	_output(0, "%s", "        ArrayList<String> typeNames = new ArrayList<String>();\n\n\n");
 }
 
 /**
@@ -599,7 +584,6 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	_output(0,"%s","=======================================================================YOUR CODE ENDS HERE==============================================================");
 	_output(0, "%s", "\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
