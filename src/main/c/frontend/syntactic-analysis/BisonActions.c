@@ -503,11 +503,12 @@ Rules * RoundBordersDesignSemanticAction(int constant, Rules * rule){
 	return rules;
 }
 
-Rules * ColorBordersDesignSemanticAction(char * variable, Rules * rule){
+Rules * ColorBordersDesignSemanticAction(char * variable2, char * variable3, Rules * rule){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Rules * rules = calloc(1, sizeof(Rules));
-	rules->variable = variable;
-	rules->rule3 = rule;
+	rules->variable2 = variable2;
+	rules->variable3 = variable3;
+	rules->rule6 = rule;
 	rules->type = COLOR_BORDERS_DESIGN;
 	return rules;
 }

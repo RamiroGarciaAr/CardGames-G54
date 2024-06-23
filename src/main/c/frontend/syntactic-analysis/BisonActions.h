@@ -72,7 +72,7 @@ InIf * InIfComparisonExpressionSemanticAction(Expression * leftExpression, Compa
 Comparison * ComparisonSemanticAction(ComparisonType type);
 Atomic * AtomicSemanticAction(AtomicType type);
 Rules * RoundBordersDesignSemanticAction(int constant, Rules * rule);
-Rules * ColorBordersDesignSemanticAction(char * variable, Rules * rule);
+Rules * ColorBordersDesignSemanticAction(char * variable2, char * variable3, Rules * rule);
 Rules * BackColorDesignSemanticAction(char * variable, Rules * rule);
 
 #endif

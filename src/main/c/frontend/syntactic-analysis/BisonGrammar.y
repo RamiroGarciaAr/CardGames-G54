@@ -220,7 +220,7 @@ rules: structures                                                               
     | WINNER_TYPE OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5, $7); }
     | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
 	| ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS rules	    				   { $$ = RoundBordersDesignSemanticAction($3, $5); }
-	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules						   { $$ = ColorBordersDesignSemanticAction($3, $5); }
+	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules						   { $$ = ColorBordersDesignSemanticAction($3, $5, $7); }
 	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules					   { $$ = BackColorDesignSemanticAction($3, $5); }
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
     | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }

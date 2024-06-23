@@ -47,6 +47,7 @@ static void _generateBlock(Block * block){
 			break;
 		case DESIGN_BLOCK:
 			_output(0, "%s", block->variable3);
+			_output(0, "%s", " design has:\n");
 			_generateRules(block->rules3);
 			break;
 		case RULE_BLOCK:
@@ -82,23 +83,33 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule1);
 				break;
 			case RULE_RESTOCK_DECK:
+				_output(1, "%s", "RestockDeck()\n");
+				_generateRules(rules->rule2);
+				break;
 			case RULE_WIN_GAME:
 			case RULE_ACTIVATE_SPECIAL_CARDS:
-				_output(1, "%s", "ActivateSpecialCards()");
+				_output(1, "%s", "ActivateSpecialCards()\n");
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WINNER_TYPE:
-				_output(0, "%s", "gameManager.addTypeRelaton(\"");
+				_output(1, "%s", "gameManager.addTypeRelation(\"");
 				_output(0, "%s", rules->variable2);
-				_output(0, "%s", ", \"");
+				_output(0, "%s", "\", \"");
 				_output(0, "%s", rules->variable3);
-				_output(0, "%s", "\");");
+				_output(0, "%s", "\");\n");
 				_generateRules(rules->rule6);
 				break;
 			case ROUND_BORDERS_DESIGN:
 				//completar
 				break;
 			case COLOR_BORDERS_DESIGN:
+				_output(1, "%s", "deck.assignColorToType(\"");
+				_output(0, "%s", rules->variable2);
+				_output(0, "%s", "\", Colors.");
+				_output(0, "%s", rules->variable3);
+				_output(0, "%s", ", true);\n");
+				_generateRules(rules->rule6);
+				break;
 			case BACKGROUND_COLOR_DESIGN:
 				//completar
 				break;
@@ -192,13 +203,13 @@ static void _generateUserScore(UserScore * userScore){
 static void _generateGameFunction(GameFunction * gameFunction){
 	_output(1, "%s", "numbersOnDeck = ");			//OK
 	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
-	_output(0, "%s", ";\n\n");							//OK
+	_output(0, "%s", ";\n");							//OK
 	_output(1, "%s", "String[] typeNames = {");		//OK
 	_generateCardTypes(gameFunction->cardTypes);	//OK
-	_output(0, "%s", "};\n\n");						//OK
+	_output(0, "%s", "};\n");						//OK
 	_output(1, "%s", "numbersOfCardsInHand = ");	//OK
 	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
-	_output(0, "%s", ";\n\n");							//OK
+	_output(0, "%s", ";\n");							//OK
 	_output(1, "%s", "int rounds = ");			//OK
 	_output(0, "%d", gameFunction->cteRounds);	//OK
 	_output(0, "%s", ";\n");					//OK
@@ -210,19 +221,21 @@ static void _generateGameFunction(GameFunction * gameFunction){
 	_output(0, "%s", ", ");									//OK
 	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
 	_output(0, "%s", ");\n");								//OK
-	_output(1, "%s", "WinRoundCondition(");
+	_output(0, "%s", "WinRoundCondition(");
 	_output(0, "%s", gameFunction->varWinRoundCondition);
 	_output(0, "%s", ")\n");
-	_output(1, "%s", "WinGameCondition(");	
+	_output(0, "%s", "WinGameCondition(");	
 	_output(0, "%s", gameFunction->varWinGameCondition);	
 	_output(0, "%s", ")\n");
-	_output(1, "%s", "CardsDesign(");
+	_output(0, "%s", "CardsDesign(");
 	_output(0, "%s", gameFunction->varCardDesign);
 	_output(0, "%s", ")\n");	
-	_output(1, "%s", "BackgroundDesign(");
+	_output(0, "%s", "BackgroundDesign(");
 	_output(0, "%s", gameFunction->varBackDesign);	
 	_output(0, "%s", ")\n");
-	_output(0, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);");
+	_output(1, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); //OK
+	_output(1, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer);\n");
+	_output(1, "%s", "deck.generateDeck();\n");
 	_generateBlock(gameFunction->block); 
 }
 
