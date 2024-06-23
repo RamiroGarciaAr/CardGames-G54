@@ -6,10 +6,6 @@ const char _indentationCharacter = ' ';
 const char _indentationSize = 4;
 static Logger * _logger = NULL;
 
-FILE * file;
-
-char * strType = "";
-
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -124,7 +120,7 @@ static void _generateRules(Rules * rules){
 	}
 }
 
-static void _generateExpression(Expression * expression){ //listo
+static void _generateExpression(Expression * expression){
 	switch(expression->type){
 		case EXPR_ADD:
 		case EXPR_DIV:
@@ -150,7 +146,7 @@ static void _generateExpression(Expression * expression){ //listo
 	}
 }
 
-static void _generateUserRules(UserRules * userRules){ //listo
+static void _generateUserRules(UserRules * userRules){
 	switch(userRules->type){
 		case NUMBER_ASSIG:
 			_generateUserScore(userRules->userScore);
@@ -189,7 +185,7 @@ static void _generateUserRules(UserRules * userRules){ //listo
 	}
 }
 
-static void _generateUserScore(UserScore * userScore){ //listo
+static void _generateUserScore(UserScore * userScore){
 	_generateUser(userScore->user);
 }
 
@@ -341,7 +337,7 @@ static void _generatePmOne(PmOne * pmOne){
 //  RobarCarta(water) -> deck.draw()
 //}
 
-static void _generateStructures(Structures * structures){ //listo
+static void _generateStructures(Structures * structures){
 	switch(structures->type){
 		case IF_STRUCTURE:
 			_output(1, "%s", "if(");
@@ -371,7 +367,7 @@ static void _generateStructures(Structures * structures){ //listo
 	}
 }
 
-static void _generateInBrakets(InBrakets * inBrakets){ //listo
+static void _generateInBrakets(InBrakets * inBrakets){
 	_generateRules(inBrakets->leftRules);
 	_output(1, "%s", "\n}\n");
 	_generateRules(inBrakets->rightRules);
@@ -396,7 +392,7 @@ static void _generateDeck(Deck * deck){
 	_output(0, "%s", "Deck");
 }
 
-static void _generateUser(User * user){ //TODO
+static void _generateUser(User * user){
 	switch(user->type){
 		case USER_PLAYER:
 			_output(0, "%s", "player");
@@ -434,13 +430,12 @@ static void _generateIfs(Ifs * ifs){
 	}
 }
 
-static void _generateInIf(InIf * inIf){ //TODO
+static void _generateInIf(InIf * inIf){
 	switch(inIf->type){
 		case TYPE_IF:
-			strType = inIf->variable;
-			//_output(0, "%s", "type");
-			//_generateComparison(inIf->comparison1);
-			//_output(0, "%s", inIf->variable);
+			_output(0, "%s", "type");
+			_generateComparison(inIf->comparison1);
+			_output(0, "%s", inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
 			_output(0, "%s", "SpecialCardsOnPlay()");
@@ -455,7 +450,7 @@ static void _generateInIf(InIf * inIf){ //TODO
 			break;
 	}
 }
-static void _generateComparison(Comparison * comparison){ //TODO
+static void _generateComparison(Comparison * comparison){
 	switch(comparison->type){
 		case COMP_GREATER:
 		case COMP_LOWER:
@@ -472,7 +467,7 @@ static void _generateComparison(Comparison * comparison){ //TODO
 	}
 }
 
-static void _generateAtomic(Atomic * atomic){ //TODO
+static void _generateAtomic(Atomic * atomic){
 	switch(atomic->type){
 		case ATOMIC_VALUE:
 		case ATOMIC_TYPE:
