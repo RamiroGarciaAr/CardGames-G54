@@ -299,6 +299,11 @@ struct Rules {
             char * variable;
             Rules * rule3;
         };
+		struct {
+            char * variable2;
+			char * variable3;
+            Rules * rule6;
+        };
 		struct{
 			int constant2;
 			Rules * rule5;

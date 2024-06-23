@@ -33,7 +33,7 @@ Rules * RuleMoveCardsSemanticAction(HandRef * leftHandRef, HandRef * rightHandRe
 Rules * RuleLookAtSemanticAction(HandRef * handRef, int constant, Rules * rule);
 Rules * RuleRestockDeckSemanticAction(Rules * rule);
 Rules * RuleWinGameSemanticAction(Rules * rule);
-Rules * RuleWinnerTypeSemanticAction(char * variable, Rules * rule);
+Rules * RuleWinnerTypeSemanticAction(char * variable2, char * variable3, Rules * rule);
 Rules * RuleActivateSpecialCardsSemanticAction(Rules * rule);
 Rules * RuleUserSemanticAction(UserRules * userRules);
 Rules * RuleTiedSemanticAction(bool boolean, Rules * rule);

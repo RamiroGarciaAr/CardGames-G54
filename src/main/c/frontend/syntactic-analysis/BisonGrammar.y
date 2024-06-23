@@ -217,7 +217,7 @@ rules: structures                                                               
     | LOOK_AT OPEN_PARENTHESIS handRef COMMA INTEGER CLOSE_PARENTHESIS rules                   { $$ = RuleLookAtSemanticAction($3, $5, $7); }
     | RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                    { $$ = RuleRestockDeckSemanticAction($4); }
     | WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                             { $$ = RuleWinGameSemanticAction($5); }
-    | WINNER_TYPE OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5); }
+    | WINNER_TYPE OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5, $7); }
     | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
 	| ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS rules	    				   { $$ = RoundBordersDesignSemanticAction($3, $5); }
 	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules						   { $$ = ColorBordersDesignSemanticAction($3, $5); }

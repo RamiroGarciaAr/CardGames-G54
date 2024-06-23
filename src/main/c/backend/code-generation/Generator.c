@@ -92,8 +92,12 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WINNER_TYPE:
-				_output(0, "%s", rules->variable);
-				_generateRules(rules->rule3);
+				_output(0, "%s", "gameManager.addTypeRelaton(\"");
+				_output(0, "%s", rules->variable2);
+				_output(0, "%s", ", \"");
+				_output(0, "%s", rules->variable3);
+				_output(0, "%s", "\");");
+				_generateRules(rules->rule6);
 				break;
 			case ROUND_BORDERS_DESIGN:
 				//completar
@@ -190,26 +194,26 @@ static void _generateUserScore(UserScore * userScore){ //listo
 }
 
 static void _generateGameFunction(GameFunction * gameFunction){
-	_output(1, "%s", "NumbersOnDeck(");
-	_output(0, "%d", gameFunction->cteNumbersOnDeck);
-	_output(0, "%s", ")\n");
-	_output(1, "%s", "TypesOfCards(");
-	_generateCardTypes(gameFunction->cardTypes);
-	_output(0, "%s", ")\n");
-	_output(1, "%s", "CardsByPlayer(");
-	_output(0, "%d", gameFunction->cteCardsByPlayers);
-	_output(0, "%s", ")\n");
-	_output(1, "%s", "Rounds(");
-	_output(0, "%d", gameFunction->cteRounds);
-	_output(0, "%s", ")\n");
-	_output(1, "%s", "RoundsTimer(");
-	_output(0, "%d", gameFunction->cteRoundTimer);	
-	_output(0, "%s", ")\n");	
-	_output(1, "%s", "StartingScore(");
-	_output(0, "%d", gameFunction->cteUserStartingScore);	
-	_output(0, "%s", ", ");
-	_output(0, "%d", gameFunction->cteMachineStartingScore);
-	_output(0, "%s", ")\n");
+	_output(1, "%s", "int numbersOnDeck = ");			//OK
+	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
+	_output(0, "%s", ";\n\n");							//OK
+	_output(1, "%s", "String[] typeNames = {");		//OK
+	_generateCardTypes(gameFunction->cardTypes);	//OK
+	_output(0, "%s", "};\n\n");						//OK
+	_output(1, "%s", "int numbersOfCardsInHand = ");	//OK
+	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
+	_output(0, "%s", ";\n\n");							//OK
+	_output(1, "%s", "int rounds = ");			//OK
+	_output(0, "%d", gameFunction->cteRounds);	//OK
+	_output(0, "%s", ";\n");					//OK
+	_output(1, "%s", "int roundTimer = ");			//OK
+	_output(0, "%d", gameFunction->cteRoundTimer);	//OK	
+	_output(0, "%s", ";\n");						//OK
+	_output(1, "%s", "StartingScore(");						//OK
+	_output(0, "%d", gameFunction->cteUserStartingScore);	//OK	
+	_output(0, "%s", ", ");									//OK
+	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
+	_output(0, "%s", ");\n");								//OK
 	_output(1, "%s", "WinRoundCondition(");
 	_output(0, "%s", gameFunction->varWinRoundCondition);
 	_output(0, "%s", ")\n");
@@ -228,10 +232,14 @@ static void _generateGameFunction(GameFunction * gameFunction){
 static void _generateCardTypes(CardTypes * cardTypes){ //listo
 	switch(cardTypes->type){
 		case ONE_TYPE:
+			_output(0, "%s", "\"");
 			_output(0, "%s", cardTypes->variable);
+			_output(0, "%s", "\"");
 			break;
 		case MULTIPLE_TYPE:
-			_output(0, "%s, ", cardTypes->variable1);
+			_output(0, "%s", "\"");
+			_output(0, "%s", cardTypes->variable1);
+			_output(0, "%s", "\", ");
 			_generateCardTypes(cardTypes->cardType);
 			break;
 		default:
@@ -580,6 +588,7 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
 	_output(0, "%s", "        musicPlayer.play();\n");
 	_output(0, "%s", "        ArrayList<String> typeNames = new ArrayList<String>();\n\n\n");
+	_output(0, "%s", "=======================================================================YOUR CODE STARTS HERE==============================================================\n");
 }
 
 /**
@@ -588,6 +597,7 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
+	_output(0,"%s","=======================================================================YOUR CODE ENDS HERE==============================================================\n");
 	_output(0, "%s", "\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");

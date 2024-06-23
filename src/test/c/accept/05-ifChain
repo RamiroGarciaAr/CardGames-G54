@@ -1,8 +1,8 @@
 ElementalClashRule for type Water, Fire, Earth: 
     if(type == Earth){
-        WinnerType(Fire)
+        WinnerType(Fire, Earth)
     }elif(type == Water){
-        WinnerType(Earth)
+        WinnerType(Earth, Water)
     }else{
         tied = true
     }
