@@ -41,16 +41,19 @@ static void _generateBlock(Block * block){
 			_generateRules(block->rules1);
 			break;
 		case GAME_BLOCK:
+			_output(0, "%s", "//");
 			_output(0, "%s", block->variable2);
 			_output(0, "%s", " game has:\n");
 			_generateGameFunction(block->gameFunction);
 			break;
 		case DESIGN_BLOCK:
+			_output(0, "%s", "//");
 			_output(0, "%s", block->variable3);
 			_output(0, "%s", " design has:\n");
 			_generateRules(block->rules3);
 			break;
 		case RULE_BLOCK:
+			_output(0, "%s", "//");
 			_output(0, "%s", block->variable4);
 			_output(0, "%s", " for game:\n");
 			_generateRules(block->rules2);
@@ -221,16 +224,16 @@ static void _generateGameFunction(GameFunction * gameFunction){
 	_output(0, "%s", ", ");									//OK
 	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
 	_output(0, "%s", ");\n");								//OK
-	_output(0, "%s", "WinRoundCondition(");
+	_output(0, "%s", "//WinRoundCondition(");
 	_output(0, "%s", gameFunction->varWinRoundCondition);
 	_output(0, "%s", ")\n");
-	_output(0, "%s", "WinGameCondition(");	
+	_output(0, "%s", "//WinGameCondition(");	
 	_output(0, "%s", gameFunction->varWinGameCondition);	
 	_output(0, "%s", ")\n");
-	_output(0, "%s", "CardsDesign(");
+	_output(0, "%s", "//CardsDesign(");
 	_output(0, "%s", gameFunction->varCardDesign);
 	_output(0, "%s", ")\n");	
-	_output(0, "%s", "BackgroundDesign(");
+	_output(0, "%s", "//BackgroundDesign(");
 	_output(0, "%s", gameFunction->varBackDesign);	
 	_output(0, "%s", ")\n");
 	_output(1, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); //OK
@@ -581,7 +584,9 @@ static void _generatePrologue(void)
 	_output(0, "%s", "    private AI machine;\n");
 	_output(0, "%s", "    private int startingMachineScore=0;\n");
 	_output(0, "%s", "    private int startingPlayerScore=0;\n");
-	_output(0, "%s", "    private boolean mouseOverHighlightedCard = false;\n\n");
+	_output(0, "%s", "    private boolean mouseOverHighlightedCard = false;\n");
+	_output(0, "%s", "    private int numbersOnDeck = -1;\n");
+	_output(0, "%s", "    private int numbersOfCardsInHand = -1;\n\n");
 	_output(0, "%s", "    @Override\n");
 	_output(0, "%s", "    public void create() {\n");
 	_output(0, "%s", "        camera = new PerspectiveCamera();\n");
@@ -596,8 +601,6 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        MusicPlayer musicPlayer = new MusicPlayer();\n");
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
 	_output(0, "%s", "        musicPlayer.play();\n");
-	_output(0, "%s", "        ArrayList<String> typeNames = new ArrayList<String>();\n\n\n");
-	_output(0, "%s", "=======================================================================YOUR CODE STARTS HERE==============================================================\n");
 }
 
 /**
@@ -606,9 +609,8 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	_output(0,"%s","=======================================================================YOUR CODE ENDS HERE==============================================================\n");
-	_output(0, "%s", "\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
-	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n\n");
+	_output(0, "%s", "        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
+	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(machine, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "    }\n\n");
@@ -637,7 +639,7 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "        float mouseX = Gdx.input.getX();\n");
 	_output(0, "%s", "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();\n");
 	_output(0, "%s", "        // Handle input for playing a round\n");
-	_output(0, "%s", "        if (Gdx.input.justTouched()) {\n\n");
+	_output(0, "%s", "        if (Gdx.input.justTouched()) {\n");
 	_output(0, "%s", "            Card selectedCard = getSelectedCard(mouseX, mouseY);\n");
 	_output(0, "%s", "            if (selectedCard != null){\n");
 	_output(0, "%s", "                selectedCard.animateToPosition((float) viewport.getScreenX() /2, (float) viewport.getScreenY() /2,2f);\n");
@@ -684,10 +686,10 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    }\n\n");
 	_output(0, "%s", "    private void highlightCardUnderMouse() {\n");
 	_output(0, "%s", "        float mouseX = Gdx.input.getX();\n");
-	_output(0, "%s", "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Invertir el eje Y\n\n");
+	_output(0, "%s", "        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); // Invertir el eje Y\n");
 	_output(0, "%s", "        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);\n");
-	_output(0, "%s", "        shapeRenderer.setColor(Color.YELLOW); // Definir el color una vez fuera del bucle\n\n");
-	_output(0, "%s", "        boolean highlightFound = false;\n\n");
+	_output(0, "%s", "        shapeRenderer.setColor(Color.YELLOW); // Definir el color una vez fuera del bucle\n");
+	_output(0, "%s", "        boolean highlightFound = false;\n");
 	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
 	_output(0, "%s", "            if (card.isTouched(mouseX, mouseY)) {\n");
 	_output(0, "%s", "                card.highlightCard(shapeRenderer); // Resaltar la carta sin llamar a begin/end dentro del bucle\n");
@@ -709,7 +711,7 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    private void drawPlayerCardsBatch(Player player, float startX, float startY) {\n");
 	_output(0, "%s", "        float cardSpacing = 20;\n");
 	_output(0, "%s", "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
-	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n");
 	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
 	_output(0, "%s", "            card.setCardPosition(currentX, startY);\n");
 	_output(0, "%s", "            card.drawCardBatch(batch, font);\n");
@@ -719,7 +721,7 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    private void drawPlayerCardsShape(Player player, float startX, float startY) {\n");
 	_output(0, "%s", "        float cardSpacing = 20;\n");
 	_output(0, "%s", "        float totalWidth = player.getCardsInHand().size() * (Card.CARD_WIDTH + cardSpacing) - cardSpacing;\n");
-	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n\n");
+	_output(0, "%s", "        float currentX = startX + (Gdx.graphics.getWidth() - totalWidth) / 2;\n");
 	_output(0, "%s", "        for (Card card : player.getCardsInHand()) {\n");
 	_output(0, "%s", "            card.setCardPosition(currentX, startY);\n");
 	_output(0, "%s", "            //card.drawCardShape(shapeRenderer);\n");
@@ -752,9 +754,9 @@ static void _generateEpilogue(void)
 void generate(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	//file = fopen("MyGdxGame.java", "w");
-	//_generatePrologue();
+	_generatePrologue();
 	_generateProgram(compilerState->abstractSyntaxtTree);
-	//_generateEpilogue();
+	_generateEpilogue();
 	//fclose(file);
 	logDebugging(_logger, "Generation is done.");
 }
