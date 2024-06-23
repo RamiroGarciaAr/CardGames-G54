@@ -190,13 +190,13 @@ static void _generateUserScore(UserScore * userScore){
 }
 
 static void _generateGameFunction(GameFunction * gameFunction){
-	_output(1, "%s", "int numbersOnDeck = ");			//OK
+	_output(1, "%s", "numbersOnDeck = ");			//OK
 	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
 	_output(0, "%s", ";\n\n");							//OK
 	_output(1, "%s", "String[] typeNames = {");		//OK
 	_generateCardTypes(gameFunction->cardTypes);	//OK
 	_output(0, "%s", "};\n\n");						//OK
-	_output(1, "%s", "int numbersOfCardsInHand = ");	//OK
+	_output(1, "%s", "numbersOfCardsInHand = ");	//OK
 	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
 	_output(0, "%s", ";\n\n");							//OK
 	_output(1, "%s", "int rounds = ");			//OK
@@ -222,6 +222,7 @@ static void _generateGameFunction(GameFunction * gameFunction){
 	_output(1, "%s", "BackgroundDesign(");
 	_output(0, "%s", gameFunction->varBackDesign);	
 	_output(0, "%s", ")\n");
+	_output(0, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);");
 	_generateBlock(gameFunction->block); 
 }
 
