@@ -8,6 +8,8 @@ static Logger * _logger = NULL;
 
 FILE * file;
 
+char * strType = "";
+
 void initializeGeneratorModule() {
 	_logger = createLogger("Generator");
 }
@@ -322,6 +324,14 @@ static void _generatePmOne(PmOne * pmOne){
 			break;	
 	}
 }
+//elementalclash for type wather, fire
+//winertype(fire, water)
+//if(type == "Water"){
+// WinnerType(water, fire) -> gameManager.addTypeRelaton("Water", "Fire");
+//}
+//if(type != "Water"){
+//  RobarCarta(water) -> deck.draw()
+//}
 
 static void _generateStructures(Structures * structures){ //listo
 	switch(structures->type){
@@ -415,12 +425,14 @@ static void _generateIfs(Ifs * ifs){
 			break;
 	}
 }
+
 static void _generateInIf(InIf * inIf){ //TODO
 	switch(inIf->type){
 		case TYPE_IF:
-			_output(0, "%s", "type");
-			_generateComparison(inIf->comparison1);
-			_output(0, "%s", inIf->variable);
+			strType = inIf->variable;
+			//_output(0, "%s", "type");
+			//_generateComparison(inIf->comparison1);
+			//_output(0, "%s", inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
 			_output(0, "%s", "SpecialCardsOnPlay()");
