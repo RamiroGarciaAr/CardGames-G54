@@ -24,20 +24,24 @@ static void _generateProgram(Program * program) {
 	_generateBlock(program->block);
 }
 
-static void _generateBlock(Block * block){
+static void _generateBlock(Block * block){ //listo?
 	switch(block->type){
 		case VALUE_BLOCK:
+			_output(0, "%s", "//Rule ");
 			_output(0, "%s", block->variable);
-			_output(0, "%s", " for value ");
+			_output(0, "%s", "\n");
+			_output(1, "%s", "deck.AddSpecialAbilityTo(");
 			_output(0, "%d", block->constant);
-			_output(0, "%s", ":\n");
+			_output(0, "%s", ", ");
 			_generateRules(block->rules);
 			break;
 		case TYPE_BLOCK:
+			_output(0, "%s", "//Rule ");
 			_output(0, "%s", block->variable1);
-			_output(0, "%s", " for type ");
+			_output(0, "%s", "\n");
+			_output(1, "%s", "deck.AddSpecialAbilityTo(");
 			_generateCardTypes(block->cardTypes);
-			_output(0, "%s", ":\n");
+			_output(0, "%s", ", ");
 			_generateRules(block->rules1);
 			break;
 		case GAME_BLOCK:
@@ -71,18 +75,21 @@ static void _generateRules(Rules * rules){
 				_generateStructures(rules->structures);
 				break;
 			case RULE_MOVE_CARDS:
-				_output(1, "%s", "MoveCards(");
+				_output(0, "%s", "new MoveCardsAction(");
 				_generateHandRef(rules->leftHandRef);
 				_output(0, "%s", ", ");
 				_generateHandRef(rules->rightHandRef);
 				_output(0, "%s", ", ");
 				_output(0, "%d", rules->constant);
-				_output(0, "%s", ")");
+				_output(0, "%s", "));\n");
 				_generateRules(rules->rule);
 				break;
 			case RULE_LOOK_AT:
+				_output(0, "%s", "new LookAtAction(");
 				_generateHandRef(rules->handRef);
+				_output(0, "%s", ", ");
 				_output(0, "%d", rules->constant1);
+				_output(0, "%s", "));\n");
 				_generateRules(rules->rule1);
 				break;
 			case RULE_RESTOCK_DECK:
@@ -203,7 +210,7 @@ static void _generateUserScore(UserScore * userScore){
 	_generateUser(userScore->user);
 }
 
-static void _generateGameFunction(GameFunction * gameFunction){
+static void _generateGameFunction(GameFunction * gameFunction){ //listo
 	_output(1, "%s", "numbersOnDeck = ");			//OK
 	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
 	_output(0, "%s", ";\n");							//OK
@@ -292,54 +299,54 @@ static void _generateGetters(Getters * getters){
 	}
 }
 
-static void _generateArithmetic(Arithmetic * arithmetic){ 
+static void _generateArithmetic(Arithmetic * arithmetic){ //listo
 	switch(arithmetic->type){
 		case ARIT_ADD:	
+			_output(0, "%s", " + ");
 			break;
-			// return '+';
 		case ARIT_DIV:
+			_output(0, "%s", " / ");
 			break;
-			// return '/';
 		case ARIT_MUL:
+			_output(0, "%s", " * ");
 			break;
-			// return '*';
 		case ARIT_SUB:
+			_output(0, "%s", " - ");
 			break;
-			// return '-';
 		case ARIT_MODULE:
+			_output(0, "%s", " % ");
 			break;
-			// return '%';
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
 			break;
 	}
 }
 
-static void _generateAsignations(Asignations * asignations){ 
+static void _generateAsignations(Asignations * asignations){ //listo
 	switch(asignations->type){
 		case ASIG_EQUAL:
+			_output(0, "%s", " = ");
 			break;
-			// return "=";
 		case ASIG_ADD_EQUAL:
+			_output(0, "%s", " += ");
 			break;
-			// return "+=";
 		case SUB_EQUAL:
+			_output(0, "%s", " -= ");
 			break;
-			// return "-=";
 		default:
 			logError(_logger, "The specified asignations type is unknown: %d", asignations->type);
 			break;
 	}
 }
 
-static void _generatePmOne(PmOne * pmOne){ 
+static void _generatePmOne(PmOne * pmOne){ //listo
 	switch(pmOne->type){
 		case INCREASE:
+			_output(0, "%s", " ++ ");
 			break;
-			// return "++";
 		case DECREASE:
+			_output(0, "%s", " -- ");
 			break;
-			// return "--";
 		default:
 			logError(_logger, "The specified pmOne type is unknown: %d", pmOne->type);
 			break;	
@@ -405,8 +412,8 @@ static void _generateHandRef(HandRef * handRef){
 	}
 }
 
-static void _generateDeck(Deck * deck){ 
-	_output(0, "%s", "Deck");
+static void _generateDeck(Deck * deck){ //listo
+	_output(0, "%s", "deck.getDeck()");
 }
 
 static void _generateUser(User * user){
@@ -423,7 +430,7 @@ static void _generateUser(User * user){
 	}
 }
 
-static void _generateIfs(Ifs * ifs){
+static void _generateIfs(Ifs * ifs){//eliminamos tied?
 	switch(ifs->type){
 		case INIF:
 			_generateInIf(ifs->inIf);
@@ -450,8 +457,7 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){
 	switch(inIf->type){
 		case TYPE_IF:
-			_output(0, "%s", "type");
-			_generateComparison(inIf->comparison1);
+			_generateComparison(inIf->comparison1); //if(inIf->comparison->type == "COMP_EQUAL_EQUAL")
 			_output(0, "%s", inIf->variable);
 			break;
 		case ACTIVATE_SPECIAL_CARDS_IF:
@@ -467,16 +473,25 @@ static void _generateInIf(InIf * inIf){
 			break;
 	}
 }
-static void _generateComparison(Comparison * comparison){
+static void _generateComparison(Comparison * comparison){ //listo
 	switch(comparison->type){
 		case COMP_GREATER:
+			_output(0, "%s", " > ");
+			break;
 		case COMP_LOWER:
+			_output(0, "%s", " < ");
+			break;
 		case COMP_EQUAL_EQUAL:
 			_output(0, "%s", " == ");
 			break;
 		case COMP_GREATER_OR_EQUAL:
+			_output(0, "%s", " >= ");
+			break;
 		case COMP_LOWER_OR_EQUAL:
+			_output(0, "%s", " <= ");
+			break;
 		case COMP_DIFERENT:
+			_output(0, "%s", " != ");
 			break;
 		default:
 			logError(_logger, "The specified comparison type is unknown: %d", comparison->type);
@@ -484,40 +499,19 @@ static void _generateComparison(Comparison * comparison){
 	}
 }
 
-static void _generateAtomic(Atomic * atomic){
+static void _generateAtomic(Atomic * atomic){ //listo
 	switch(atomic->type){
 		case ATOMIC_VALUE:
+			_output(0, "%s", "value");
+			break;
 		case ATOMIC_TYPE:
+			_output(0, "%s", "type");
 			break;
 		default:
+			logError(_logger, "The specified atomic type is unknown: %d", atomic->type);
 			break;
 	}
 }
-
-/**
- * Converts and expression type to the proper character of the operation
- * involved, or returns '\0' if that's not possible.
- */
-//static const char _expressionTypeToCharacter(const ExpressionType type) {
-//	switch (type) {
-//		case ADDITION: return '+';
-//		case DIVISION: return '/';
-//		case MULTIPLICATION: return '*';
-//		case SUBTRACTION: return '-';
-//		default:
-//			logError(_logger, "The specified expression type cannot be converted into character: %d", type);
-//			return '\0';
-//	}
-//}
-
-/**
- * Generates the output of a constant.
- */
-//static void _generateConstant(const unsigned int indentationLevel, Constant * constant) {
-//	_output(indentationLevel, "%s", "[ $C$, circle, draw, black!20\n");
-//	_output(1 + indentationLevel, "%s%d%s", "[ $", constant->value, "$, circle, draw ]\n");
-//	_output(indentationLevel, "%s", "]\n");
-//}
 
 /**
  * Generates an indentation string for the specified level.
@@ -600,7 +594,7 @@ static void _generatePrologue(void)
 	_output(0, "%s", "        font.setColor(Color.WHITE);\n");
 	_output(0, "%s", "        MusicPlayer musicPlayer = new MusicPlayer();\n");
 	_output(0, "%s", "        musicPlayer.loadSongs(new String[]{\"pookatori_and_friends.mp3\", \"ready_set_play.mp3\",\"threshold.mp3\"});\n");
-	_output(0, "%s", "        musicPlayer.play();\n");
+	_output(0, "%s", "        musicPlayer.play();\n\n\n");
 }
 
 /**
@@ -609,7 +603,7 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	_output(0, "%s", "        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
+	_output(0, "%s", "\n\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(machine, numbersOfCardsInHand, deck);\n");
@@ -754,9 +748,9 @@ static void _generateEpilogue(void)
 void generate(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	//file = fopen("MyGdxGame.java", "w");
-	_generatePrologue();
+	//_generatePrologue();
 	_generateProgram(compilerState->abstractSyntaxtTree);
-	_generateEpilogue();
+	//_generateEpilogue();
 	//fclose(file);
 	logDebugging(_logger, "Generation is done.");
 }

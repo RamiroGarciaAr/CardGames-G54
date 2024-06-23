@@ -1,7 +1,6 @@
 myDesign design has:
     if(value == 5 && type == Fire){
-        RoundBorders(2) 
-        ColorBorders(red) 
+        ColorBorders(Fire, RED) 
     }
 
 myBackgroundDesign design has:
