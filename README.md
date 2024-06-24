@@ -2,7 +2,9 @@
 
 [![✗](https://github.com/agustin-golmar/Flex-Bison-Compiler/actions/workflows/pipeline.yaml/badge.svg?branch=production)](https://github.com/agustin-golmar/Flex-Bison-Compiler/actions/workflows/pipeline.yaml)
 
-# Flex-Bison-Compiler
+# CardGames Compiler
+
+https://www.notion.so/itognetti/CardGames-0a785b4df9584b1498b497a4f870c353
 
 A base compiler example, developed with Flex and Bison.
 
