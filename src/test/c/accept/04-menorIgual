@@ -1,4 +1,0 @@
-Testing for type Water: 
-    if(value == 3){
-        Machine.score -= User.SelectedCard.value
-    }

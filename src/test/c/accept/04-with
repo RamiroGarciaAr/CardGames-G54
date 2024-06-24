@@ -1,0 +1,4 @@
+Testing for type Water: 
+    with(value 3){
+        LookAt(Deck, 1)
+    }

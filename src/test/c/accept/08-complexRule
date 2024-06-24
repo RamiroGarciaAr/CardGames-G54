@@ -1,0 +1,9 @@
+RuleTesting for type Water:
+    with(value 3){
+        MoveCards(Deck, Playing.Hand, 2)
+    }
+
+RuleTest2 for value 2:
+    with(type Water){
+        LookAt(Deck, 1)
+    }

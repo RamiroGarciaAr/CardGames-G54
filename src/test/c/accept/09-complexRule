@@ -1,7 +1,0 @@
-WinRoundRule for game: 
-    if(User.SelectedCard.value > Machine.SelectedCard.value){
-        Machine.score -= User.SelectedCard.value
-    }else{ 
-        User.score -= Machine.SelectedCard.value
-    }
-    RestockDeck()

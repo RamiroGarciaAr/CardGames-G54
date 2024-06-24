@@ -1,0 +1,4 @@
+WinRoundRule for game: 
+    WinnerType(Earth, Fire)
+    WinnerType(Fire, Water)
+    WinnerType(Water, Earth)
