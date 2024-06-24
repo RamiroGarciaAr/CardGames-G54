@@ -103,7 +103,6 @@
 %token <token> SELECTED_CARD
 %token <token> SCORE
 
-%token <token> FOREACH	
 %token <token> IFS	
 %token <token> ELSE	
 %token <token> ELIF	
@@ -207,7 +206,7 @@ rules: structures                                                               
     | LOOK_AT OPEN_PARENTHESIS handRef COMMA INTEGER CLOSE_PARENTHESIS rules                   { $$ = RuleLookAtSemanticAction($3, $5, $7); }
     | RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                    { $$ = RuleRestockDeckSemanticAction($4); }
     | WIN_GAME OPEN_PARENTHESIS user CLOSE_PARENTHESIS rules                             	   { $$ = RuleWinGameSemanticAction($3, $5); }
-    | WINNER_TYPE OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5, $7); }
+    | WINNER_TYPE OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules             { $$ = RuleWinnerTypeSemanticAction($3, $5, $7); }
 	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules		   { $$ = ColorBordersDesignSemanticAction($3, $5, $7); }
 	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules					   { $$ = BackColorDesignSemanticAction($3, $5); }
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
@@ -258,7 +257,6 @@ pmOne: ADD_ONE														{ $$ = PMOneSemanticAction(INCREASE); }
 	;
 
 structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = StructureIfSemanticAction($3, $5, IF_STRUCTURE); }
-	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS inBrakets	{ $$ = StructureForeachSemanticAction($3, $5); }
 	| ELIF OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5, ELIF_STRUCTURE); }
 	| ELSE inBrakets												{ $$ = StructureElseSemanticAction($2); }
 	| WITH OPEN_PARENTHESIS with CLOSE_PARENTHESIS inBrakets		{ $$ = StructureWithSemanticAction($3, $5); }

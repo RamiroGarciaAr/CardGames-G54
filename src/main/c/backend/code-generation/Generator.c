@@ -24,7 +24,7 @@ static void _generateProgram(Program * program) {
 	_generateBlock(program->block);
 }
 
-static void _generateBlock(Block * block){ //listo
+static void _generateBlock(Block * block){
 	switch(block->type){
 		case VALUE_BLOCK:
 			_output(0, "%s", "//Rule ");
@@ -57,10 +57,19 @@ static void _generateBlock(Block * block){ //listo
 			_generateRules(block->rules3);
 			break;
 		case RULE_BLOCK:
-			_output(0, "%s", "//");
-			_output(0, "%s", block->variable4);
-			_output(0, "%s", " for game:\n");
-			_generateRules(block->rules2);
+//			if(strcmp(block->variable4, "GlobalRule") == 0){
+//				_output(0, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer) {\n");
+//	          	_output(0, "%s", "@Override\n");
+//            	_output(0, "%s", "public int compare(Card o1, Card o2) {\n");
+//				//_output(0, "%s", block->variable4);
+//				_generateRules(block->rules2);
+//				_output(0, "%s", "}\n});\n");
+//			}else{
+				_output(0, "%s", "//");
+				_output(0, "%s", block->variable4);
+				_output(0, "%s", " for game:\n");
+				_generateRules(block->rules2);
+//			}
 			break;
 		default:
 			logError(_logger, "The specified block type is unknown: %d", block->type);
@@ -93,11 +102,11 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule1);
 				break;
 			case RULE_RESTOCK_DECK:
-				_output(2, "%s", "deck.generateDeck();\n"); //OK
+				_output(2, "%s", "deck.generateDeck();\n");
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WIN_GAME:
-				_output(2, "%s", "gameManager.winGame("); //OK
+				_output(2, "%s", "gameManager.winGame(");
 				_generateUser(rules->user);
 				_output(0, "%s", ");\n");
 				_generateRules(rules->rule2);
@@ -111,7 +120,7 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule6);
 				break;
 			case COLOR_BORDERS_DESIGN:
-				_output(2, "%s", "deck.assignColorToType(\""); //OK
+				_output(2, "%s", "deck.assignColorToType(\"");
 				_output(0, "%s", rules->variable2);
 				_output(0, "%s", "\", Colors.");
 				_output(0, "%s", rules->variable3);
@@ -119,16 +128,16 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule6);
 				break;
 			case BACKGROUND_COLOR_DESIGN:
-				_output(2, "%s", "LoadBackgroundImage("); //OK
+				_output(2, "%s", "LoadBackgroundImage(\"");
 				_output(0, "%s", rules->variable);
-				_output(0, "%s", ".png);\n");
+				_output(0, "%s", ".png\");\n");
 				_generateRules(rules->rule3);
 				break;
 			case USER_RULES:
 				_generateUserRules(rules->userRules);
 				break;
 			case FINISH_RULE:
-				_generateBlock(rules->block); //OK
+				_generateBlock(rules->block);
 				break;
 			default:
 				logError(_logger, "The specified rule type is unknown: %d", rules->type);
@@ -140,11 +149,28 @@ static void _generateRules(Rules * rules){
 static void _generateExpression(Expression * expression){
 	switch(expression->type){
 		case EXPR_ADD:
+			_generateExpression(expression->leftExpression);
+			_output(0, "%s", " + ");
+			_generateExpression(expression->rightExpression);
+			break;
 		case EXPR_DIV:
+			_generateExpression(expression->leftExpression);
+			_output(0, "%s", " / ");
+			_generateExpression(expression->rightExpression);
+			break;
 		case EXPR_MUL:
+			_generateExpression(expression->leftExpression);
+			_output(0, "%s", " * ");
+			_generateExpression(expression->rightExpression);
+			break;
 		case EXPR_SUB:
+			_generateExpression(expression->leftExpression);
+			_output(0, "%s", " - ");
+			_generateExpression(expression->rightExpression);
+			break;
 		case EXPR_MODULE:
 			_generateExpression(expression->leftExpression);
+			_output(0, "%s", " \% ");
 			_generateExpression(expression->rightExpression);
 			break;
 		case NUMBERS:
@@ -163,7 +189,7 @@ static void _generateExpression(Expression * expression){
 	}
 }
 
-static void _generateUserRules(UserRules * userRules){
+static void _generateUserRules(UserRules * userRules){ //Cuando se implemente if
 	switch(userRules->type){
 		case NUMBER_ASSIG:
 			_generateUserScore(userRules->userScore);
@@ -196,31 +222,27 @@ static void _generateUserRules(UserRules * userRules){
 	}
 }
 
-static void _generateUserScore(UserScore * userScore){
-	_generateUser(userScore->user);
-}
-
-static void _generateGameFunction(GameFunction * gameFunction){ //listo
-	_output(2, "%s", "numbersOnDeck = ");			//OK
-	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
-	_output(0, "%s", ";\n");							//OK
-	_output(2, "%s", "String[] typeNames = {");		//OK
-	_generateCardTypes(gameFunction->cardTypes);	//OK
-	_output(0, "%s", "};\n");						//OK
-	_output(2, "%s", "numbersOfCardsInHand = ");	//OK
-	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
-	_output(0, "%s", ";\n");							//OK
-	_output(2, "%s", "int rounds = ");			//OK
-	_output(0, "%d", gameFunction->cteRounds);	//OK
-	_output(0, "%s", ";\n");					//OK
-	_output(2, "%s", "int roundTimer = ");			//OK
-	_output(0, "%d", gameFunction->cteRoundTimer);	//OK	
-	_output(0, "%s", ";\n");						//OK
-	_output(2, "%s", "StartingScore(");						//OK
-	_output(0, "%d", gameFunction->cteUserStartingScore);	//OK	
-	_output(0, "%s", ", ");									//OK
-	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
-	_output(0, "%s", ");\n");								//OK
+static void _generateGameFunction(GameFunction * gameFunction){ 
+	_output(2, "%s", "numbersOnDeck = ");			
+	_output(0, "%d", gameFunction->cteNumbersOnDeck);	
+	_output(0, "%s", ";\n");							
+	_output(2, "%s", "String[] typeNames = {");		
+	_generateCardTypes(gameFunction->cardTypes);	
+	_output(0, "%s", "};\n");						
+	_output(2, "%s", "numbersOfCardsInHand = ");	
+	_output(0, "%d", gameFunction->cteCardsByPlayers);	
+	_output(0, "%s", ";\n");							
+	_output(2, "%s", "int rounds = ");			
+	_output(0, "%d", gameFunction->cteRounds);	
+	_output(0, "%s", ";\n");					
+	_output(2, "%s", "int roundTimer = ");			
+	_output(0, "%d", gameFunction->cteRoundTimer);		
+	_output(0, "%s", ";\n");						
+	_output(2, "%s", "StartingScore(");						
+	_output(0, "%d", gameFunction->cteUserStartingScore);	
+	_output(0, "%s", ", ");									
+	_output(0, "%d", gameFunction->cteMachineStartingScore);
+	_output(0, "%s", ");\n");								
 	_output(0, "%s", "//WinRoundCondition(");
 	_output(0, "%s", gameFunction->varWinRoundCondition);
 	_output(0, "%s", ")\n");
@@ -233,13 +255,15 @@ static void _generateGameFunction(GameFunction * gameFunction){ //listo
 	_output(0, "%s", "//BackgroundDesign(");
 	_output(0, "%s", gameFunction->varBackDesign);	
 	_output(0, "%s", ")\n");
-	_output(2, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); //OK
-	_output(2, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer);\n");
+	_output(2, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); 
 	_output(2, "%s", "deck.generateDeck();\n");
+	_output(2, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer);\n");
+	_output(2, "%s", "player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
+	_output(2, "%s", "machine = new AI(startingMachineScore, numbersOfCardsInHand);\n");
 	_generateBlock(gameFunction->block); 
 }
 
-static void _generateCardTypes(CardTypes * cardTypes){ //listo
+static void _generateCardTypes(CardTypes * cardTypes){ 
 	switch(cardTypes->type){
 		case ONE_TYPE:
 			_output(0, "%s", "\"");
@@ -260,6 +284,12 @@ static void _generateCardTypes(CardTypes * cardTypes){ //listo
 
 static void _generateUserCard(UserCard * userCard){
 	_generateUser(userCard->user);
+	_output(0, "%s", ".getCardsInHand()");
+}
+
+static void _generateUserScore(UserScore * userScore){
+	_generateUser(userScore->user);
+	_output(0, "%s", ".getScore()");
 }
 
 static void _generateNumbers(Numbers * numbers){
@@ -276,7 +306,7 @@ static void _generateNumbers(Numbers * numbers){
 	}
 }
 
-static void _generateArithmetic(Arithmetic * arithmetic){ //listo
+static void _generateArithmetic(Arithmetic * arithmetic){
 	switch(arithmetic->type){
 		case ARIT_ADD:	
 			_output(0, "%s", " + ");
@@ -291,7 +321,7 @@ static void _generateArithmetic(Arithmetic * arithmetic){ //listo
 			_output(0, "%s", " - ");
 			break;
 		case ARIT_MODULE:
-			_output(0, "%s", " % ");
+			_output(0, "%s", " \% ");
 			break;
 		default:
 			logError(_logger, "The specified arithmetic type is unknown: %d", arithmetic->type);
@@ -299,7 +329,7 @@ static void _generateArithmetic(Arithmetic * arithmetic){ //listo
 	}
 }
 
-static void _generateAsignations(Asignations * asignations){ //listo
+static void _generateAsignations(Asignations * asignations){
 	switch(asignations->type){
 		case ASIG_EQUAL:
 			_output(0, "%s", " = ");
@@ -316,7 +346,7 @@ static void _generateAsignations(Asignations * asignations){ //listo
 	}
 }
 
-static void _generatePmOne(PmOne * pmOne){ //listo
+static void _generatePmOne(PmOne * pmOne){
 	switch(pmOne->type){
 		case INCREASE:
 			_output(0, "%s", " ++ ");
@@ -329,16 +359,8 @@ static void _generatePmOne(PmOne * pmOne){ //listo
 			break;	
 	}
 }
-//elementalclash for type wather, fire
-//winertype(fire, water)
-//if(type == "Water"){
-// WinnerType(water, fire) -> gameManager.addTypeRelaton("Water", "Fire");
-//}
-//if(type != "Water"){
-//  RobarCarta(water) -> deck.draw()
-//}
 
-static void _generateStructures(Structures * structures){
+static void _generateStructures(Structures * structures){ //Arreglar problemas de if
 	switch(structures->type){
 		case IF_STRUCTURE:
 			_output(1, "%s", "if(");
@@ -351,12 +373,6 @@ static void _generateStructures(Structures * structures){
 			_generateIfs(structures->conditional);
 			_output(0, "%s", "){\n");
 			_generateInBrakets(structures->inBrakets, 1);
-			break;
-		case FOREACH_STRUCTURE:
-			_output(1, "%s", "for(");
-			_generateAtomic(structures->atomic);
-			_output(0, "%s", "){\n");
-			_generateInBrakets(structures->inBrakets1, 1);
 			break;
 		case ELSE_STRUCTURE:
 			_output(1, "%s", "else{\n");
@@ -378,7 +394,9 @@ static void _generateWith(With * with){
 			_output(0, "%d, ", with->constant);
 			break;
 		case TYPE_WITH:
-			_output(0, "%s, ", with->variable);
+			_output(0, "%s", "\"");
+			_output(0, "%s", with->variable);
+			_output(0, "%s", "\", ");
 			break;
 		default:
 			logError(_logger, "The specified with type is unknown: %d", with->type);
@@ -407,11 +425,11 @@ static void _generateHandRef(HandRef * handRef){
 	}
 }
 
-static void _generateDeck(Deck * deck){ //listo
+static void _generateDeck(Deck * deck){
 	_output(0, "%s", "deck.getDeck()");
 }
 
-static void _generateUser(User * user){ //listo
+static void _generateUser(User * user){
 	switch(user->type){
 		case USER_PLAYER:
 			_output(0, "%s", "player");
@@ -449,8 +467,11 @@ static void _generateIfs(Ifs * ifs){
 static void _generateInIf(InIf * inIf){
 	switch(inIf->type){
 		case TYPE_IF:
-			_generateComparison(inIf->comparison1); //if(inIf->comparison->type == "COMP_EQUAL_EQUAL")
+			_output(0, "%s", "strType");
+			_generateComparison(inIf->comparison1);
+			_output(0, "%s", "\"");
 			_output(0, "%s", inIf->variable);
+			_output(0, "%s", "\"");
 			break;
 		case EXPRESSION_IF:
 			_generateExpression(inIf->leftExpression);
@@ -462,7 +483,8 @@ static void _generateInIf(InIf * inIf){
 			break;
 	}
 }
-static void _generateComparison(Comparison * comparison){ //listo
+
+static void _generateComparison(Comparison * comparison){
 	switch(comparison->type){
 		case COMP_GREATER:
 			_output(0, "%s", " > ");
@@ -488,13 +510,13 @@ static void _generateComparison(Comparison * comparison){ //listo
 	}
 }
 
-static void _generateAtomic(Atomic * atomic){ //listo
+static void _generateAtomic(Atomic * atomic){ 
 	switch(atomic->type){
 		case ATOMIC_VALUE:
-			_output(0, "%s", "value");
+			_output(0, "%s", ".getValue()");
 			break;
 		case ATOMIC_TYPE:
-			_output(0, "%s", "type");
+			_output(0, "%s", ".getType()");
 			break;
 		default:
 			logError(_logger, "The specified atomic type is unknown: %d", atomic->type);
@@ -561,7 +583,7 @@ static void _generatePrologue(void)
 	_output(0, "%s", "    Texture backgroundTexture = null;\n");
 	_output(0, "%s", "    private Viewport viewport;\n");
 	_output(0, "%s", "    private Camera camera;\n");
-	_output(0, "%s", "    private Stage stage;\n\n");
+	_output(0, "%s", "    private Stage stage;\n");
 	_output(0, "%s", "    private GameManager gameManager;\n");
 	_output(0, "%s", "    private Player player;\n");
 	_output(0, "%s", "    private AI machine;\n");
@@ -592,8 +614,7 @@ static void _generatePrologue(void)
  */
 static void _generateEpilogue(void) 
 {
-	_output(0, "%s", "\n\n\n        player = new Player(startingPlayerScore, numbersOfCardsInHand);\n");
-	_output(0, "%s", "        machine = new AI(startingMachineScore, numbersOfCardsInHand);\n");
+	_output(0, "%s", "\n\n\n        deck.generateDeck();\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(player, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "        gameManager.dealInitialCards(machine, numbersOfCardsInHand, deck);\n");
 	_output(0, "%s", "    }\n\n");
@@ -601,7 +622,6 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    public void render() {\n");
 	_output(0, "%s", "        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);\n");
 	_output(0, "%s", "        stage.draw();\n");
-	_output(0, "%s", "        // Draw player cards and Background using SpriteBatch\n");
 	_output(0, "%s", "        batch.begin();\n");
 	_output(0, "%s", "        if (backgroundTexture != null) {\n");
 	_output(0, "%s", "            Sprite backgroundSprite = new Sprite(backgroundTexture,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());\n");
@@ -609,12 +629,11 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "        }\n");
 	_output(0, "%s", "        drawPlayerCardsBatch(player, 50, 0);\n");
 	_output(0, "%s", "        batch.end();\n");
-	_output(0, "%s", "        // Draw scores\n");
 	_output(0, "%s", "        batch.begin();\n");
 	_output(0, "%s", "        drawScores();\n");
-	_output(0, "%s", "        batch.end();\n\n");
+	_output(0, "%s", "        batch.end();\n");
 	_output(0, "%s", "        // Resaltar la carta bajo el mouse\n");
-	_output(0, "%s", "        highlightCardUnderMouse();\n\n");
+	_output(0, "%s", "        highlightCardUnderMouse();\n");
 	_output(0, "%s", "        // Draw player cards using ShapeRenderer\n");
 	_output(0, "%s", "        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);\n");
 	_output(0, "%s", "        drawPlayerCardsShape(player, 50, Gdx.graphics.getHeight() - 450);\n");
@@ -647,6 +666,14 @@ static void _generateEpilogue(void)
 	_output(0, "%s", "    //Esto puede ser un metodo abstracto que se crea en al GM\n");
 	_output(0, "%s", "    private boolean winGameCondition(Player player) {\n");
 	_output(0, "%s", "        return player.getScore() == 2;\n");
+	_output(0, "%s", "    }\n\n");
+	_output(0, "%s", "    private void LoadBackgroundImage(String name) {\n");
+	_output(0, "%s", "        FileHandle fileHandle = Gdx.files.internal(\"assets/Backgrounds/\" + name);\n");
+	_output(0, "%s", "        if (fileHandle.exists()){\n");
+	_output(0, "%s", "            if (fileHandle.extension().equals(\".png\") || fileHandle.extension().equals(\".jpg\")){\n");
+	_output(0, "%s", "                backgroundTexture = new Texture(fileHandle);\n");
+	_output(0, "%s", "            }\n");
+	_output(0, "%s", "        }\n");
 	_output(0, "%s", "    }\n\n");
 	_output(0, "%s", "    private void LoadRandomBackgroundImage() {\n");
 	_output(0, "%s", "        FileHandle folder = Gdx.files.internal(\"assets/Backgrounds/\");\n");
@@ -737,9 +764,9 @@ static void _generateEpilogue(void)
 void generate(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	//file = fopen("MyGdxGame.java", "w");
-	//_generatePrologue();
+	_generatePrologue();
 	_generateProgram(compilerState->abstractSyntaxtTree);
-	//_generateEpilogue();
+	_generateEpilogue();
 	//fclose(file);
 	logDebugging(_logger, "Generation is done.");
 }

@@ -134,7 +134,6 @@ enum UserRulesType{
 
 enum StructuresType {
 	IF_STRUCTURE,
-	FOREACH_STRUCTURE,
 	ELIF_STRUCTURE,
 	ELSE_STRUCTURE,
 	WITH_STRUCTURE
@@ -370,10 +369,6 @@ struct Structures {
 		struct {
 			Ifs * conditional;
 			InBrakets * inBrakets;
-		};
-		struct {
-			Atomic *  atomic;
-			InBrakets * inBrakets1;
 		};
 		struct{
 			With * with;

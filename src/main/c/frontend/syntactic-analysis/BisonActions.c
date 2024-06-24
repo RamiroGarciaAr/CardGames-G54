@@ -316,15 +316,6 @@ Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets,
 	return structure;
 }
 
-Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrakets){
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	Structures * structure = calloc(1, sizeof(Structures));
-	structure->atomic = atomic;
-	structure->inBrakets1 = inBrakets;
-	structure->type = FOREACH_STRUCTURE;
-	return structure;
-}
-
 Structures * StructureElseSemanticAction(InBrakets * inBrakets){
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	Structures * structure = calloc(1, sizeof(Structures));

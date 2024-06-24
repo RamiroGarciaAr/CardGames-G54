@@ -1,6 +1,0 @@
-mySpecialCard for type Water:
-    foreach(value){
-        if(value % 2 == 0){
-            LookAt(Deck, 1)
-        }
-    }

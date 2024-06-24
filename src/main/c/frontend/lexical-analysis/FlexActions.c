@@ -319,9 +319,7 @@ Token GamingLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	Token token;
-	if (strcmp(lexicalAnalyzerContext->lexeme, "foreach") == 0) {
-		token = FOREACH;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "if") == 0) {
+	if (strcmp(lexicalAnalyzerContext->lexeme, "if") == 0) {
 		token = IFS;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "else") == 0) {
 		token = ELSE;

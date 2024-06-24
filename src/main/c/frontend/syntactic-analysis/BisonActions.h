@@ -49,7 +49,6 @@ UserRules * UserRuleCardSemanticAction(UserScore * userScore, Asignations * asig
 UserRules * UserRuleArithmeticSemanticAction(UserScore * userScore, Asignations * asignations, Numbers * leftNum, Arithmetic * arithmetic, Numbers * rightNum, Rules * rule);
 UserRules * UserRulePMOneSemanticAction(UserScore * userScore,PmOne * pmOne, Rules * rule);
 Structures * StructureIfSemanticAction(Ifs * conditional, InBrakets * inBrakets, StructuresType type);
-Structures * StructureForeachSemanticAction(Atomic * atomic, InBrakets * inBrakets);
 Structures * StructureElseSemanticAction(InBrakets * inBrakets);
 Structures * StructureWithSemanticAction(With * with, InBrakets * inBrakets);
 InBrakets * MultipleBraketsSemanticAction(Rules * leftRules, Rules * rightRules);

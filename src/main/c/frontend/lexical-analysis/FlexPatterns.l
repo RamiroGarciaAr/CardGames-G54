@@ -85,7 +85,6 @@
 "SelectedCard"                      { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 "score"                             { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 
-"foreach"                           { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "if"                                { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "else"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "elif"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
