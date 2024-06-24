@@ -1,7 +1,5 @@
 myDesign design has:
-    if(value == 5 && type == Fire){
-        ColorBorders(Fire, RED) 
-    }
+    ColorBorders(Fire, RED)
 
 myBackgroundDesign design has:
-    BackgroundColor(lightgrey) 
+    BackgroundColor(background1) 

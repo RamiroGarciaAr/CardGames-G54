@@ -130,6 +130,8 @@ Token TypeLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 		token = TYPE;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "value") == 0) {
 		token = VALUE;
+	} else if (strcmp(lexicalAnalyzerContext->lexeme, "with") == 0) {
+		token = WITH;
 	}
 	return token;
 }
@@ -195,24 +197,14 @@ Token GameFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) 
 		token = WIN_GAME;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "WinnerType") == 0) {
 		token = WINNER_TYPE;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "SpecialCardsOnPlay") == 0) {
-		token = SPECIAL_CARDS_ON_PLAY;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "ActivateSpecialCards") == 0) {
-		token = ACTIVATE_SPECIAL_CARDS;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "GetLoser") == 0) {
-		token = GET_LOSER;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "GetWinner") == 0) {
-		token = GET_WINNER;
-	}
+	} 
 	return token;
 }
 
 Token DesignFunctionLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
 	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
 	Token token;
-	if (strcmp(lexicalAnalyzerContext->lexeme, "RoundBorders") == 0) {
-		token = ROUND_BORDERS;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "ColorBorders") == 0) {
+	if (strcmp(lexicalAnalyzerContext->lexeme, "ColorBorders") == 0) {
 		token = COLOR_BORDERS;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "BackgroundColor") == 0) {
 		token = BACKGROUND_COLOR;
@@ -285,8 +277,6 @@ Token PlayerReferenceLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContex
 		token = SELECTED_CARD;
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "score") == 0) {
 		token = SCORE;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "tied") == 0) {
-		token = TIED;
 	} 
 	return token;
 }
@@ -338,16 +328,5 @@ Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerConte
 	} else if (strcmp(lexicalAnalyzerContext->lexeme, "elif") == 0) {
 		token = ELIF;
 	}
-	return token;
-}
-
-Token BooleanLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext) {
-	_logLexicalAnalyzerContext(__FUNCTION__, lexicalAnalyzerContext);
-	Token token;
-	if (strcmp(lexicalAnalyzerContext->lexeme, "true") == 0) {
-		token = TRUE;
-	} else if (strcmp(lexicalAnalyzerContext->lexeme, "false") == 0) {
-		token = FALSE;
-	} 
 	return token;
 }

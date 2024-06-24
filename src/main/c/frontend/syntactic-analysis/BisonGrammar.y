@@ -11,7 +11,6 @@
 
 	int integer;
 	char * variable;
-	bool boolean;
 
 	Token token;
 
@@ -27,7 +26,6 @@
 	UserCard * userCard;
 	Numbers * numbers;
 	UserRules * userRules;
-	Getters * getters;
 	Arithmetic * arithmetic;
 	Asignations * asignations;
 	PmOne * pmOne;
@@ -40,6 +38,7 @@
 	InIf * inIf;
 	Comparison * comparison;
 	Atomic * atomic;
+	With * with;
 }
 
 /**
@@ -103,15 +102,12 @@
 %token <token> HAND
 %token <token> SELECTED_CARD
 %token <token> SCORE
-%token <token> TIED
 
 %token <token> FOREACH	
 %token <token> IFS	
 %token <token> ELSE	
 %token <token> ELIF	
-
-%token <token> TRUE
-%token <token> FALSE
+%token <token> WITH
 
 %token <token> NUMBERS_ON_DECK
 %token <token> TYPES_OF_CARDS
@@ -129,12 +125,7 @@
 %token <token> RESTOCK_DECK
 %token <token> WIN_GAME
 %token <token> WINNER_TYPE
-%token <token> SPECIAL_CARDS_ON_PLAY
-%token <token> ACTIVATE_SPECIAL_CARDS
-%token <token> GET_LOSER
-%token <token> GET_WINNER
 
-%token <token> ROUND_BORDERS
 %token <token> COLOR_BORDERS
 %token <token> BACKGROUND_COLOR
 
@@ -153,7 +144,6 @@
 %type <userCard> userCard
 %type <numbers> numbers
 %type <userRules> userRules
-%type <getters> getters
 %type <arithmetic> arithmetic
 %type <asignations> asignations
 %type <pmOne> pmOne
@@ -166,7 +156,7 @@
 %type <inIf> inIf
 %type <comparison> comparison
 %type <atomic> atomic
-%type <boolean> boolean
+%type <with> with
 
 /**
  * Precedence and associativity.
@@ -216,21 +206,14 @@ rules: structures                                                               
     | MOVE_CARDS OPEN_PARENTHESIS handRef COMMA handRef COMMA INTEGER CLOSE_PARENTHESIS rules  { $$ = RuleMoveCardsSemanticAction($3, $5, $7, $9); }
     | LOOK_AT OPEN_PARENTHESIS handRef COMMA INTEGER CLOSE_PARENTHESIS rules                   { $$ = RuleLookAtSemanticAction($3, $5, $7); }
     | RESTOCK_DECK OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                                    { $$ = RuleRestockDeckSemanticAction($4); }
-    | WIN_GAME OPEN_PARENTHESIS IDENTIFIER CLOSE_PARENTHESIS rules                             { $$ = RuleWinGameSemanticAction($5); }
+    | WIN_GAME OPEN_PARENTHESIS user CLOSE_PARENTHESIS rules                             	   { $$ = RuleWinGameSemanticAction($3, $5); }
     | WINNER_TYPE OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules                            { $$ = RuleWinnerTypeSemanticAction($3, $5, $7); }
-    | ACTIVATE_SPECIAL_CARDS OPEN_PARENTHESIS CLOSE_PARENTHESIS rules                          { $$ = RuleActivateSpecialCardsSemanticAction($4); }
-	| ROUND_BORDERS OPEN_PARENTHESIS INTEGER CLOSE_PARENTHESIS rules	    				   { $$ = RoundBordersDesignSemanticAction($3, $5); }
-	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules						   { $$ = ColorBordersDesignSemanticAction($3, $5, $7); }
+	| COLOR_BORDERS OPEN_PARENTHESIS VARIABLE COMMA VARIABLE CLOSE_PARENTHESIS rules		   { $$ = ColorBordersDesignSemanticAction($3, $5, $7); }
 	| BACKGROUND_COLOR OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS rules					   { $$ = BackColorDesignSemanticAction($3, $5); }
     | userRules                                                                                { $$ = RuleUserSemanticAction($1); }
-    | TIED EQUAL boolean rules                                                                 { $$ = RuleTiedSemanticAction($3, $4); }
     | block                                                                  				   { $$ = RuleFinishedSemanticAction($1); }
     | %empty {$$ = NULL;}
     ;
-
-boolean: TRUE														{ $$ = true; }
-	| FALSE															{ $$ = false; }
-	;
 															
 userScore: user DOT SCORE											{ $$ = UserScoreSemanticAction($1); }
 	;
@@ -256,11 +239,6 @@ userRules: userScore asignations numbers rules								  { $$ = UserRuleNumberSem
 	| userScore asignations userCard DOT VALUE rules						  { $$ = UserRuleCardSemanticAction($1, $2, $3, $6); }
 	| userScore asignations numbers arithmetic numbers rules 				  { $$ = UserRuleArithmeticSemanticAction($1, $2, $3, $4, $5, $6); }
 	| userScore pmOne rules													  { $$ = UserRulePMOneSemanticAction($1, $2, $3); }
-	| getters DOT SCORE asignations getters DOT SELECTED_CARD DOT VALUE rules { $$ = UserRuleGetterSemanticAction($1, $4, $5, $10); }
-	;
-
-getters: GET_LOSER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3, GETTER_LOSER); }
-	| GET_WINNER OPEN_PARENTHESIS VARIABLE CLOSE_PARENTHESIS		{ $$ = GettersSemanticAction($3, GETTER_WINNER); }
 	;
 
 arithmetic: ADD														{ $$ = ArithmeticSemanticAction(ARIT_ADD); }
@@ -283,6 +261,11 @@ structures: IFS OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets	{ $$ = Structur
 	| FOREACH OPEN_PARENTHESIS atomic CLOSE_PARENTHESIS inBrakets	{ $$ = StructureForeachSemanticAction($3, $5); }
 	| ELIF OPEN_PARENTHESIS ifs CLOSE_PARENTHESIS inBrakets			{ $$ = StructureIfSemanticAction($3, $5, ELIF_STRUCTURE); }
 	| ELSE inBrakets												{ $$ = StructureElseSemanticAction($2); }
+	| WITH OPEN_PARENTHESIS with CLOSE_PARENTHESIS inBrakets		{ $$ = StructureWithSemanticAction($3, $5); }
+	;
+
+with: VALUE INTEGER		{ $$ = WithValueSemanticAction($2); }
+	| TYPE VARIABLE		{ $$ = WithTypeSemanticAction($2); }
 	;
 
 inBrakets: OPEN_BRAKETS rules CLOSE_BRAKETS rules					{ $$ = MultipleBraketsSemanticAction($2, $4); }
@@ -302,11 +285,9 @@ user: PLAYER														{ $$ = UserSemanticAction(USER_PLAYER); }
 ifs: inIf															{ $$ = IfSemanticAction($1); }
 	| inIf AND inIf													{ $$ = IfChainSemanticAction($1, $3, AND_IF); }
 	| inIf OR inIf													{ $$ = IfChainSemanticAction($1, $3, OR_IF); }
-	| TIED															{ $$ = IfTiedAction($1); }
 	;
 	
 inIf: TYPE comparison VARIABLE										{ $$ = InIfVariableSemanticAction($2, $3); }
-	| SPECIAL_CARDS_ON_PLAY OPEN_PARENTHESIS CLOSE_PARENTHESIS		{ $$ = InIfSpecialCardsSemanticAction(); }
 	| expression comparison expression								{ $$ = InIfComparisonExpressionSemanticAction($1, $2, $3); }
 	;
 

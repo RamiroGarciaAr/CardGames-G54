@@ -69,6 +69,7 @@
 "for"                               { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "type"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 "value"                             { return TypeLexemeAction(createLexicalAnalyzerContext()); }
+"with"                              { return TypeLexemeAction(createLexicalAnalyzerContext()); }
 
 ":"                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
 ","                                 { return PunctuationLexemeAction(createLexicalAnalyzerContext()); }
@@ -83,15 +84,11 @@
 "Hand"                              { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 "SelectedCard"                      { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 "score"                             { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
-"tied"                              { return PlayerReferenceLexemeAction(createLexicalAnalyzerContext()); }
 
 "foreach"                           { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "if"                                { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "else"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
 "elif"                              { return ControlStructureLexemeAction(createLexicalAnalyzerContext()); }
-
-"true"                              { return BooleanLexemeAction(createLexicalAnalyzerContext()); }
-"false"                             { return BooleanLexemeAction(createLexicalAnalyzerContext()); }
 
 "NumbersOnDeck"                     { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "TypesOfCards"                      { return LanguageFunctionLexemeAction(createLexicalAnalyzerContext()); }
@@ -111,10 +108,7 @@
 "WinnerType"                        { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "SpecialCardsOnPlay"                { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ActivateSpecialCards"              { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
-"GetLoser"                          { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
-"GetWinner"                         { return GameFunctionLexemeAction(createLexicalAnalyzerContext()); }
 
-"RoundBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "ColorBorders"                      { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 "BackgroundColor"                   { return DesignFunctionLexemeAction(createLexicalAnalyzerContext()); }
 

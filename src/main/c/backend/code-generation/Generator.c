@@ -24,13 +24,13 @@ static void _generateProgram(Program * program) {
 	_generateBlock(program->block);
 }
 
-static void _generateBlock(Block * block){ //listo?
+static void _generateBlock(Block * block){ //listo
 	switch(block->type){
 		case VALUE_BLOCK:
 			_output(0, "%s", "//Rule ");
 			_output(0, "%s", block->variable);
 			_output(0, "%s", "\n");
-			_output(1, "%s", "deck.AddSpecialAbilityTo(");
+			_output(2, "%s", "deck.AddSpecialAbilityTo(");
 			_output(0, "%d", block->constant);
 			_output(0, "%s", ", ");
 			_generateRules(block->rules);
@@ -39,7 +39,7 @@ static void _generateBlock(Block * block){ //listo?
 			_output(0, "%s", "//Rule ");
 			_output(0, "%s", block->variable1);
 			_output(0, "%s", "\n");
-			_output(1, "%s", "deck.AddSpecialAbilityTo(");
+			_output(2, "%s", "deck.AddSpecialAbilityTo(");
 			_generateCardTypes(block->cardTypes);
 			_output(0, "%s", ", ");
 			_generateRules(block->rules1);
@@ -93,27 +93,25 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule1);
 				break;
 			case RULE_RESTOCK_DECK:
-				_output(1, "%s", "RestockDeck()\n");
+				_output(2, "%s", "deck.generateDeck();\n"); //OK
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WIN_GAME:
-			case RULE_ACTIVATE_SPECIAL_CARDS:
-				_output(1, "%s", "ActivateSpecialCards()\n");
+				_output(2, "%s", "gameManager.winGame("); //OK
+				_generateUser(rules->user);
+				_output(0, "%s", ");\n");
 				_generateRules(rules->rule2);
 				break;
 			case RULE_WINNER_TYPE:
-				_output(1, "%s", "gameManager.addTypeRelation(\"");
+				_output(2, "%s", "gameManager.addTypeRelation(\"");
 				_output(0, "%s", rules->variable2);
 				_output(0, "%s", "\", \"");
 				_output(0, "%s", rules->variable3);
 				_output(0, "%s", "\");\n");
 				_generateRules(rules->rule6);
 				break;
-			case ROUND_BORDERS_DESIGN:
-				//completar
-				break;
 			case COLOR_BORDERS_DESIGN:
-				_output(1, "%s", "deck.assignColorToType(\"");
+				_output(2, "%s", "deck.assignColorToType(\""); //OK
 				_output(0, "%s", rules->variable2);
 				_output(0, "%s", "\", Colors.");
 				_output(0, "%s", rules->variable3);
@@ -121,18 +119,16 @@ static void _generateRules(Rules * rules){
 				_generateRules(rules->rule6);
 				break;
 			case BACKGROUND_COLOR_DESIGN:
-				//completar
+				_output(2, "%s", "LoadBackgroundImage("); //OK
+				_output(0, "%s", rules->variable);
+				_output(0, "%s", ".png);\n");
+				_generateRules(rules->rule3);
 				break;
 			case USER_RULES:
 				_generateUserRules(rules->userRules);
 				break;
-			case TIED_RULE:
-				_output(0, "%s", "tied = ");
-				_output(0, "%s", rules->tied? "true" : "false");
-				_generateRules(rules->rule4);
-				break;
 			case FINISH_RULE:
-				_generateBlock(rules->block);
+				_generateBlock(rules->block); //OK
 				break;
 			default:
 				logError(_logger, "The specified rule type is unknown: %d", rules->type);
@@ -194,12 +190,6 @@ static void _generateUserRules(UserRules * userRules){
 			_generatePmOne(userRules->pmOne);
 			_generateRules(userRules->rule2);
 			break;
-		case GETTER_ASSIG:
-			_generateGetters(userRules->leftGetter);
-			_generateAsignations(userRules->asignations2);
-			_generateGetters(userRules->rightGetter);
-			_generateRules(userRules->rule3);
-			break;
 		default:
 			logError(_logger, "The specified userRules type is unknown: %d", userRules->type);
 			break;
@@ -211,22 +201,22 @@ static void _generateUserScore(UserScore * userScore){
 }
 
 static void _generateGameFunction(GameFunction * gameFunction){ //listo
-	_output(1, "%s", "numbersOnDeck = ");			//OK
+	_output(2, "%s", "numbersOnDeck = ");			//OK
 	_output(0, "%d", gameFunction->cteNumbersOnDeck);	//OK
 	_output(0, "%s", ";\n");							//OK
-	_output(1, "%s", "String[] typeNames = {");		//OK
+	_output(2, "%s", "String[] typeNames = {");		//OK
 	_generateCardTypes(gameFunction->cardTypes);	//OK
 	_output(0, "%s", "};\n");						//OK
-	_output(1, "%s", "numbersOfCardsInHand = ");	//OK
+	_output(2, "%s", "numbersOfCardsInHand = ");	//OK
 	_output(0, "%d", gameFunction->cteCardsByPlayers);	//OK
 	_output(0, "%s", ";\n");							//OK
-	_output(1, "%s", "int rounds = ");			//OK
+	_output(2, "%s", "int rounds = ");			//OK
 	_output(0, "%d", gameFunction->cteRounds);	//OK
 	_output(0, "%s", ";\n");					//OK
-	_output(1, "%s", "int roundTimer = ");			//OK
+	_output(2, "%s", "int roundTimer = ");			//OK
 	_output(0, "%d", gameFunction->cteRoundTimer);	//OK	
 	_output(0, "%s", ";\n");						//OK
-	_output(1, "%s", "StartingScore(");						//OK
+	_output(2, "%s", "StartingScore(");						//OK
 	_output(0, "%d", gameFunction->cteUserStartingScore);	//OK	
 	_output(0, "%s", ", ");									//OK
 	_output(0, "%d", gameFunction->cteMachineStartingScore);//OK
@@ -243,9 +233,9 @@ static void _generateGameFunction(GameFunction * gameFunction){ //listo
 	_output(0, "%s", "//BackgroundDesign(");
 	_output(0, "%s", gameFunction->varBackDesign);	
 	_output(0, "%s", ")\n");
-	_output(1, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); //OK
-	_output(1, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer);\n");
-	_output(1, "%s", "deck.generateDeck();\n");
+	_output(2, "%s", "Deck deck = new Deck(typeNames, numbersOnDeck);\n"); //OK
+	_output(2, "%s", "gameManager = new GameManager(typeNames, numbersOnDeck, rounds, roundTimer);\n");
+	_output(2, "%s", "deck.generateDeck();\n");
 	_generateBlock(gameFunction->block); 
 }
 
@@ -283,19 +273,6 @@ static void _generateNumbers(Numbers * numbers){
 		default:
 			logError(_logger, "The specified numbers type is unknown: %d", numbers->type);
 			break;	
-	}
-}
-
-static void _generateGetters(Getters * getters){
-	switch(getters->type){
-		case GETTER_LOSER:
-			break;
-		case GETTER_WINNER:
-			_output(0, "%s", getters->variable);
-			break;
-		default:
-			logError(_logger, "The specified getters type is unknown: %d", getters->type);
-			break;
 	}
 }
 
@@ -367,23 +344,27 @@ static void _generateStructures(Structures * structures){
 			_output(1, "%s", "if(");
 			_generateIfs(structures->conditional);
 			_output(0, "%s", "){\n");
-			_generateInBrakets(structures->inBrakets);
+			_generateInBrakets(structures->inBrakets, 1);
 			break;
 		case ELIF_STRUCTURE:
-			_output(1, "%s", "elif(");
+			_output(1, "%s", "else if(");
 			_generateIfs(structures->conditional);
 			_output(0, "%s", "){\n");
-			_generateInBrakets(structures->inBrakets);
+			_generateInBrakets(structures->inBrakets, 1);
 			break;
 		case FOREACH_STRUCTURE:
-			_output(1, "%s", "foreach(");
+			_output(1, "%s", "for(");
 			_generateAtomic(structures->atomic);
 			_output(0, "%s", "){\n");
-			_generateInBrakets(structures->inBrakets1);
+			_generateInBrakets(structures->inBrakets1, 1);
 			break;
 		case ELSE_STRUCTURE:
 			_output(1, "%s", "else{\n");
-			_generateInBrakets(structures->inBrakets2);
+			_generateInBrakets(structures->inBrakets2, 1);
+			break;
+		case WITH_STRUCTURE:
+			_generateWith(structures->with);
+			_generateInBrakets(structures->inBrakets3, 0);
 			break;
 		default:
 			logError(_logger, "The specified structures type is unknown: %d", structures->type);
@@ -391,9 +372,23 @@ static void _generateStructures(Structures * structures){
 	}
 }
 
-static void _generateInBrakets(InBrakets * inBrakets){
+static void _generateWith(With * with){
+	switch(with->type){
+		case VALUE_WITH:
+			_output(0, "%d, ", with->constant);
+			break;
+		case TYPE_WITH:
+			_output(0, "%s, ", with->variable);
+			break;
+		default:
+			logError(_logger, "The specified with type is unknown: %d", with->type);
+			break;
+	}
+}
+
+static void _generateInBrakets(InBrakets * inBrakets, int noBrakets){
 	_generateRules(inBrakets->leftRules);
-	_output(1, "%s", "\n}\n");
+	_output(0, "%s", noBrakets?"\n}\n":"\n");
 	_generateRules(inBrakets->rightRules);
 }
 
@@ -401,7 +396,7 @@ static void _generateHandRef(HandRef * handRef){
 	switch(handRef->type){
 		case USER:
 			_generateUser(handRef->user);
-			_output(0, "%s", ".Hand");
+			_output(0, "%s", ".getCardsInHand()");
 			break;
 		case HAND_DECK:
 			_generateDeck(handRef->deck);
@@ -416,7 +411,7 @@ static void _generateDeck(Deck * deck){ //listo
 	_output(0, "%s", "deck.getDeck()");
 }
 
-static void _generateUser(User * user){
+static void _generateUser(User * user){ //listo
 	switch(user->type){
 		case USER_PLAYER:
 			_output(0, "%s", "player");
@@ -430,7 +425,7 @@ static void _generateUser(User * user){
 	}
 }
 
-static void _generateIfs(Ifs * ifs){//eliminamos tied?
+static void _generateIfs(Ifs * ifs){
 	switch(ifs->type){
 		case INIF:
 			_generateInIf(ifs->inIf);
@@ -444,9 +439,6 @@ static void _generateIfs(Ifs * ifs){//eliminamos tied?
 			_generateInIf(ifs->leftInIf);
 			_output(0, "%s", " || ");
 			_generateInIf(ifs->rightInIf);
-			break;
-		case TIED_IF:
-			_output(0, "%s", ifs->tied? "true" : "false");
 			break;	
 		default:
 			logError(_logger, "The specified ifs type is unknown: %d", ifs->type);
@@ -459,9 +451,6 @@ static void _generateInIf(InIf * inIf){
 		case TYPE_IF:
 			_generateComparison(inIf->comparison1); //if(inIf->comparison->type == "COMP_EQUAL_EQUAL")
 			_output(0, "%s", inIf->variable);
-			break;
-		case ACTIVATE_SPECIAL_CARDS_IF:
-			_output(0, "%s", "SpecialCardsOnPlay()");
 			break;
 		case EXPRESSION_IF:
 			_generateExpression(inIf->leftExpression);

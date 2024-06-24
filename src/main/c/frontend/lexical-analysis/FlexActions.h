@@ -47,6 +47,5 @@ Token PlayerReferenceLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContex
 Token LogicLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token GamingLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 Token ControlStructureLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
-Token BooleanLexemeAction(LexicalAnalyzerContext * lexicalAnalyzerContext);
 
 #endif

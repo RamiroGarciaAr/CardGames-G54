@@ -24,7 +24,6 @@ typedef enum PmOneType PmOneType;
 typedef enum ArithmeticType ArithmeticType;
 typedef enum AsignationsType AsignationsType;
 typedef enum UserRulesType UserRulesType;
-typedef enum GettersType GettersType;
 typedef enum StructuresType StructuresType;
 typedef enum HandRefType HandRefType;
 typedef enum IfType IfType;
@@ -32,6 +31,7 @@ typedef enum InIfType InIfType;
 typedef enum ComparisonType ComparisonType;
 typedef enum AtomicType AtomicType;
 typedef enum UserType UserType;
+typedef enum WithType WithType;
 
 typedef struct Block Block;
 typedef struct GameFunction GameFunction;
@@ -46,7 +46,6 @@ typedef struct PmOne PmOne;
 typedef struct Arithmetic Arithmetic;
 typedef struct Asignations Asignations;
 typedef struct CardTypes CardTypes;
-typedef struct Getters Getters;
 typedef struct Structures Structures;
 typedef struct HandRef HandRef;
 typedef struct InBrakets InBrakets;
@@ -56,6 +55,7 @@ typedef struct InIf InIf;
 typedef struct Comparison Comparison;
 typedef struct Atomic Atomic;
 typedef struct Program Program;
+typedef struct With With;
 
 /**
  * Node types for the Abstract Syntax Tree (AST).
@@ -95,11 +95,9 @@ enum RuleType {
     RULE_WIN_GAME,
     RULE_WINNER_TYPE,
     RULE_ACTIVATE_SPECIAL_CARDS,
-	ROUND_BORDERS_DESIGN,
 	COLOR_BORDERS_DESIGN,
 	BACKGROUND_COLOR_DESIGN,
     USER_RULES,
-    TIED_RULE,
     FINISH_RULE
 };
 
@@ -131,20 +129,15 @@ enum UserRulesType{
 	NUMBER_ASSIG,
 	CARD_ASSIG,
 	ARITHMETIC_ASSIG,
-	PMO_ASSIG,
-	GETTER_ASSIG	
-};
-
-enum GettersType{
-	GETTER_LOSER,
-	GETTER_WINNER
+	PMO_ASSIG	
 };
 
 enum StructuresType {
 	IF_STRUCTURE,
 	FOREACH_STRUCTURE,
 	ELIF_STRUCTURE,
-	ELSE_STRUCTURE
+	ELSE_STRUCTURE,
+	WITH_STRUCTURE
 };
 
 enum HandRefType {
@@ -155,8 +148,7 @@ enum HandRefType {
 enum IfType {
 	INIF, 
 	AND_IF,
-	OR_IF,
-	TIED_IF
+	OR_IF
 };
 
 enum InIfType {
@@ -182,6 +174,11 @@ enum AtomicType{
 enum UserType{
 	USER_PLAYER,
 	USER_IDENTIFIER
+};
+
+enum WithType{
+	VALUE_WITH,
+	TYPE_WITH
 };
 
 /* ------------------------------------------------- EXPRESSIONS ------------------------------------------------- */
@@ -300,19 +297,15 @@ struct Rules {
             Rules * rule3;
         };
 		struct {
+			User * user;
+			Rules * rule4;
+		};
+		struct {
             char * variable2;
 			char * variable3;
             Rules * rule6;
         };
-		struct{
-			int constant2;
-			Rules * rule5;
-		};
         UserRules * userRules;
-        struct {
-            bool tied;
-            Rules * rule4;
-        };
 		Block * block;
     };
     RuleType type;
@@ -368,19 +361,8 @@ struct UserRules{
 			PmOne * pmOne;
 			Rules * rule2;
 		};
-		struct {
-			Getters * leftGetter;
-			Asignations * asignations2;
-			Getters * rightGetter;
-			Rules * rule3;
-		};
 	};
 	UserRulesType type;
-};
-
-struct Getters{
-	char * variable;
-	GettersType type;
 };
 
 struct Structures {
@@ -393,9 +375,21 @@ struct Structures {
 			Atomic *  atomic;
 			InBrakets * inBrakets1;
 		};
+		struct{
+			With * with;
+			InBrakets * inBrakets3;
+		};
 		InBrakets * inBrakets2;
 	};
 	StructuresType type;
+};
+
+struct With{
+	union{
+		int constant;
+		char * variable;
+	};
+	WithType type;
 };
 
 struct InBrakets {
@@ -418,7 +412,6 @@ struct Ifs {
 			InIf * leftInIf;
 			InIf * rightInIf;
 		};
-		bool tied;
 	};
 	IfType type;
 };

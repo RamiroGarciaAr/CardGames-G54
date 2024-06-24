@@ -8,14 +8,22 @@ MyCardGame game has:
     WinRoundCondition(WinRoundRule)
     WinGameCondition(standard)
     CardsDesign(myDesign) 
-    BackgroundDesign(standard)
+    BackgroundDesign(myBackground)
 
-WinRoundRule for game:
-    WinnerType(Fire, Earth)
-    WinnerType(Earth, Water)
-    WinnerType(Water, Fire)
+WinRoundRule for game: 
+    WinnerType(Earth, Fire)
+    WinnerType(Fire, Water)
+    WinnerType(Water, Earth)
 
 myDesign design has: 
     ColorBorders(Water, CORNFLOWER)
     ColorBorders(Fire, MAGENTA)
     ColorBorders(Earth, LIME)    
+
+myBackground design has:
+    BackgroundColor(background3)
+
+RuleTesting for type Water:
+    with(value 3){
+        MoveCards(Deck, Playing.Hand, 2)
+    }
